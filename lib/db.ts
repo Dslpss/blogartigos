@@ -26,6 +26,9 @@ export interface BlogPost {
   author: string;
   slug: string;
   imageUrl: string;
+  status: string;
+  source: string;
+  region: string;
   createdAt: Timestamp;
 }
 

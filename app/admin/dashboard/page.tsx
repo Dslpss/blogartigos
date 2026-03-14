@@ -39,7 +39,10 @@ const AdminDashboard = () => {
     category: 'Estratégia',
     author: 'Dennis Emanuel',
     imageUrl: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=2070&auto=format&fit=crop',
-    slug: ''
+    slug: '',
+    status: 'Transmissão_Ativa',
+    source: 'CB_Analytics_Hub',
+    region: 'LATAM_BRASIL'
   });
   const [editingArticleId, setEditingArticleId] = useState<string | null>(null);
 
@@ -125,7 +128,10 @@ const AdminDashboard = () => {
       category: article.category,
       author: article.author,
       imageUrl: article.imageUrl,
-      slug: article.slug
+      slug: article.slug,
+      status: article.status || 'Transmissão_Ativa',
+      source: article.source || 'CB_Analytics_Hub',
+      region: article.region || 'LATAM_BRASIL'
     });
     setIsAddingArticle(true);
   };
@@ -155,7 +161,10 @@ const AdminDashboard = () => {
       category: 'Estratégia',
       author: 'Dennis Emanuel',
       imageUrl: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=2070&auto=format&fit=crop',
-      slug: ''
+      slug: '',
+      status: 'Transmissão_Ativa',
+      source: 'CB_Analytics_Hub',
+      region: 'LATAM_BRASIL'
     });
   };
 
@@ -319,6 +328,38 @@ const AdminDashboard = () => {
                            className="w-full bg-white border border-border rounded-xl p-3 outline-none focus:border-accent"
                          />
                       </div>
+
+                        <div className="bg-secondary/5 border border-secondary/10 rounded-xl p-6 mb-4">
+                           <h4 className="text-[10px] font-black uppercase tracking-widest text-secondary mb-2 italic">Guia de Contexto Técnico</h4>
+                           <p className="text-[11px] text-secondary/70 leading-relaxed italic">
+                             Estes campos definem as metadados que aparecem na barra lateral das notícias e artigos. 
+                             Eles ajudam a dar uma aparência de "inteligência governamental/técnica" ao blog.
+                           </p>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                          <div className="space-y-2">
+                             <div className="flex items-center gap-2 ml-4">
+                                <label className="text-[10px] font-black uppercase tracking-widest text-secondary italic">Status</label>
+                                <span className="text-[8px] px-1.5 py-0.5 bg-accent/10 text-accent rounded-full border border-accent/20 cursor-help" title="Estado da informação (ex: Transmissão_Ativa, Arquivado, Em_Analise)">?</span>
+                             </div>
+                             <input type="text" required value={newArticle.status || ''} onChange={e => setNewArticle({...newArticle, status: e.target.value})} placeholder="Transmissão_Ativa" className="w-full bg-white border border-border rounded-xl p-3 outline-none focus:border-accent" />
+                          </div>
+                          <div className="space-y-2">
+                             <div className="flex items-center gap-2 ml-4">
+                                <label className="text-[10px] font-black uppercase tracking-widest text-secondary italic">Fonte</label>
+                                <span className="text-[8px] px-1.5 py-0.5 bg-accent/10 text-accent rounded-full border border-accent/20 cursor-help" title="Origem dos dados (ex: CB_Analytics_Hub, Intelligence_Unit)">?</span>
+                             </div>
+                             <input type="text" required value={newArticle.source || ''} onChange={e => setNewArticle({...newArticle, source: e.target.value})} placeholder="CB_Analytics_Hub" className="w-full bg-white border border-border rounded-xl p-3 outline-none focus:border-accent" />
+                          </div>
+                          <div className="space-y-2">
+                             <div className="flex items-center gap-2 ml-4">
+                                <label className="text-[10px] font-black uppercase tracking-widest text-secondary italic">Região</label>
+                                <span className="text-[8px] px-1.5 py-0.5 bg-accent/10 text-accent rounded-full border border-accent/20 cursor-help" title="Foco geográfico (ex: LATAM_BRASIL, GLOBAL_SOUTH, EU_WEST)">?</span>
+                             </div>
+                             <input type="text" required value={newArticle.region || ''} onChange={e => setNewArticle({...newArticle, region: e.target.value})} placeholder="LATAM_BRASIL" className="w-full bg-white border border-border rounded-xl p-3 outline-none focus:border-accent" />
+                          </div>
+                        </div>
 
                        <div className="space-y-2">
                           <label className="text-[10px] font-black uppercase tracking-widest text-secondary ml-4">Conteúdo (Markdown/Texto)</label>

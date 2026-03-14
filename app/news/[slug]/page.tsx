@@ -78,9 +78,9 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
           <div className="glass-panel p-10 bg-white shadow-sm border-primary/5">
             <h4 className="text-xs font-black uppercase tracking-[0.4em] text-accent mb-6">CONTEXTO_TÉCNICO</h4>
             <div className="space-y-4 opacity-60 font-mono text-[10px] leading-relaxed uppercase">
-              <p>Status: Transmissão_Ativa</p>
-              <p>Fonte: CB_Analytics_Hub</p>
-              <p>Região: LATAM_BRASIL</p>
+              <p>Status: {article.status || 'Transmissão_Ativa'}</p>
+              <p>Fonte: {article.source || 'CB_Analytics_Hub'}</p>
+              <p>Região: {article.region || 'LATAM_BRASIL'}</p>
               <p>Categoria: {article.category}</p>
             </div>
           </div>
