@@ -36,13 +36,15 @@ import {
 } from '@/lib/db';
 import { useAuth } from '@/lib/auth-context';
 
-const SUPER_ADMIN_EMAIL = 'dennisemannuel93@gmail.com';
+const SUPER_ADMIN_EMAIL = process.env.NEXT_PUBLIC_SUPER_ADMIN_EMAIL;
 
 const AdminDashboard = () => {
   const { role } = useAuth();
   const [activeTab, setActiveTab] = useState('articles');
   const [blogName, setBlogName] = useState('');
   const [blogDescription, setBlogDescription] = useState('');
+  const [blogLogoUrl, setBlogLogoUrl] = useState('');
+  const [blogNewsletterUrl, setBlogNewsletterUrl] = useState('');
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [articles, setArticles] = useState<BlogPost[]>([]);
@@ -78,6 +80,8 @@ const AdminDashboard = () => {
         ]);
         setBlogName(settings.name);
         setBlogDescription(settings.description || '');
+        setBlogLogoUrl(settings.logoUrl || '');
+        setBlogNewsletterUrl(settings.newsletterUrl || '');
         setArticles(fetchedArticles);
         setTeamMembers(members);
       } catch (err) {
@@ -92,7 +96,12 @@ const AdminDashboard = () => {
   const handleSaveSettings = async () => {
     setSaving(true);
     try {
-      await updateBlogSettings({ name: blogName, description: blogDescription });
+      await updateBlogSettings({ 
+        name: blogName, 
+        description: blogDescription, 
+        logoUrl: blogLogoUrl,
+        newsletterUrl: blogNewsletterUrl 
+      });
       alert('Configurações salvas!');
     } catch (err) {
       alert('Erro ao salvar.');
@@ -256,6 +265,16 @@ const AdminDashboard = () => {
                        <div className="space-y-2">
                           <label className="text-[10px] font-black uppercase tracking-widest text-primary ml-4">Nome do Blog</label>
                           <input type="text" value={blogName} onChange={e => setBlogName(e.target.value)} className="w-full bg-white border border-border rounded-xl p-3 outline-none focus:border-accent text-primary" />
+                       </div>
+                       <div className="space-y-2">
+                          <label className="text-[10px] font-black uppercase tracking-widest text-primary ml-4">URL da Logo (Opcional)</label>
+                          <input type="url" placeholder="https://exemplo.com/logo.png" value={blogLogoUrl} onChange={e => setBlogLogoUrl(e.target.value)} className="w-full bg-white border border-border rounded-xl p-3 outline-none focus:border-accent text-primary" />
+                          <p className="text-[8px] text-secondary opacity-50 ml-4 italic">* Se vazio, usará a logo padrão de texto.</p>
+                       </div>
+                       <div className="space-y-2">
+                          <label className="text-[10px] font-black uppercase tracking-widest text-primary ml-4">Link da Newsletter (Opcional)</label>
+                          <input type="url" placeholder="https://substack.com/@seu-perfil" value={blogNewsletterUrl} onChange={e => setBlogNewsletterUrl(e.target.value)} className="w-full bg-white border border-border rounded-xl p-3 outline-none focus:border-accent text-primary" />
+                          <p className="text-[8px] text-secondary opacity-50 ml-4 italic">* Se vazio, o botão mostrará "Em breve".</p>
                        </div>
                        <div className="space-y-2">
                           <label className="text-[10px] font-black uppercase tracking-widest text-primary ml-4">Descrição</label>

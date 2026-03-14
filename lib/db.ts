@@ -40,6 +40,8 @@ export interface UserRole {
 export interface BlogSettings {
   name: string;
   description?: string;
+  logoUrl?: string;
+  newsletterUrl?: string;
 }
 
 // Blog Settings
@@ -49,7 +51,12 @@ export const getBlogSettings = async (): Promise<BlogSettings> => {
   if (docSnap.exists()) {
     return docSnap.data() as BlogSettings;
   }
-  return { name: 'Dslpss Study-Notes Blog', description: 'Uma plataforma dedicada ao acompanhamento técnico de notícias, análises de mercado e insights estratégicos.' };
+  return { 
+    name: 'Dslpss Study-Notes Blog', 
+    description: 'Uma plataforma dedicada ao acompanhamento técnico de notícias, análises de mercado e insights estratégicos.',
+    logoUrl: '',
+    newsletterUrl: ''
+  };
 };
 
 export const updateBlogSettings = async (settings: Partial<BlogSettings>) => {

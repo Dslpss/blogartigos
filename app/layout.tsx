@@ -32,7 +32,7 @@ export default async function RootLayout({
     <html lang="pt-BR">
       <body className={`${inter.variable} ${playfair.variable} antialiased font-sans bg-background text-foreground`}>
         <AuthProvider>
-          <Navbar blogName={settings.name} />
+          <Navbar blogName={settings.name} logoUrl={settings.logoUrl} />
           {children}
         </AuthProvider>
       </body>

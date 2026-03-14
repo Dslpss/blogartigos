@@ -21,7 +21,7 @@ const AuthContext = createContext<AuthContextType>({
   role: null,
 });
 
-const SUPER_ADMIN_EMAIL = 'dennisemannuel93@gmail.com';
+const SUPER_ADMIN_EMAIL = process.env.NEXT_PUBLIC_SUPER_ADMIN_EMAIL;
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);

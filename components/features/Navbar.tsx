@@ -4,14 +4,18 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { Menu, X, Twitter, Github, Linkedin, ArrowUpRight, Shield } from 'lucide-react';
+import { CustomAlert } from '@/components/ui/Alert';
 
 interface NavbarProps {
   blogName?: string;
+  logoUrl?: string;
+  newsletterUrl?: string;
 }
 
-const Navbar = ({ blogName }: NavbarProps) => {
+const Navbar = ({ blogName, logoUrl, newsletterUrl }: NavbarProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
 
   const displayBlogName = blogName || "ComunicaBrasil";
   const nameParts = displayBlogName.match(/[A-Z][a-z]+/g) || [displayBlogName];
@@ -25,6 +29,14 @@ const Navbar = ({ blogName }: NavbarProps) => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const handleSubscribe = () => {
+    if (newsletterUrl) {
+      window.open(newsletterUrl, '_blank');
+    } else {
+      setIsAlertOpen(true);
+    }
+  };
 
   const menuItems = [
     { name: 'Início', href: '/' },
@@ -40,12 +52,24 @@ const Navbar = ({ blogName }: NavbarProps) => {
         <div className="flex items-center gap-2 group relative">
           {/* Logo Link */}
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center transition-all duration-500 group-hover:rotate-12 group-hover:bg-accent">
-              <span className="text-white font-black text-xl italic underline decoration-accent underline-offset-4">C</span>
-            </div>
-            <span className="text-xl font-black uppercase tracking-tighter text-primary">
-              {firstPart}<span className="text-accent underline decoration-primary underline-offset-4">{secondPart}</span>
-            </span>
+            {logoUrl ? (
+              <div className="h-10 transition-transform duration-500 group-hover:scale-105">
+                <img 
+                  src={logoUrl} 
+                  alt={blogName || "Logo"} 
+                  className="h-full w-auto object-contain max-w-[200px]" 
+                />
+              </div>
+            ) : (
+              <>
+                <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center transition-all duration-500 group-hover:rotate-12 group-hover:bg-accent">
+                  <span className="text-white font-black text-xl italic underline decoration-accent underline-offset-4">C</span>
+                </div>
+                <span className="text-xl font-black uppercase tracking-tighter text-primary">
+                  {firstPart}<span className="text-accent underline decoration-primary underline-offset-4">{secondPart}</span>
+                </span>
+              </>
+            )}
           </Link>
 
           {/* Hidden Admin Link (Separate from Logo Link to fix Hydration Error) */}
@@ -70,7 +94,10 @@ const Navbar = ({ blogName }: NavbarProps) => {
               <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-accent transition-all duration-300 group-hover:w-full" />
             </Link>
           ))}
-          <button className="btn-premium flex items-center gap-2">
+          <button 
+            onClick={handleSubscribe}
+            className="btn-premium flex items-center gap-2 active:scale-95 transition-transform"
+          >
             Inscrever-se <ArrowUpRight className="w-4 h-4" />
           </button>
         </div>
@@ -114,6 +141,14 @@ const Navbar = ({ blogName }: NavbarProps) => {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <CustomAlert 
+        isOpen={isAlertOpen}
+        onClose={() => setIsAlertOpen(false)}
+        title="Newsletter"
+        message={`O recurso de Newsletter está em desenvolvimento direto no laboratório do ${displayBlogName}. Em breve você receberá nossos artigos exclusivos em sua caixa de entrada.`}
+        type="info"
+      />
     </nav>
   );
 };
