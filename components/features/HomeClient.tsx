@@ -19,9 +19,10 @@ interface Article {
 
 interface HomeClientProps {
   articles: Article[];
+  blogName?: string;
 }
 
-const HomeClient: React.FC<HomeClientProps> = ({ articles }) => {
+const HomeClient: React.FC<HomeClientProps> = ({ articles, blogName = "Comunica Brasil" }) => {
   const featuredArticles = articles.slice(0, 6);
 
   return (
@@ -44,7 +45,8 @@ const HomeClient: React.FC<HomeClientProps> = ({ articles }) => {
             </motion.div>
             
             <h1 className="text-4xl sm:text-6xl lg:text-8xl font-black mb-10 leading-[0.9] tracking-tighter text-primary">
-              Descodificando a <span className="text-accent underline decoration-black underline-offset-8">Realidade</span> com Precisão.
+              {blogName.split(' ')[0]} <br />
+              <span className="text-accent underline decoration-black underline-offset-8">{blogName.split(' ').slice(1).join(' ')}</span>
             </h1>
             
             <p className="text-xl text-secondary mb-12 max-w-xl leading-relaxed">

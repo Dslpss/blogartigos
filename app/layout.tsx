@@ -18,6 +18,8 @@ export const metadata: Metadata = {
   description: "O portal de notícias e artigos com visual premium e informação de qualidade.",
 };
 
+import { AuthProvider } from "@/lib/auth-context";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -26,8 +28,10 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body className={`${inter.variable} ${playfair.variable} antialiased font-sans bg-background text-foreground`}>
-        <Navbar />
-        {children}
+        <AuthProvider>
+          <Navbar />
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );

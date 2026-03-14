@@ -1,55 +1,23 @@
 import { Metadata } from "next";
 import HomeClient from "@/components/features/HomeClient";
+import { getBlogSettings, getArticles } from "@/lib/db";
 
 export const metadata: Metadata = {
   title: "Comunica Brasil | Jornalismo Técnico e Independente",
   description: "As principais notícias do Brasil e do mundo com análise técnica e profundidade.",
 };
 
-const mockArticles = [
-  {
-    id: '1',
-    title: 'A Ascensão da Economia Digital no Brasil',
-    excerpt: 'Como as fintechs e a digitalização estão transformando o cenário financeiro nacional em 2024.',
-    category: 'ECONOMIA',
-    date: '14 Mar 2026',
-    slug: 'ascensao-economia-digital',
-    featured: true
-  },
-  {
-    id: '2',
-    title: 'IA e o Futuro do Trabalho Técnico',
-    excerpt: 'Análise profunda sobre como a automação inteligente está redefinindo as competências necessárias para o mercado.',
-    category: 'TECNOLOGIA',
-    date: '13 Mar 2026',
-    slug: 'ia-futuro-trabalho'
-  },
-  {
-    id: '3',
-    title: 'Energia Limpa: O Protocolo de Sustentabilidade',
-    excerpt: 'O Brasil se posiciona como líder na transição energética global com novos parques eólicos.',
-    category: 'SOCIEDADE',
-    date: '12 Mar 2026',
-    slug: 'energia-limpa-brasil'
-  },
-  {
-    id: '4',
-    title: 'Cibersegurança em Ambientes Híbridos',
-    excerpt: 'Novas ameaças exigem protocolos de defesa mais robustos e descentralizados.',
-    category: 'TECNOLOGIA',
-    date: '11 Mar 2026',
-    slug: 'ciberseguranca-hibrida'
-  },
-  {
-    id: '5',
-    title: 'Infraestrutura 5G e Conectividade Rural',
-    excerpt: 'O impacto da chegada do 5G no agronegócio e a integração das fronteiras produtivas.',
-    category: 'ECONOMIA',
-    date: '10 Mar 2026',
-    slug: '5g-conectividade-rural'
-  }
-];
+export default async function Home() {
+  const [settings, articles] = await Promise.all([
+    getBlogSettings(),
+    getArticles()
+  ]);
 
-export default function Home() {
-  return <HomeClient articles={mockArticles} />;
+  const formattedArticles = articles.map(a => ({
+    ...a,
+    id: a.id || Math.random().toString(),
+    createdAt: a.createdAt?.toDate().toISOString() || new Date().toISOString()
+  }));
+
+  return <HomeClient articles={formattedArticles as any} blogName={settings.name} />;
 }

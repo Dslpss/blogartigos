@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import { Menu, X, Twitter, Github, Linkedin, ArrowUpRight } from 'lucide-react';
+import { Menu, X, Twitter, Github, Linkedin, ArrowUpRight, Shield } from 'lucide-react';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -28,14 +28,26 @@ const Navbar = () => {
     <nav className={`glass-header transition-all duration-500 ${scrolled ? 'shadow-premium' : ''}`}>
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="group flex items-center gap-2">
-          <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center transition-all duration-500 group-hover:rotate-12 group-hover:bg-accent">
-            <span className="text-white font-black text-xl italic underline decoration-accent underline-offset-4">C</span>
-          </div>
-          <span className="text-xl font-black uppercase tracking-tighter text-primary">
-            Comunica<span className="text-accent underline decoration-primary underline-offset-4">Brasil</span>
-          </span>
-        </Link>
+        <div className="flex items-center gap-2 group relative">
+          {/* Logo Link */}
+          <Link href="/" className="flex items-center gap-2">
+            <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center transition-all duration-500 group-hover:rotate-12 group-hover:bg-accent">
+              <span className="text-white font-black text-xl italic underline decoration-accent underline-offset-4">C</span>
+            </div>
+            <span className="text-xl font-black uppercase tracking-tighter text-primary">
+              Comunica<span className="text-accent underline decoration-primary underline-offset-4">Brasil</span>
+            </span>
+          </Link>
+
+          {/* Hidden Admin Link (Separate from Logo Link to fix Hydration Error) */}
+          <Link 
+            href="/admin/dashboard" 
+            className="absolute -top-2 -right-6 opacity-0 group-hover:opacity-10 hover:opacity-100 transition-opacity p-2"
+            title="Acesso Administrativo"
+          >
+             <Shield className="w-3 h-3 text-primary" />
+          </Link>
+        </div>
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center gap-8">
