@@ -35,7 +35,7 @@ const ArticlesClient: React.FC<ArticlesClientProps> = ({ articles }) => {
               <span className="text-accent font-black uppercase tracking-widest text-[10px]">Arquivo de Insights</span>
             </div>
             
-            <h1 className="text-5xl md:text-7xl font-black text-primary tracking-tighter uppercase leading-none">
+            <h1 className="text-4xl sm:text-5xl md:text-7xl font-black text-primary tracking-tighter uppercase leading-none">
               Protocolos de <br /> <span className="text-accent italic underline decoration-primary underline-offset-8">Conhecimento.</span>
             </h1>
             

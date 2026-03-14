@@ -43,7 +43,7 @@ const HomeClient: React.FC<HomeClientProps> = ({ articles }) => {
               <span className="text-accent font-bold uppercase tracking-[0.3em] text-xs">A Nova Era da Informação</span>
             </motion.div>
             
-            <h1 className="text-6xl md:text-8xl font-black mb-10 leading-[0.9] tracking-tighter text-primary">
+            <h1 className="text-4xl sm:text-6xl lg:text-8xl font-black mb-10 leading-[0.9] tracking-tighter text-primary">
               Descodificando a <span className="text-accent underline decoration-black underline-offset-8">Realidade</span> com Precisão.
             </h1>
             
@@ -77,7 +77,7 @@ const HomeClient: React.FC<HomeClientProps> = ({ articles }) => {
           <div className="bento-grid">
             {/* Main Bento Item (Large) */}
             {featuredArticles[0] && (
-              <div className="col-span-4 md:col-span-2 row-span-2 bento-item group p-8 flex flex-col justify-end bg-primary overflow-hidden">
+              <div className="col-span-1 md:col-span-2 lg:row-span-2 bento-item group p-8 flex flex-col justify-end bg-primary overflow-hidden">
                 <div className="absolute inset-0 opacity-20 pointer-events-none overflow-hidden">
                   <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-accent blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2" />
                 </div>
@@ -101,7 +101,7 @@ const HomeClient: React.FC<HomeClientProps> = ({ articles }) => {
 
             {/* Medium Bento Items */}
             {featuredArticles.slice(1, 3).map((article, idx) => (
-              <div key={article.id} className="col-span-4 md:col-span-2 bento-item group p-6 flex flex-col justify-between bg-surface">
+              <div key={article.id} className="col-span-1 md:col-span-1 lg:col-span-2 bento-item group p-6 flex flex-col justify-between bg-surface">
                 <div>
                    <span className="text-[10px] font-black uppercase text-accent/60 tracking-widest block mb-4 italic">{article.category}</span>
                    <h3 className="text-2xl font-black text-primary leading-tight group-hover:text-accent transition-colors">
@@ -118,13 +118,13 @@ const HomeClient: React.FC<HomeClientProps> = ({ articles }) => {
             ))}
 
             {/* Small Statistics/Visual Bento Items */}
-            <div className="col-span-4 md:col-span-1 bento-item bg-accent/5 p-6 flex flex-col items-center justify-center text-center border-accent/10">
+            <div className="col-span-1 bento-item bg-accent/5 p-6 flex flex-col items-center justify-center text-center border-accent/10">
               <Zap className="w-10 h-10 text-accent mb-4 animate-pulse" />
               <div className="text-3xl font-black text-primary">2.4k+</div>
               <div className="text-[10px] font-bold text-accent uppercase tracking-widest mt-1">Pontos de Dados</div>
             </div>
 
-            <div className="col-span-4 md:col-span-1 bento-item group p-8 flex flex-col justify-center bg-white border-dashed border-2 border-border hover:border-accent/30 hover:bg-accent/5">
+            <div className="col-span-1 bento-item group p-8 flex flex-col justify-center bg-white border-dashed border-2 border-border hover:border-accent/30 hover:bg-accent/5">
               <h4 className="text-sm font-black uppercase text-primary mb-4 opacity-40">Seja um Editor</h4>
               <p className="text-xs text-secondary mb-4 italic">Contribua com suas análises técnicas para nossa rede.</p>
               <ArrowUpRight className="w-6 h-6 text-accent group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
@@ -132,7 +132,7 @@ const HomeClient: React.FC<HomeClientProps> = ({ articles }) => {
 
             {/* Final Row items */}
             {featuredArticles.slice(3, 5).map((article) => (
-              <div key={article.id} className="col-span-4 md:col-span-1 bento-item group p-6 bg-surface flex flex-col gap-4">
+              <div key={article.id} className="col-span-1 bento-item group p-6 bg-surface flex flex-col gap-4">
                 <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center text-accent">
                    {article.category === 'TECNOLOGIA' ? <Globe className="w-4 h-4" /> : <Shield className="w-4 h-4" />}
                 </div>

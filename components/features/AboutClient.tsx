@@ -24,7 +24,7 @@ const AboutClient = () => {
               <span className="text-accent font-bold uppercase tracking-[0.3em] text-xs">Nosso Manifesto</span>
             </motion.div>
             
-            <h1 className="text-6xl md:text-8xl font-black mb-10 leading-[0.9] tracking-tighter text-primary">
+            <h1 className="text-4xl sm:text-6xl lg:text-8xl font-black mb-10 leading-[0.9] tracking-tighter text-primary">
               Elevando o <span className="text-accent italic underline decoration-black underline-offset-8">Padrão</span> da Informação.
             </h1>
             
@@ -38,7 +38,7 @@ const AboutClient = () => {
         <section className="mb-32">
           <div className="bento-grid">
             {/* Mission Item */}
-            <div className="col-span-4 md:col-span-2 bento-item p-10 bg-primary text-white flex flex-col justify-end min-h-[400px]">
+            <div className="col-span-1 md:col-span-2 bento-item p-10 bg-primary text-white flex flex-col justify-end min-h-[400px]">
               <div className="absolute top-8 right-8">
                 <Sparkles className="w-12 h-12 text-accent/40" />
               </div>
@@ -49,7 +49,7 @@ const AboutClient = () => {
             </div>
 
             {/* Core Values Bento Column */}
-            <div className="col-span-4 md:col-span-2 grid grid-cols-2 gap-6">
+            <div className="col-span-1 md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div className="bento-item p-6 bg-surface flex flex-col gap-4">
                 <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center text-accent">
                   <Shield className="w-5 h-5" />
@@ -107,7 +107,7 @@ const AboutClient = () => {
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
-            className="p-20 bg-primary rounded-[3rem] text-white relative overflow-hidden text-center"
+            className="p-10 md:p-20 bg-primary rounded-[2rem] md:rounded-[3rem] text-white relative overflow-hidden text-center"
           >
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-accent/20 via-transparent to-transparent pointer-events-none" />
             <h2 className="text-4xl md:text-5xl font-black mb-8 relative z-10 tracking-tighter uppercase">Quer fazer parte da rede?</h2>
