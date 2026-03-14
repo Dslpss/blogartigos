@@ -100,7 +100,7 @@ const HomeClient: React.FC<HomeClientProps> = ({ articles, blogName = "Comunica 
                     {featuredArticles[0].excerpt}
                   </p>
                   <Link 
-                    href={`/news/${featuredArticles[0].slug}`}
+                    href={`/news/${featuredArticles[0].slug || featuredArticles[0].id}`}
                     className="inline-flex items-center gap-2 text-white font-bold uppercase tracking-widest text-xs border-b border-white/20 pb-1 hover:border-accent hover:text-accent transition-all"
                   >
                     Explorar Tese <ArrowRight className="w-4 h-4" />
@@ -125,7 +125,7 @@ const HomeClient: React.FC<HomeClientProps> = ({ articles, blogName = "Comunica 
                   </h3>
                 </div>
                 <Link 
-                  href={`/news/${article.slug}`}
+                  href={`/news/${article.slug || article.id}`}
                   className="relative z-10 self-end p-2 rounded-full border border-border group-hover:bg-accent group-hover:text-white group-hover:border-accent transition-all duration-300"
                 >
                   <ArrowRight className="w-5 h-5" />
@@ -160,7 +160,7 @@ const HomeClient: React.FC<HomeClientProps> = ({ articles, blogName = "Comunica 
                 <h3 className="relative z-10 text-base font-bold text-primary leading-tight group-hover:text-accent transition-colors">
                   {article.title}
                 </h3>
-                <Link href={`/news/${article.slug}`} className="relative z-10 text-[9px] font-black uppercase tracking-widest text-accent mt-auto hover:underline">
+                <Link href={`/news/${article.slug || article.id}`} className="relative z-10 text-[9px] font-black uppercase tracking-widest text-accent mt-auto hover:underline">
                   Ver Mais
                 </Link>
               </div>

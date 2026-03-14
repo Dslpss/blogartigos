@@ -1,60 +1,77 @@
 import { Metadata } from "next";
+import { getArticleBySlug } from "@/lib/db";
+import { notFound } from "next/navigation";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const title = slug.replace(/-/g, ' ');
+  const article = await getArticleBySlug(slug);
+  
+  const title = article ? article.title : slug.replace(/-/g, ' ');
+  
   return {
-    title: `${title.charAt(0).toUpperCase() + title.slice(1)} | Comunica Brasil`,
-    description: `Leia mais sobre ${title} no Comunica Brasil.`,
+    title: `${title} | Comunica Brasil`,
+    description: article?.excerpt || `Leia mais sobre ${title} no Comunica Brasil.`,
   };
 }
 
 export default async function NewsDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
+  const article = await getArticleBySlug(slug);
+
+  if (!article) {
+    notFound();
+  }
+
   return (
     <article className="min-h-screen pt-48 pb-24 px-6 max-w-[1200px] mx-auto">
       <header className="mb-20">
         <div className="flex items-center gap-4 mb-8">
           <span className="text-accent font-black uppercase tracking-[0.5em] text-[10px] bg-accent/5 py-2 px-6 border border-accent/10 backdrop-blur-md">
-            Brasil / Política
+            {article.category}
           </span>
           <div className="h-[1px] w-12 bg-accent/30" />
         </div>
         
         <h1 className="text-5xl md:text-8xl font-black leading-[0.85] uppercase tracking-tighter mb-12 italic text-primary">
-          {slug.replace(/-/g, ' ')}
+          {article.title}
         </h1>
         
         <div className="flex items-center justify-between border-y border-primary/5 py-8 text-primary">
           <div className="flex items-center gap-6">
             <div className="w-12 h-12 rounded-full bg-accent/10 border border-accent/20 flex items-center justify-center font-mono text-xs font-black">
-              CB
+              {article.author?.substring(0, 2).toUpperCase() || 'CB'}
             </div>
             <div className="flex flex-col">
-              <span className="font-black uppercase tracking-widest text-[10px]">Por Equipe Comunica Brasil</span>
-              <span className="opacity-40 font-mono text-[9px] uppercase tracking-widest">Protocolo: 2026_MAR_14</span>
+              <span className="font-black uppercase tracking-widest text-[10px]">Por {article.author || 'Equipe Comunica Brasil'}</span>
+              <span className="opacity-40 font-mono text-[9px] uppercase tracking-widest">Protocolo: {article.date}</span>
             </div>
           </div>
-          <time className="font-mono text-[10px] opacity-40 uppercase tracking-[0.3em]">14_MARÇO_2026</time>
+          <time className="font-mono text-[10px] opacity-40 uppercase tracking-[0.3em]">{article.date}</time>
         </div>
       </header>
 
-      <div className="aspect-[21/9] bg-primary/5 overflow-hidden mb-20 relative group">
-        <div className="absolute inset-0 bg-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
-        <div className="absolute inset-8 border border-primary/5" />
-      </div>
+      {article.imageUrl && (
+        <div className="aspect-[21/9] bg-primary/5 overflow-hidden mb-20 relative group">
+          <img 
+            src={article.imageUrl} 
+            alt={article.title} 
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+          <div className="absolute inset-8 border border-white/10" />
+        </div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
         <div className="lg:col-span-8 prose prose-2xl prose-primary prose-invert-none max-w-none font-serif text-primary leading-relaxed space-y-12">
-          <p className="text-3xl md:text-4xl font-sans font-black leading-tight italic border-l-8 border-accent pl-10 mb-16">
-            Esta é uma página de detalhe dinâmica para a notícia. O conteúdo será carregado do Firestore garantindo precisão técnica.
-          </p>
-          <p className="opacity-70">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-          </p>
-          <p className="opacity-70">
-            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-          </p>
+          {article.excerpt && (
+            <p className="text-3xl md:text-4xl font-sans font-black leading-tight italic border-l-8 border-accent pl-10 mb-16">
+              {article.excerpt}
+            </p>
+          )}
+          <div className="opacity-70 whitespace-pre-wrap">
+            {article.content}
+          </div>
         </div>
         
         <aside className="lg:col-span-4 space-y-12">
@@ -64,6 +81,7 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
               <p>Status: Transmissão_Ativa</p>
               <p>Fonte: CB_Analytics_Hub</p>
               <p>Região: LATAM_BRASIL</p>
+              <p>Categoria: {article.category}</p>
             </div>
           </div>
         </aside>

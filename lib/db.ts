@@ -9,6 +9,7 @@ import {
   deleteDoc, 
   query, 
   orderBy,
+  where,
   Timestamp 
 } from 'firebase/firestore';
 import { db } from './firebase';
@@ -80,4 +81,35 @@ export const updateArticle = async (id: string, article: Partial<BlogPost>) => {
 export const deleteArticle = async (id: string) => {
   const articleRef = doc(db, 'articles', id);
   await deleteDoc(articleRef);
+};
+export const getArticleBySlug = async (slug: string): Promise<BlogPost | null> => {
+  const articlesCol = collection(db, 'articles');
+  
+  // First, try to find by the 'slug' field
+  const q = query(articlesCol, where('slug', '==', slug));
+  const querySnapshot = await getDocs(q);
+  
+  if (!querySnapshot.empty) {
+    const doc = querySnapshot.docs[0];
+    return {
+      id: doc.id,
+      ...doc.data()
+    } as BlogPost;
+  }
+
+  // Fallback: try to find by the document ID itself
+  try {
+    const docRef = doc(db, 'articles', slug);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return {
+        id: docSnap.id,
+        ...docSnap.data()
+      } as BlogPost;
+    }
+  } catch (e) {
+    // Ignore error if slug is not a valid doc ID
+  }
+
+  return null;
 };

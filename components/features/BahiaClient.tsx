@@ -17,6 +17,7 @@ export default function BahiaClient() {
           title="Salvador planeja o primeiro Carnaval 100% tecnológico."
           excerpt="Uso de blockchain para ingressos e segurança preditiva com drones devem marcar a folia baiana."
           image="https://images.unsplash.com/photo-1606064934508-73f08e379a91?q=80&w=2070&auto=format&fit=crop"
+          date="14/03/2026"
         />
       </div>
     </main>

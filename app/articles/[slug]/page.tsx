@@ -1,36 +1,57 @@
 import { Metadata } from "next";
+import { getArticleBySlug } from "@/lib/db";
+import { notFound } from "next/navigation";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const title = slug.replace(/-/g, ' ');
+  const article = await getArticleBySlug(slug);
+  
+  const title = article ? article.title : slug.replace(/-/g, ' ');
+  
   return {
-    title: `${title.charAt(0).toUpperCase() + title.slice(1)} | Artigo Comunica Brasil`,
-    description: `Análise técnica: ${title}.`,
+    title: `${title} | Artigo Comunica Brasil`,
+    description: article?.excerpt || `Análise técnica: ${title}.`,
   };
 }
 
 export default async function ArticleDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
+  const article = await getArticleBySlug(slug);
+
+  if (!article) {
+    notFound();
+  }
+
   return (
     <article className="min-h-screen pt-32 pb-24 px-4 max-w-3xl mx-auto">
       <header className="mb-16 text-center">
-        <span className="text-accent font-bold uppercase tracking-[0.4em] text-[10px] mb-6 block">Artigo de Opinião</span>
+        <span className="text-accent font-bold uppercase tracking-[0.4em] text-[10px] mb-6 block">
+          {article.category || 'Artigo de Opinião'}
+        </span>
         <h1 className="text-5xl md:text-7xl font-bold leading-[0.9] uppercase mb-12 italic">
-          {slug.replace(/-/g, ' ')}
+          {article.title}
         </h1>
+        
+        {article.imageUrl && (
+          <div className="mb-12 rounded-2xl overflow-hidden border border-border aspect-video">
+            <img 
+              src={article.imageUrl} 
+              alt={article.title} 
+              className="w-full h-full object-cover"
+            />
+          </div>
+        )}
+
         <div className="h-px w-24 bg-accent mx-auto mb-8" />
         <div className="opacity-60 text-xs uppercase tracking-widest">
-          Publicado em 14 de Março de 2026
+          {article.author} • {article.date}
         </div>
       </header>
 
       <div className="prose prose-invert prose-stone max-w-none font-serif text-xl leading-loose">
-        <p className="first-letter:text-7xl first-letter:font-bold first-letter:text-accent first-letter:mr-3 first-letter:float-left">
-          O pensamento técnico sobre os rumos da nossa sociedade exige uma análise profunda livre de amarras ideológicas.
-        </p>
-        <p>
-          Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-        </p>
+        <div className="whitespace-pre-wrap">
+          {article.content}
+        </div>
       </div>
     </article>
   );

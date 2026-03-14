@@ -82,7 +82,12 @@ const AdminDashboard = () => {
     try {
       let finalImageUrl = newArticle.imageUrl;
 
-      const slug = newArticle.title.toLowerCase().replace(/ /g, '-');
+      const slug = newArticle.title
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '') // remove accents
+        .replace(/[^a-z0-9]+/g, '-')     // keep only alphanumeric
+        .replace(/^-+|-+$/g, '');        // remove leading/trailing dashes
       
       if (editingArticleId) {
         await updateArticle(editingArticleId, {

@@ -17,6 +17,7 @@ export default function WorldClient() {
           title="Europa acelera transição energética após novos relatórios."
           excerpt="Dados mostram que o investimento em eólica superou as expectativas do primeiro trimestre."
           image="https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?q=80&w=2070&auto=format&fit=crop"
+          date="14/03/2026"
         />
       </div>
     </main>

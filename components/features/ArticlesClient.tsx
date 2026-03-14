@@ -13,6 +13,7 @@ interface Article {
   category: string;
   date: string;
   slug: string;
+  imageUrl?: string;
 }
 
 interface ArticlesClientProps {

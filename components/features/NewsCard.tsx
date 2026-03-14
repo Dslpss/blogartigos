@@ -6,24 +6,26 @@ import Link from 'next/link';
 import { ArrowUpRight, Clock, Tag } from 'lucide-react';
 
 interface NewsCardProps {
-  id: string;
+  id?: string;
   title: string;
   excerpt: string;
   category: string;
   date: string;
   slug: string;
   imageUrl?: string;
+  image?: string; // Fallback for old/static code
 }
 
-const NewsCard: React.FC<NewsCardProps> = ({ title, excerpt, category, date, slug, imageUrl }) => {
+const NewsCard: React.FC<NewsCardProps> = ({ id, title, excerpt, category, date, slug, imageUrl, image }) => {
+  const finalImage = imageUrl || image;
   return (
     <motion.div
       whileHover={{ y: -8 }}
       className="bg-white border border-border rounded-2xl p-6 transition-all duration-500 hover:shadow-premium hover:border-accent/20 group h-full flex flex-col"
     >
-      {imageUrl && (
+      {finalImage && (
         <div className="w-full h-48 mb-6 rounded-xl overflow-hidden border border-border group-hover:border-accent/30 transition-all">
-          <img src={imageUrl} alt={title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+          <img src={finalImage} alt={title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
         </div>
       )}
       <div className="flex items-center justify-between mb-4">
@@ -46,7 +48,7 @@ const NewsCard: React.FC<NewsCardProps> = ({ title, excerpt, category, date, slu
 
       <div className="mt-auto pt-6 border-t border-border flex items-center justify-between">
         <Link 
-          href={`/news/${slug}`}
+          href={`/news/${slug || id}`}
           className="text-[10px] font-black uppercase tracking-widest text-primary hover:text-accent flex items-center gap-2 group/btn"
         >
           Ver Análise <ArrowUpRight className="w-3 h-3 transition-transform group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1" />

@@ -22,6 +22,7 @@ export default function NewsClient() {
           title="STF forma maioria para manter prisão de ex-conselheiro do TCE."
           excerpt="Decisão impacta diretamente o cenário político regional e reforça combate à corrupção."
           image="https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?q=80&w=2070&auto=format&fit=crop"
+          date="14/03/2026"
         />
         <NewsCard 
           slug="justica-tranca-acao"
@@ -29,6 +30,7 @@ export default function NewsClient() {
           title="Justiça tranca ação por transfobia e estudante é absolvido."
           excerpt="O caso foi encerrado após a defesa apresentar novas provas de que não houve dolo na conduta."
           image="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?q=80&w=2070&auto=format&fit=crop"
+          date="14/03/2026"
         />
       </div>
     </main>
