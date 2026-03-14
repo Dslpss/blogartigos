@@ -1,0 +1,6 @@
+{
+  "css.lint.unknownAtRules": "ignore",
+  "tailwindCSS.experimental.classRegex": [
+    ["@theme\\s*{([^}]*)}", "(--color-[\\w-]+)\\s*:\\s*[^;]+"]
+  ]
+}
