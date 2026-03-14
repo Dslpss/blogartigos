@@ -11,7 +11,7 @@ const AboutClient = () => {
         {/* Hero Section */}
         <section className="mb-32 relative">
           <div className="absolute top-0 right-0 -z-10 opacity-10 animate-float">
-            <Target className="w-64 h-64 text-accent" />
+            <Target className="w-64 h-64 text-primary" />
           </div>
           
           <div className="max-w-4xl">
@@ -20,12 +20,12 @@ const AboutClient = () => {
               animate={{ opacity: 1, x: 0 }}
               className="flex items-center gap-2 mb-6"
             >
-              <div className="w-12 h-[2px] bg-accent" />
-              <span className="text-accent font-bold uppercase tracking-[0.3em] text-xs">Nosso Manifesto</span>
+              <div className="w-12 h-[2px] bg-primary" />
+              <span className="text-primary font-bold uppercase tracking-[0.3em] text-xs">Nosso Manifesto</span>
             </motion.div>
             
             <h1 className="text-4xl sm:text-6xl lg:text-8xl font-black mb-10 leading-[0.9] tracking-tighter text-primary">
-              Elevando o <span className="text-accent italic underline decoration-black underline-offset-8">Padrão</span> da Informação.
+              Elevando o <span className="text-highlight italic underline decoration-primary underline-offset-8">Padrão</span> da Informação.
             </h1>
             
             <p className="text-xl text-secondary mb-12 max-w-2xl leading-relaxed">
@@ -40,7 +40,7 @@ const AboutClient = () => {
             {/* Mission Item */}
             <div className="col-span-1 md:col-span-2 bento-item p-10 bg-primary text-white flex flex-col justify-end min-h-[400px]">
               <div className="absolute top-8 right-8">
-                <Sparkles className="w-12 h-12 text-accent/40" />
+                <Sparkles className="w-12 h-12 text-highlight/40" />
               </div>
               <h2 className="text-4xl font-black mb-6 uppercase tracking-tighter">Nossa Missão</h2>
               <p className="text-white/60 text-lg leading-relaxed italic font-serif">
@@ -51,30 +51,30 @@ const AboutClient = () => {
             {/* Core Values Bento Column */}
             <div className="col-span-1 md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div className="bento-item p-6 bg-surface flex flex-col gap-4">
-                <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center text-accent">
+                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
                   <Shield className="w-5 h-5" />
                 </div>
                 <h3 className="text-lg font-black uppercase text-primary">Rigor Técinco</h3>
-                <p className="text-sm text-secondary/70">Análises baseadas em dados puros e protocolos verificáveis.</p>
+                <p className="text-sm text-secondary font-medium">Análises baseadas em dados puros e protocolos verificáveis.</p>
               </div>
 
               <div className="bento-item p-6 bg-surface flex flex-col gap-4">
-                <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center text-accent">
+                <div className="w-10 h-10 rounded-xl bg-highlight-subtle flex items-center justify-center text-primary">
                   <Zap className="w-5 h-5" />
                 </div>
                 <h3 className="text-lg font-black uppercase text-primary">Agilidade</h3>
-                <p className="text-sm text-secondary/70">Resposta rápida aos fluxos de informação globais.</p>
+                <p className="text-sm text-secondary font-medium">Resposta rápida aos fluxos de informação globais.</p>
               </div>
 
               <div className="bento-item p-6 bg-surface flex flex-col gap-4">
-                <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center text-accent">
+                <div className="w-10 h-10 rounded-xl bg-highlight-subtle flex items-center justify-center text-primary">
                   <Users className="w-5 h-5" />
                 </div>
                 <h3 className="text-lg font-black uppercase text-primary">Comunidade</h3>
-                <p className="text-sm text-secondary/70">Engajamento com os principais líderes de pensamento do país.</p>
+                <p className="text-sm text-secondary font-medium">Engajamento com os principais líderes de pensamento do país.</p>
               </div>
 
-              <div className="bento-item p-6 bg-accent text-white flex flex-col justify-center items-center text-center">
+              <div className="bento-item p-6 bg-highlight text-primary flex flex-col justify-center items-center text-center shadow-glow">
                 <div className="text-4xl font-black">100%</div>
                 <div className="text-[10px] font-bold uppercase tracking-[0.2em] mt-2">Independente</div>
               </div>
@@ -109,7 +109,7 @@ const AboutClient = () => {
             whileInView={{ opacity: 1 }}
             className="p-10 md:p-20 bg-primary rounded-[2rem] md:rounded-[3rem] text-white relative overflow-hidden text-center"
           >
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-accent/20 via-transparent to-transparent pointer-events-none" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-highlight/10 via-transparent to-transparent pointer-events-none" />
             <h2 className="text-4xl md:text-5xl font-black mb-8 relative z-10 tracking-tighter uppercase">Quer fazer parte da rede?</h2>
             <p className="text-white/60 mb-10 max-w-xl mx-auto italic font-serif">Estamos sempre em busca de novos talentos técnicos e analíticos.</p>
             <button className="btn-premium flex items-center gap-3 mx-auto">

@@ -40,8 +40,8 @@ const HomeClient: React.FC<HomeClientProps> = ({ articles, blogName = "Comunica 
               animate={{ opacity: 1, x: 0 }}
               className="flex items-center gap-2 mb-6"
             >
-              <div className="w-12 h-[2px] bg-accent" />
-              <span className="text-accent font-bold uppercase tracking-[0.3em] text-xs">A Nova Era da Informação</span>
+              <div className="w-12 h-[2px] bg-highlight" />
+              <span className="text-highlight font-bold uppercase tracking-[0.3em] text-xs">A Nova Era da Informação</span>
             </motion.div>
             
             <h1 className="text-4xl sm:text-6xl lg:text-8xl font-black mb-10 leading-[0.9] tracking-tighter text-primary">
@@ -49,15 +49,15 @@ const HomeClient: React.FC<HomeClientProps> = ({ articles, blogName = "Comunica 
               <span className="text-accent underline decoration-black underline-offset-8">{blogName.split(' ').slice(1).join(' ')}</span>
             </h1>
             
-            <p className="text-xl text-secondary mb-12 max-w-xl leading-relaxed">
-              Explramos o cruzamento entre tecnologia de ponta, economia digital e o futuro da sociedade brasileira através de análises rigorosas.
+            <p className="text-xl text-primary/70 mb-12 max-w-xl leading-relaxed">
+              Exploramos o cruzamento entre tecnologia de ponta, economia digital e o futuro da sociedade brasileira através de análises rigorosas.
             </p>
             
             <div className="flex flex-wrap gap-6">
-              <button className="btn-premium flex items-center gap-2 shadow-glow">
+              <button className="btn-premium flex items-center gap-2 shadow-glow hover:!bg-highlight hover:!text-primary transition-colors">
                 Começar Leitura <ArrowRight className="w-5 h-5" />
               </button>
-              <button className="px-8 py-3 rounded-full border border-border font-medium hover:bg-surface transition-all active:scale-95">
+              <button className="px-8 py-3 rounded-full border border-primary/20 font-bold text-primary hover:bg-highlight/10 transition-all active:scale-95 uppercase tracking-widest text-xs">
                 Ver Protocolos
               </button>
             </div>
@@ -101,7 +101,7 @@ const HomeClient: React.FC<HomeClientProps> = ({ articles, blogName = "Comunica 
                   </p>
                   <Link 
                     href={`/news/${featuredArticles[0].slug || featuredArticles[0].id}`}
-                    className="inline-flex items-center gap-2 text-white font-bold uppercase tracking-widest text-xs border-b border-white/20 pb-1 hover:border-accent hover:text-accent transition-all"
+                    className="inline-flex items-center gap-2 text-white font-bold uppercase tracking-widest text-xs border-b border-white/20 pb-1 hover:border-highlight hover:text-highlight transition-all"
                   >
                     Explorar Tese <ArrowRight className="w-4 h-4" />
                   </Link>
@@ -134,16 +134,16 @@ const HomeClient: React.FC<HomeClientProps> = ({ articles, blogName = "Comunica 
             ))}
 
             {/* Small Statistics/Visual Bento Items */}
-            <div className="col-span-1 bento-item bg-accent/5 p-6 flex flex-col items-center justify-center text-center border-accent/10">
-              <Zap className="w-10 h-10 text-accent mb-4 animate-pulse" />
+            <div className="col-span-1 bento-item bg-highlight-subtle p-6 flex flex-col items-center justify-center text-center border-highlight/10">
+              <Zap className="w-10 h-10 text-primary mb-4 animate-pulse" />
               <div className="text-3xl font-black text-primary">2.4k+</div>
-              <div className="text-[10px] font-bold text-accent uppercase tracking-widest mt-1">Pontos de Dados</div>
+              <div className="text-[10px] font-bold text-primary/60 uppercase tracking-widest mt-1">Pontos de Dados</div>
             </div>
 
-            <div className="col-span-1 bento-item group p-8 flex flex-col justify-center bg-white border-dashed border-2 border-border hover:border-accent/30 hover:bg-accent/5">
-              <h4 className="text-sm font-black uppercase text-primary mb-4 opacity-40">Seja um Editor</h4>
-              <p className="text-xs text-secondary mb-4 italic">Contribua com suas análises técnicas para nossa rede.</p>
-              <ArrowUpRight className="w-6 h-6 text-accent group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+            <div className="col-span-1 bento-item group p-8 flex flex-col justify-center bg-white border-dashed border-2 border-border hover:border-highlight/30 hover:bg-highlight-subtle">
+              <h4 className="text-sm font-black uppercase text-primary mb-4">Seja um Editor</h4>
+              <p className="text-xs text-secondary mb-4 italic font-medium">Contribua com suas análises técnicas para nossa rede.</p>
+              <ArrowUpRight className="w-6 h-6 text-highlight group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
             </div>
 
             {/* Final Row items */}
@@ -160,7 +160,7 @@ const HomeClient: React.FC<HomeClientProps> = ({ articles, blogName = "Comunica 
                 <h3 className="relative z-10 text-base font-bold text-primary leading-tight group-hover:text-accent transition-colors">
                   {article.title}
                 </h3>
-                <Link href={`/news/${article.slug || article.id}`} className="relative z-10 text-[9px] font-black uppercase tracking-widest text-accent mt-auto hover:underline">
+                <Link href={`/news/${article.slug || article.id}`} className="relative z-10 text-[9px] font-black uppercase tracking-widest text-highlight mt-auto hover:underline">
                   Ver Mais
                 </Link>
               </div>
@@ -168,23 +168,6 @@ const HomeClient: React.FC<HomeClientProps> = ({ articles, blogName = "Comunica 
           </div>
         </section>
 
-        {/* Surprise Element: Interactive Data/Logo Wall or something */}
-        <section className="mt-40 text-center">
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            className="p-20 bg-primary rounded-[3rem] text-white relative overflow-hidden"
-          >
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-accent/20 via-transparent to-transparent pointer-events-none" />
-            <h2 className="text-4xl md:text-6xl font-black mb-8 relative z-10 tracking-tighter">Pronto para o Próximo Ciclo?</h2>
-            <p className="text-white/60 mb-12 max-w-xl mx-auto italic font-serif">Acompanhe diariamente as atualizações do protocolo Comunica Brasil.</p>
-            <div className="flex justify-center gap-4 relative z-10">
-              <button className="px-10 py-4 bg-accent text-white font-black uppercase tracking-widest text-xs rounded-full hover:scale-105 transition-transform shadow-glow">
-                Submeter Feedback
-              </button>
-            </div>
-          </motion.div>
-        </section>
       </div>
     </div>
   );

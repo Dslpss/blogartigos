@@ -91,12 +91,12 @@ const Navbar = ({ blogName, logoUrl, newsletterUrl }: NavbarProps) => {
               className="text-sm font-semibold uppercase tracking-widest text-primary/60 hover:text-accent transition-colors relative group"
             >
               {item.name}
-              <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-accent transition-all duration-300 group-hover:w-full" />
+              <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-highlight transition-all duration-300 group-hover:w-full" />
             </Link>
           ))}
           <button 
             onClick={handleSubscribe}
-            className="btn-premium flex items-center gap-2 active:scale-95 transition-transform"
+            className="btn-premium flex items-center gap-2 active:scale-95 transition-transform !bg-primary hover:!bg-highlight hover:!text-primary transition-colors duration-300 shadow-glow"
           >
             Inscrever-se <ArrowUpRight className="w-4 h-4" />
           </button>

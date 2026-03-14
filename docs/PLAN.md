@@ -1,32 +1,31 @@
-# Project Orchestration Plan: Admin & Backend Implementation
+# PLAN: Fix Post-Deployment Auth & Assets
 
-**Context:**
-- **User Request:** "vamos criar um backend e uma pagina de admin com rota protegida... nessa pagina de admin o admin vai poder trocar nome do blog add noticias artigos e alterações em geral"
-- **Project Type:** Full Stack Next.js App
-- **Stack Decision:** Firebase (Auth, Firestore) for rapid development and scalability.
+The application is deployed on Railway but facing Auth issues (Domain not authorized) and a missing favicon.
 
-## Agents Involved
-1. **project-planner**: Architectural setup and task breakdown.
-2. **security-auditor**: Authentication logic and route protection.
-3. **backend-specialist**: Firebase/Firestore integration and API helpers.
-4. **frontend-specialist**: Dashboard UI, forms, and settings management.
+## User Actions Required (CRITICAL)
+- [ ] **Firebase Console:** Go to `Authentication -> Settings -> Authorized domains` and add `blogartigos-production.up.railway.app`.
+- [ ] **Railway Dashboard:** Double check that all 8 environment variables from `.env.example` are accurately added.
 
-## Phase 1: Foundation (Planning & Setup)
-- [ ] Initialize `docs/PLAN.md` (Current).
-- [ ] Configure Firebase Client SDK in `lib/firebase.ts`.
-- [ ] Define Firestore Schema for `articles` and `settings`.
+## Proposed Changes
 
-## Phase 2: Security & Identity
-- [ ] Implement `useAuth` hook for session management.
-- [ ] Create `AdminGuard` component for route protection.
-- [ ] Implement `/admin/login` page with "High-End" aesthetic.
+### 1. `security-auditor` (Auth Check)
+- Verify if the Firebase initialization in `lib/firebase.ts` handles environment variables correctly.
+- Check if `NEXT_PUBLIC_SUPER_ADMIN_EMAIL` is detected correctly in production.
 
-## Phase 3: Dashboard & Content Management
-- [ ] Create `/admin/dashboard` with site settings (e.g., Blog Name).
-- [ ] Implement Article CRUD (Create, Read, Update, Delete).
-- [ ] Connect frontend components (`HomeClient`, `Navbar`) to fetch data from Firestore instead of mock data.
+### 2. `frontend-specialist` (Favicon & Theme Fix)
+- Create `public/` directory (missing).
+- Generate a premium `favicon.ico` using the new color palette:
+  - **Primary:** Institutional Blue
+  - **Accent:** Sustainability Green
+  - **Highlights:** Light Yellow
+- Refactor `globals.css` to implement this institutional identity across the site.
+- Ensure the premium glassmorphism and animations remain but with the new color tones.
 
-## Phase 4: Verification
-- [ ] Run `security_scan.py`.
-- [ ] Functional testing of all admin features.
-- [ ] Visual regression check on mobile.
+### 3. `devops-engineer` (Deployment Check)
+- Verify `next.config.js` and build process.
+- Ensure the new `public/` folder is correctly picked up by Railway.
+
+## Verification
+- [ ] Successful login on the Railway production URL.
+- [ ] Favicon appearing in the browser tab.
+- [ ] Site visual matching the new institutional identity.

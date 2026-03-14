@@ -25,7 +25,7 @@ const NewsSlider: React.FC<SliderProps> = ({ slides }) => {
     <div className="relative w-full h-[70vh] rounded-[3rem] overflow-hidden bg-primary shadow-premium group">
       {/* Background with Ambient Glow */}
       <div className="absolute inset-0">
-         <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_30%_30%,_var(--tw-gradient-stops))] from-accent/20 via-primary to-primary" />
+         <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_30%_30%,_var(--tw-gradient-stops))] from-highlight/10 via-primary to-primary" />
       </div>
 
       <AnimatePresence mode="wait">
@@ -63,7 +63,7 @@ const NewsSlider: React.FC<SliderProps> = ({ slides }) => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className="text-lg md:text-xl text-white/50 mb-12 max-w-xl italic font-serif"
+              className="text-lg md:text-xl text-white/80 mb-12 max-w-xl italic font-serif"
             >
               {slides[current].description}
             </motion.p>
@@ -76,11 +76,11 @@ const NewsSlider: React.FC<SliderProps> = ({ slides }) => {
             >
               <Link 
                 href={`/news/${slides[current].slug}`}
-                className="btn-premium flex items-center gap-3 !bg-white !text-primary hover:!bg-accent hover:!text-white"
+                className="btn-premium flex items-center gap-3 !bg-white !text-primary hover:!bg-highlight hover:!text-primary"
               >
                 Ler Relatório <Play className="w-4 h-4 fill-current" />
               </Link>
-              <button className="flex items-center gap-2 text-white/40 hover:text-white transition-colors uppercase font-black text-[10px] tracking-widest">
+              <button className="flex items-center gap-2 text-white/70 hover:text-white transition-colors uppercase font-black text-[10px] tracking-widest">
                 <Maximize2 className="w-4 h-4" /> Expandir Visual
               </button>
             </motion.div>
@@ -109,7 +109,7 @@ const NewsSlider: React.FC<SliderProps> = ({ slides }) => {
         {slides.map((_, idx) => (
           <div 
             key={idx}
-            className={`h-1 rounded-full transition-all duration-500 ${current === idx ? 'w-12 bg-accent shadow-glow' : 'w-4 bg-white/20'}`}
+            className={`h-1 rounded-full transition-all duration-500 ${current === idx ? 'w-12 bg-highlight shadow-glow' : 'w-4 bg-white/20'}`}
           />
         ))}
       </div>

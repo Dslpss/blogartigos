@@ -68,7 +68,7 @@ const NewsDetailPage = ({ article }: { article: ArticleData }) => {
            initial={{ opacity: 0 }}
            animate={{ opacity: 1 }}
            transition={{ delay: 0.2 }}
-           className="prose prose-lg max-w-none prose-slate prose-headings:font-black prose-headings:tracking-tighter prose-headings:uppercase prose-p:leading-relaxed prose-p:text-secondary/80 prose-strong:text-primary"
+           className="prose prose-lg max-w-none prose-slate prose-headings:font-black prose-headings:tracking-tighter prose-headings:uppercase prose-p:leading-relaxed prose-p:text-secondary prose-strong:text-primary"
         >
           <div dangerouslySetInnerHTML={{ __html: article.content }} />
         </motion.div>

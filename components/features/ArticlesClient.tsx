@@ -81,7 +81,7 @@ const ArticlesClient: React.FC<ArticlesClientProps> = ({ articles }) => {
         <div className="mt-32 p-12 bg-surface rounded-[2.5rem] border border-border text-center overflow-hidden relative">
           <div className="absolute top-0 right-0 w-64 h-64 bg-accent/5 blur-3xl rounded-full translate-x-1/2 -translate-y-1/2" />
           <h2 className="text-3xl font-black text-primary mb-6 relative z-10">Não encontrou o que procurava?</h2>
-          <p className="text-secondary max-w-lg mx-auto mb-10 italic font-medium opacity-70">
+          <p className="text-secondary max-w-lg mx-auto mb-10 italic font-medium">
             Nossa biblioteca é atualizada em tempo real via fluxos de dados globais. Tente usar palavras-chave mais específicas.
           </p>
           <button className="btn-premium">Solicitar Análise</button>

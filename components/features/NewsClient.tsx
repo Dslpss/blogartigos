@@ -7,7 +7,7 @@ export default function NewsClient() {
     <main className="min-h-screen px-4 py-32 max-w-7xl mx-auto">
       <header className="mb-16 border-b border-foreground/20 pb-8 flex justify-between items-end">
         <div>
-          <span className="text-accent font-bold uppercase tracking-widest text-sm mb-4 block">Feed</span>
+          <span className="text-highlight font-bold uppercase tracking-widest text-sm mb-4 block">Feed</span>
           <h1 className="text-6xl md:text-8xl font-bold uppercase tracking-tighter">Notícias</h1>
         </div>
         <p className="max-w-xs text-right opacity-60 italic font-serif hidden md:block">

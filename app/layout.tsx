@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
 import Navbar from "@/components/features/Navbar";
+import Footer from "@/components/features/Footer";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -34,6 +35,7 @@ export default async function RootLayout({
         <AuthProvider>
           <Navbar blogName={settings.name} logoUrl={settings.logoUrl} />
           {children}
+          <Footer blogName={settings.name} />
         </AuthProvider>
       </body>
     </html>
