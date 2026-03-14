@@ -4,5 +4,13 @@
     "location": "us-central1",
     "rules": "firestore.rules",
     "indexes": "firestore.indexes.json"
+  },
+  "auth": {
+    "providers": {
+      "googleSignIn": {
+        "oAuthBrandDisplayName": "Comunica Brasil",
+        "supportEmail": "dennisemannuel93@gmail.com"
+      }
+    }
   }
 }

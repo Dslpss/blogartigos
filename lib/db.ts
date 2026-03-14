@@ -2,19 +2,18 @@ import {
   collection, 
   getDocs, 
   getDoc, 
-  doc, 
-  setDoc, 
   addDoc, 
   updateDoc, 
   deleteDoc, 
+  doc, 
   query, 
+  where, 
+  setDoc,
+  Timestamp,
   orderBy,
-  where,
-  Timestamp 
+  limit
 } from 'firebase/firestore';
 import { db } from './firebase';
-
-
 
 export interface BlogPost {
   id?: string;
@@ -32,87 +31,113 @@ export interface BlogPost {
   createdAt: Timestamp;
 }
 
-export interface BlogSettings {
-  name: string;
-  description: string;
+export interface UserRole {
+  uid?: string;
+  email: string;
+  role: 'admin' | 'editor';
 }
 
-// Settings
+export interface BlogSettings {
+  name: string;
+  description?: string;
+}
+
+// Blog Settings
 export const getBlogSettings = async (): Promise<BlogSettings> => {
-  const docRef = doc(db, 'settings', 'general');
+  const docRef = doc(db, 'settings', 'blog');
   const docSnap = await getDoc(docRef);
-  
   if (docSnap.exists()) {
     return docSnap.data() as BlogSettings;
-  } else {
-    // Default settings if none exist
-    const defaults = { name: 'Comunica Brasil', description: 'O portal de notícias e artigos premium.' };
-    await setDoc(docRef, defaults);
-    return defaults;
   }
+  return { name: 'Dslpss Study-Notes Blog', description: 'Uma plataforma dedicada ao acompanhamento técnico de notícias, análises de mercado e insights estratégicos.' };
 };
 
-export const updateBlogSettings = async (settings: BlogSettings) => {
-  const docRef = doc(db, 'settings', 'general');
-  await updateDoc(docRef, { ...settings });
+export const updateBlogSettings = async (settings: Partial<BlogSettings>) => {
+  await setDoc(doc(db, 'settings', 'blog'), settings, { merge: true });
 };
 
 // Articles
 export const getArticles = async (): Promise<BlogPost[]> => {
-  const articlesCol = collection(db, 'articles');
-  const articlesQuery = query(articlesCol, orderBy('createdAt', 'desc'));
-  const articlesSnapshot = await getDocs(articlesQuery);
-  return articlesSnapshot.docs.map(doc => ({
-    id: doc.id,
-    ...doc.data()
-  })) as BlogPost[];
+  const q = query(collection(db, 'articles'), orderBy('createdAt', 'desc'));
+  const querySnapshot = await getDocs(q);
+  return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as BlogPost));
 };
 
-export const addArticle = async (article: Omit<BlogPost, 'id' | 'createdAt'>) => {
-  const articlesCol = collection(db, 'articles');
-  return await addDoc(articlesCol, {
+export const getArticleBySlug = async (slug: string): Promise<BlogPost | null> => {
+  const q = query(collection(db, 'articles'), where('slug', '==', slug), limit(1));
+  const querySnapshot = await getDocs(q);
+  
+  if (!querySnapshot.empty) {
+    const docData = querySnapshot.docs[0];
+    return { id: docData.id, ...docData.data() } as BlogPost;
+  }
+
+  try {
+    const docRef = doc(db, 'articles', slug);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return { id: docSnap.id, ...docSnap.data() } as BlogPost;
+    }
+  } catch (err) {}
+  
+  return null;
+};
+
+export const addArticle = async (article: Omit<BlogPost, 'createdAt'>) => {
+  await addDoc(collection(db, 'articles'), {
     ...article,
     createdAt: Timestamp.now()
   });
 };
 
 export const updateArticle = async (id: string, article: Partial<BlogPost>) => {
-  const articleRef = doc(db, 'articles', id);
-  await updateDoc(articleRef, article);
+  await updateDoc(doc(db, 'articles', id), article);
 };
 
 export const deleteArticle = async (id: string) => {
-  const articleRef = doc(db, 'articles', id);
-  await deleteDoc(articleRef);
+  await deleteDoc(doc(db, 'articles', id));
 };
-export const getArticleBySlug = async (slug: string): Promise<BlogPost | null> => {
-  const articlesCol = collection(db, 'articles');
+
+// User Roles & Team Management
+export const getUserRole = async (uid: string, email?: string): Promise<UserRole | null> => {
+  // Try by UID first (indexed)
+  const docRef = doc(db, 'user_roles', uid);
+  const docSnap = await getDoc(docRef);
   
-  // First, try to find by the 'slug' field
-  const q = query(articlesCol, where('slug', '==', slug));
-  const querySnapshot = await getDocs(q);
-  
-  if (!querySnapshot.empty) {
-    const doc = querySnapshot.docs[0];
-    return {
-      id: doc.id,
-      ...doc.data()
-    } as BlogPost;
+  if (docSnap.exists()) {
+    return { uid, ...docSnap.data() } as UserRole;
   }
 
-  // Fallback: try to find by the document ID itself
-  try {
-    const docRef = doc(db, 'articles', slug);
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      return {
-        id: docSnap.id,
-        ...docSnap.data()
-      } as BlogPost;
+  // Fallback: search by email to support "pending" invites
+  if (email) {
+    const inviteDocRef = doc(db, 'user_roles', `invite_${email.toLowerCase().trim()}`);
+    const inviteSnap = await getDoc(inviteDocRef);
+    if (inviteSnap.exists()) {
+      return { uid: inviteSnap.id, ...inviteSnap.data() } as UserRole;
     }
-  } catch (e) {
-    // Ignore error if slug is not a valid doc ID
   }
 
   return null;
+};
+
+export const getTeamMembers = async (): Promise<UserRole[]> => {
+  const q = query(collection(db, 'user_roles'));
+  const querySnapshot = await getDocs(q);
+  return querySnapshot.docs.map(doc => ({ uid: doc.id, ...doc.data() } as UserRole));
+};
+
+export const addTeamMember = async (email: string, role: 'admin' | 'editor', uid?: string) => {
+  // If UID is provided, use it as doc ID. 
+  // If missing (invite), use 'invite_[email]' as deterministic ID for security rules
+  const docId = uid || `invite_${email.toLowerCase().trim()}`;
+  await setDoc(doc(db, 'user_roles', docId), {
+    email: email.toLowerCase().trim(),
+    role,
+    updatedAt: Timestamp.now(),
+    ...(uid ? { uidLinked: true } : { pending: true })
+  });
+};
+
+export const removeTeamMember = async (uid: string) => {
+  await deleteDoc(doc(db, 'user_roles', uid));
 };

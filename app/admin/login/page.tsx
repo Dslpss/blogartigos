@@ -2,8 +2,8 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
+import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+import { auth, googleProvider } from '@/lib/firebase';
 import { useRouter } from 'next/navigation';
 import { Shield, Lock, Mail, ArrowRight, Loader2 } from 'lucide-react';
 
@@ -24,6 +24,18 @@ const AdminLoginPage = () => {
       router.push('/admin/dashboard');
     } catch (err: any) {
       setError('Credenciais inválidas ou erro de conexão.');
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    setLoading(true);
+    setError('');
+    try {
+      await signInWithPopup(auth, googleProvider);
+      router.push('/admin/dashboard');
+    } catch (err: any) {
+      setError('Erro ao autenticar com Google.');
       setLoading(false);
     }
   };
@@ -100,6 +112,24 @@ const AdminLoginPage = () => {
             )}
           </button>
         </form>
+
+        <div className="relative my-8">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-border"></div>
+          </div>
+          <div className="relative flex justify-center text-[10px] uppercase font-bold tracking-widest">
+            <span className="bg-white px-4 text-secondary/40">Ou acesse com</span>
+          </div>
+        </div>
+
+        <button
+          onClick={handleGoogleLogin}
+          disabled={loading}
+          className="w-full flex items-center justify-center gap-3 py-4 border border-border rounded-xl hover:bg-surface transition-all text-sm font-bold text-primary"
+        >
+          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" className="w-5 h-5" />
+          Acesso via Google
+        </button>
 
         <div className="mt-8 text-center">
           <p className="text-[10px] text-secondary/40 font-bold uppercase tracking-widest">

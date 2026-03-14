@@ -6,14 +6,14 @@ import { useRouter } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
 
 export const AdminGuard = ({ children }: { children: React.ReactNode }) => {
-  const { user, loading, isAdmin } = useAuth();
+  const { user, loading, isAdmin, isEditor } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    if (!loading && (!user || !isAdmin)) {
+    if (!loading && (!user || (!isAdmin && !isEditor))) {
       router.push('/admin/login');
     }
-  }, [user, loading, isAdmin, router]);
+  }, [user, loading, isAdmin, isEditor, router]);
 
   if (loading) {
     return (
@@ -23,7 +23,7 @@ export const AdminGuard = ({ children }: { children: React.ReactNode }) => {
     );
   }
 
-  if (!user || !isAdmin) {
+  if (!user || (!isAdmin && !isEditor)) {
     return null;
   }
 

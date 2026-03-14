@@ -2,24 +2,60 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Helper para verificar se o usuário é o administrador autorizado
-    function isAdmin() {
+    // Super Admin global helper
+    function isSuperAdmin() {
       return request.auth != null && request.auth.token.email == 'dennisemannuel93@gmail.com';
     }
 
-    // Regras para as configurações do blog
+    // Role-based helper: checks the user_roles collection
+    function hasRole(role) {
+      return request.auth != null && (
+        isSuperAdmin() || 
+        get(/databases/$(database)/documents/user_roles/$(request.auth.uid)).data.role == role
+      );
+    }
+
+    // Helper for any authorized staff (Admin or Editor)
+    function isStaff() {
+      return request.auth != null && (
+        isSuperAdmin() || 
+        exists(/databases/$(database)/documents/user_roles/$(request.auth.uid))
+      );
+    }
+
+    // New helper to check for email-based invitations
+    function hasInvite() {
+      return request.auth != null && 
+        exists(/databases/$(database)/documents/user_roles/$( "invite_" + request.auth.token.email ));
+    }
+
+    // User Roles management
+    match /user_roles/{userId} {
+      allow read: if request.auth != null && (request.auth.uid == userId || hasRole('admin'));
+      
+      // Activation: User can create their own UID doc if they have an invite
+      allow create: if request.auth != null && request.auth.uid == userId && hasInvite();
+      
+      // Deletion of old invite: User can delete the invite doc that matched their email
+      allow delete: if request.auth != null && userId == ("invite_" + request.auth.token.email);
+
+      // Management: Only Super Admin or existing Admins can manage others
+      allow write: if isSuperAdmin() || hasRole('admin');
+    }
+
+    // Blog settings: Only Admins can change
     match /settings/{setting} {
       allow read: if true;
-      allow write: if isAdmin();
+      allow write: if hasRole('admin');
     }
 
-    // Regras para os artigos e notícias
+    // Articles & News: Admins and Editors can write
     match /articles/{article} {
       allow read: if true;
-      allow write: if isAdmin();
+      allow write: if isStaff();
     }
 
-    // Bloqueio padrão para qualquer outra coleção não especificada
+    // Default deny
     match /{document=**} {
       allow read, write: if false;
     }
