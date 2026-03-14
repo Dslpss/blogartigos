@@ -5,9 +5,18 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { Menu, X, Twitter, Github, Linkedin, ArrowUpRight, Shield } from 'lucide-react';
 
-const Navbar = () => {
+interface NavbarProps {
+  blogName?: string;
+}
+
+const Navbar = ({ blogName }: NavbarProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+
+  const displayBlogName = blogName || "ComunicaBrasil";
+  const nameParts = displayBlogName.match(/[A-Z][a-z]+/g) || [displayBlogName];
+  const firstPart = nameParts[0] || displayBlogName;
+  const secondPart = displayBlogName.replace(firstPart, "");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,7 +44,7 @@ const Navbar = () => {
               <span className="text-white font-black text-xl italic underline decoration-accent underline-offset-4">C</span>
             </div>
             <span className="text-xl font-black uppercase tracking-tighter text-primary">
-              Comunica<span className="text-accent underline decoration-primary underline-offset-4">Brasil</span>
+              {firstPart}<span className="text-accent underline decoration-primary underline-offset-4">{secondPart}</span>
             </span>
           </Link>
 

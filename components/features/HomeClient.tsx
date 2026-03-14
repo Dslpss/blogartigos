@@ -13,7 +13,7 @@ interface Article {
   category: string;
   date: string;
   slug: string;
-  image?: string;
+  imageUrl?: string;
   featured?: boolean;
 }
 
@@ -80,9 +80,17 @@ const HomeClient: React.FC<HomeClientProps> = ({ articles, blogName = "Comunica 
             {/* Main Bento Item (Large) */}
             {featuredArticles[0] && (
               <div className="col-span-1 md:col-span-2 lg:row-span-2 bento-item group p-8 flex flex-col justify-end bg-primary overflow-hidden">
-                <div className="absolute inset-0 opacity-20 pointer-events-none overflow-hidden">
-                  <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-accent blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2" />
-                </div>
+                {featuredArticles[0].imageUrl && (
+                  <div className="absolute inset-0 z-0">
+                    <img src={featuredArticles[0].imageUrl} alt="" className="w-full h-full object-cover opacity-40 group-hover:scale-105 transition-transform duration-700" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/60 to-transparent" />
+                  </div>
+                )}
+                {!featuredArticles[0].imageUrl && (
+                  <div className="absolute inset-0 opacity-20 pointer-events-none overflow-hidden">
+                    <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-accent blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2" />
+                  </div>
+                )}
                 <div className="relative z-10">
                   <span className="px-3 py-1 bg-accent text-[10px] font-black uppercase text-white rounded-full mb-6 inline-block">Destaque Principal</span>
                   <h3 className="text-4xl font-black text-white mb-6 leading-tight group-hover:text-accent transition-colors">
@@ -102,9 +110,15 @@ const HomeClient: React.FC<HomeClientProps> = ({ articles, blogName = "Comunica 
             )}
 
             {/* Medium Bento Items */}
-            {featuredArticles.slice(1, 3).map((article, idx) => (
-              <div key={article.id} className="col-span-1 md:col-span-1 lg:col-span-2 bento-item group p-6 flex flex-col justify-between bg-surface">
-                <div>
+            {featuredArticles.slice(1, 3).map((article) => (
+              <div key={article.id} className="col-span-1 md:col-span-1 lg:col-span-2 bento-item group p-6 flex flex-col justify-between bg-surface overflow-hidden">
+                {article.imageUrl && (
+                  <div className="absolute inset-0 z-0">
+                    <img src={article.imageUrl} alt="" className="w-full h-full object-cover opacity-20 group-hover:scale-105 transition-transform duration-700" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-white via-white/80 to-transparent" />
+                  </div>
+                )}
+                <div className="relative z-10">
                    <span className="text-[10px] font-black uppercase text-accent/60 tracking-widest block mb-4 italic">{article.category}</span>
                    <h3 className="text-2xl font-black text-primary leading-tight group-hover:text-accent transition-colors">
                     {article.title}
@@ -112,7 +126,7 @@ const HomeClient: React.FC<HomeClientProps> = ({ articles, blogName = "Comunica 
                 </div>
                 <Link 
                   href={`/news/${article.slug}`}
-                  className="self-end p-2 rounded-full border border-border group-hover:bg-accent group-hover:text-white group-hover:border-accent transition-all duration-300"
+                  className="relative z-10 self-end p-2 rounded-full border border-border group-hover:bg-accent group-hover:text-white group-hover:border-accent transition-all duration-300"
                 >
                   <ArrowRight className="w-5 h-5" />
                 </Link>
@@ -134,14 +148,19 @@ const HomeClient: React.FC<HomeClientProps> = ({ articles, blogName = "Comunica 
 
             {/* Final Row items */}
             {featuredArticles.slice(3, 5).map((article) => (
-              <div key={article.id} className="col-span-1 bento-item group p-6 bg-surface flex flex-col gap-4">
-                <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center text-accent">
+              <div key={article.id} className="col-span-1 bento-item group p-6 bg-surface flex flex-col gap-4 overflow-hidden">
+                {article.imageUrl && (
+                  <div className="absolute inset-0 z-0">
+                    <img src={article.imageUrl} alt="" className="w-full h-full object-cover opacity-10 group-hover:scale-105 transition-transform duration-700" />
+                  </div>
+                )}
+                <div className="relative z-10 w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center text-accent">
                    {article.category === 'TECNOLOGIA' ? <Globe className="w-4 h-4" /> : <Shield className="w-4 h-4" />}
                 </div>
-                <h3 className="text-base font-bold text-primary leading-tight group-hover:text-accent transition-colors">
+                <h3 className="relative z-10 text-base font-bold text-primary leading-tight group-hover:text-accent transition-colors">
                   {article.title}
                 </h3>
-                <Link href={`/news/${article.slug}`} className="text-[9px] font-black uppercase tracking-widest text-accent mt-auto hover:underline">
+                <Link href={`/news/${article.slug}`} className="relative z-10 text-[9px] font-black uppercase tracking-widest text-accent mt-auto hover:underline">
                   Ver Mais
                 </Link>
               </div>

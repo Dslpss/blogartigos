@@ -13,6 +13,8 @@ import {
 } from 'firebase/firestore';
 import { db } from './firebase';
 
+
+
 export interface BlogPost {
   id?: string;
   title: string;

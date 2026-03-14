@@ -19,17 +19,20 @@ export const metadata: Metadata = {
 };
 
 import { AuthProvider } from "@/lib/auth-context";
+import { getBlogSettings } from "@/lib/db";
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const settings = await getBlogSettings();
+
   return (
     <html lang="pt-BR">
       <body className={`${inter.variable} ${playfair.variable} antialiased font-sans bg-background text-foreground`}>
         <AuthProvider>
-          <Navbar />
+          <Navbar blogName={settings.name} />
           {children}
         </AuthProvider>
       </body>

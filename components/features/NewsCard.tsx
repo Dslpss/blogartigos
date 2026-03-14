@@ -12,15 +12,20 @@ interface NewsCardProps {
   category: string;
   date: string;
   slug: string;
-  image?: string;
+  imageUrl?: string;
 }
 
-const NewsCard: React.FC<NewsCardProps> = ({ title, excerpt, category, date, slug }) => {
+const NewsCard: React.FC<NewsCardProps> = ({ title, excerpt, category, date, slug, imageUrl }) => {
   return (
     <motion.div
       whileHover={{ y: -8 }}
       className="bg-white border border-border rounded-2xl p-6 transition-all duration-500 hover:shadow-premium hover:border-accent/20 group h-full flex flex-col"
     >
+      {imageUrl && (
+        <div className="w-full h-48 mb-6 rounded-xl overflow-hidden border border-border group-hover:border-accent/30 transition-all">
+          <img src={imageUrl} alt={title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+        </div>
+      )}
       <div className="flex items-center justify-between mb-4">
         <span className="px-3 py-1 bg-surface text-[9px] font-black uppercase text-accent tracking-[0.2em] rounded-full border border-border group-hover:border-accent/30 transition-colors">
           {category}
