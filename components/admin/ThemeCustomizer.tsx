@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { BlogTheme, getTheme, updateTheme } from '@/lib/db';
-import { Save, RotateCcw, Palette } from 'lucide-react';
+import { Save, RotateCcw, Palette, Type, Box, Sparkles } from 'lucide-react';
 import { useBlogTheme } from '@/components/providers/ThemeProvider';
 
 const DEFAULT_THEME: BlogTheme = {
@@ -16,7 +16,11 @@ const DEFAULT_THEME: BlogTheme = {
   surfaceColor: '#f8fafc',
   footerTextColor: 'rgba(255, 255, 255, 0.6)',
   footerHighlightColor: '#004a99',
-  cardBackground: '#ffffff'
+  cardBackground: '#ffffff',
+  headingFont: 'sans',
+  bodyFont: 'sans',
+  borderRadiusPreset: 'medium',
+  glassIntensity: 20
 };
 
 const ThemeCustomizer = () => {
@@ -101,6 +105,89 @@ const ThemeCustomizer = () => {
           >
             <Save size={16} /> {saving ? 'Salvando...' : 'Aplicar Tema'}
           </button>
+        </div>
+      </div>
+
+      {/* Advanced Personalization Controls */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {/* Tipografia */}
+        <div className="p-6 bg-surface rounded-2xl border border-border/50 space-y-6">
+          <h4 className="text-[10px] font-black uppercase tracking-widest text-primary flex items-center gap-2">
+            <Type size={14} className="text-accent" /> Tipografia
+          </h4>
+          <div className="space-y-4">
+            <div>
+              <label className="text-[9px] font-bold uppercase text-secondary block mb-2">Fonte dos Títulos</label>
+              <select 
+                value={theme.headingFont || 'sans'}
+                onChange={e => setTheme({ ...theme, headingFont: e.target.value as any })}
+                className="w-full bg-white border border-border rounded-lg p-2 text-xs text-primary"
+              >
+                <option value="sans">Moderno (Sans-serif)</option>
+                <option value="serif">Elegante (Serifada)</option>
+              </select>
+            </div>
+            <div>
+              <label className="text-[9px] font-bold uppercase text-secondary block mb-2">Fonte do Corpo</label>
+              <select 
+                value={theme.bodyFont || 'sans'}
+                onChange={e => setTheme({ ...theme, bodyFont: e.target.value as any })}
+                className="w-full bg-white border border-border rounded-lg p-2 text-xs text-primary"
+              >
+                <option value="sans">Nítido (Sans-serif)</option>
+                <option value="serif">Clássico (Serifada)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        {/* Geometria */}
+        <div className="p-6 bg-surface rounded-2xl border border-border/50 space-y-6">
+          <h4 className="text-[10px] font-black uppercase tracking-widest text-primary flex items-center gap-2">
+             <Box size={14} className="text-accent" /> Geometria
+          </h4>
+          <div>
+            <label className="text-[9px] font-bold uppercase text-secondary block mb-2">Arredondamento das Bordas</label>
+            <div className="grid grid-cols-2 gap-2">
+              {['none', 'small', 'medium', 'large'].map((preset) => (
+                <button
+                  key={preset}
+                  onClick={() => setTheme({ ...theme, borderRadiusPreset: preset as any })}
+                  className={`p-2 text-[10px] uppercase font-black rounded-lg border transition-all ${
+                    theme.borderRadiusPreset === preset 
+                      ? 'bg-accent text-white border-accent shadow-glow' 
+                      : 'bg-white text-secondary border-border hover:border-accent/20'
+                  }`}
+                >
+                  {preset === 'none' ? 'Reto' : preset === 'small' ? 'Sutil' : preset === 'medium' ? 'Padrão' : 'Max'}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Efeitos */}
+        <div className="p-6 bg-surface rounded-2xl border border-border/50 space-y-6">
+          <h4 className="text-[10px] font-black uppercase tracking-widest text-primary flex items-center gap-2">
+            <Sparkles size={14} className="text-accent" /> Efeitos Visuais
+          </h4>
+          <div>
+            <div className="flex justify-between items-center mb-2">
+              <label className="text-[9px] font-bold uppercase text-secondary">Intensidade do Vidro</label>
+              <span className="text-[10px] font-mono text-accent">{theme.glassIntensity ?? 20}%</span>
+            </div>
+            <input 
+              type="range"
+              min="0"
+              max="100"
+              value={theme.glassIntensity ?? 20}
+              onChange={e => setTheme({ ...theme, glassIntensity: parseInt(e.target.value) })}
+              className="w-full accent-accent"
+            />
+            <p className="text-[8px] text-secondary/60 mt-3 italic leading-relaxed">
+              *Ajusta o desfoque (blur) do cabeçalho flutuante.
+            </p>
+          </div>
         </div>
       </div>
 

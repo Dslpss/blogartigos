@@ -68,7 +68,7 @@ const Footer: React.FC<FooterProps> = ({ blogName = 'Comunica Brasil' }) => {
               </div>
               <span className="text-2xl font-black tracking-tighter uppercase whitespace-nowrap">{blogName}</span>
             </div>
-            <p className="text-sm leading-relaxed max-w-xs italic font-serif" style={{ color: 'var(--color-footer-text, rgba(255, 255, 255, 0.6))' }}>
+            <p className="text-base leading-relaxed max-w-xs italic font-serif" style={{ color: 'var(--color-footer-text, rgba(255, 255, 255, 0.6))' }}>
               "Decodificando a complexidade técnica e econômica através de protocolos de informação rigorosos."
             </p>
             <div className="flex items-center gap-4 mt-2">
@@ -87,7 +87,7 @@ const Footer: React.FC<FooterProps> = ({ blogName = 'Comunica Brasil' }) => {
 
           {/* Column 2: Navegação */}
           <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
-            <h4 className="font-black uppercase tracking-[0.2em] text-[10px] mb-8" style={{ color: 'var(--color-footer-highlight, #00ccff)' }}>Navegação</h4>
+            <h4 className="font-black uppercase tracking-[0.2em] text-xs mb-8" style={{ color: 'var(--color-footer-highlight, #00ccff)' }}>Navegação</h4>
             <ul className="flex flex-col gap-4">
               {[
                 { name: 'Dashboard Home', href: '/' },
@@ -111,7 +111,7 @@ const Footer: React.FC<FooterProps> = ({ blogName = 'Comunica Brasil' }) => {
 
           {/* Column 3: Protocolos */}
           <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
-            <h4 className="font-black uppercase tracking-[0.2em] text-[10px] mb-8" style={{ color: 'var(--color-footer-highlight, #00ccff)' }}>Protocolos de Análise</h4>
+            <h4 className="font-black uppercase tracking-[0.2em] text-xs mb-8" style={{ color: 'var(--color-footer-highlight, #00ccff)' }}>Protocolos de Análise</h4>
             <ul className="flex flex-col gap-4">
               {[
                 'Economia Digital',
@@ -136,7 +136,7 @@ const Footer: React.FC<FooterProps> = ({ blogName = 'Comunica Brasil' }) => {
 
           {/* Column 4: Conexão */}
           <div className="col-span-2 lg:col-span-1 flex flex-col mt-8 lg:mt-0 items-center lg:items-start text-center lg:text-left">
-            <h4 className="font-black uppercase tracking-[0.2em] text-[10px] mb-6 md:mb-8" style={{ color: 'var(--color-footer-highlight, #00ccff)' }}>Conexão</h4>
+            <h4 className="font-black uppercase tracking-[0.2em] text-xs mb-6 md:mb-8" style={{ color: 'var(--color-footer-highlight, #00ccff)' }}>Conexão</h4>
             <div className="flex flex-wrap justify-center lg:justify-start gap-3 mb-8">
               {[
                 { icon: Instagram, href: '#' },
@@ -169,7 +169,7 @@ const Footer: React.FC<FooterProps> = ({ blogName = 'Comunica Brasil' }) => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-10 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-8 md:gap-6 text-[10px] font-black uppercase tracking-widest text-center md:text-left" style={{ color: 'var(--color-footer-text, rgba(255, 255, 255, 0.3))' }}>
+        <div className="pt-10 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-8 md:gap-6 text-xs font-black uppercase tracking-widest text-center md:text-left" style={{ color: 'var(--color-footer-text, rgba(255, 255, 255, 0.3))' }}>
           <div className="flex flex-col md:flex-row items-center gap-3 md:gap-2">
             <span>© {currentYear} {blogName}</span>
             <div className="hidden md:block w-1 h-1 rounded-full bg-white/10" />

@@ -1,31 +1,51 @@
-# PLAN: Fix Post-Deployment Auth & Assets
+# Advanced Personalization Implementation Plan
 
-The application is deployed on Railway but facing Auth issues (Domain not authorized) and a missing favicon.
+Enhance the blog's design system with typography controls, border geometry presets, and glassmorphism intensity adjustments.
 
-## User Actions Required (CRITICAL)
-- [ ] **Firebase Console:** Go to `Authentication -> Settings -> Authorized domains` and add `blogartigos-production.up.railway.app`.
-- [ ] **Railway Dashboard:** Double check that all 8 environment variables from `.env.example` are accurately added.
+## Phase 1: Foundation (Database & Architecture)
+- **Agent:** `database-architect`
+- **File:** `lib/db.ts`
+- **Tasks:**
+    - Extend `BlogTheme` interface with:
+        - `headingFont`: 'sans' | 'serif'
+        - `bodyFont`: 'sans' | 'serif'
+        - `borderRadiusPreset`: 'none' | 'small' | 'medium' | 'large'
+        - `glassIntensity`: number (0-100)
+    - Update `getTheme` to include these defaults in the merge logic.
 
-## Proposed Changes
+## Phase 2: Core Styling (Provider & CSS)
+- **Agent:** `frontend-specialist`
+- **Files:** `components/providers/ThemeProvider.tsx`, `app/globals.css`
+- **Tasks:**
+    - **ThemeProvider:** Map internal states to CSS variables:
+        - `--font-heading`: 'Inter' (sans) or 'Playfair Display' (serif)
+        - `--font-body`: 'Inter' (sans) or 'Playfair Display' (serif)
+        - `--radius-factor`: 0rem (none), 0.5rem (small), 1rem (medium), 2rem (large)
+        - `--glass-blur`: Calculated based on 0-100 intensity.
+    - **Global CSS:** 
+        - Apply `--font-heading` to `h1-h6`.
+        - Apply `--font-body` to `body` and `p`.
+        - Dynamize `--radius-xl` and `--radius-2xl` using calc with `--radius-factor`.
+        - Update `.glass-header` with dynamic blur variable.
 
-### 1. `security-auditor` (Auth Check)
-- Verify if the Firebase initialization in `lib/firebase.ts` handles environment variables correctly.
-- Check if `NEXT_PUBLIC_SUPER_ADMIN_EMAIL` is detected correctly in production.
+## Phase 3: Admin Experience (Tooling)
+- **Agent:** `frontend-specialist`
+- **File:** `components/admin/ThemeCustomizer.tsx`
+- **Tasks:**
+    - Add "Tipografia" section with selects for Heading/Body.
+    - Add "Geometria" section with radius presets.
+    - Add "Efeitos" section with a range slider for Header Glass Intensity.
+    - Ensure all new fields use the established fallback/reset logic.
 
-### 2. `frontend-specialist` (Favicon & Theme Fix)
-- Create `public/` directory (missing).
-- Generate a premium `favicon.ico` using the new color palette:
-  - **Primary:** Institutional Blue
-  - **Accent:** Sustainability Green
-  - **Highlights:** Light Yellow
-- Refactor `globals.css` to implement this institutional identity across the site.
-- Ensure the premium glassmorphism and animations remain but with the new color tones.
+## Phase 4: Verification
+- **Agent:** `performance-optimizer`
+- **Tasks:**
+    - Verify no layout shifts occur when switching fonts.
+    - Audit accessibility contrast if fonts change drastically.
+    - Ensure glassmorphism doesn't degrade performance on lower-end devices at high intensity.
 
-### 3. `devops-engineer` (Deployment Check)
-- Verify `next.config.js` and build process.
-- Ensure the new `public/` folder is correctly picked up by Railway.
-
-## Verification
-- [ ] Successful login on the Railway production URL.
-- [ ] Favicon appearing in the browser tab.
-- [ ] Site visual matching the new institutional identity.
+## Verification Plan
+### Manual Verification
+- Toggle Sans/Serif and check sitewide changes.
+- Switch between "None" and "Large" radius to confirm all containers/buttons react correctly.
+- Adjust glass intensity from 0 to 100 on the header.

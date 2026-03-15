@@ -37,8 +37,27 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     
     // Component Backgrounds (Fallback to core if not explicit)
     root.style.setProperty('--color-header-bg', t.headerBackground || 'rgba(255, 255, 255, 0.7)');
-    root.style.setProperty('--color-footer-bg', t.footerBackground || t.primaryColor);
     root.style.setProperty('--color-card-bg', t.cardBackground);
+    
+    // Typography
+    const fonts = {
+      sans: "'Inter', ui-sans-serif, system-ui, sans-serif",
+      serif: "'Playfair Display', ui-serif, Georgia, serif"
+    };
+    root.style.setProperty('--font-heading', fonts[t.headingFont || 'sans']);
+    root.style.setProperty('--font-body', fonts[t.bodyFont || 'sans']);
+
+    // Geometry (Border Radius)
+    const radiusMap = {
+      none: '0rem',
+      small: '0.5rem',
+      medium: '1rem',
+      large: '2rem'
+    };
+    root.style.setProperty('--radius-factor', radiusMap[t.borderRadiusPreset || 'medium']);
+
+    // Effects (Glassmorphism)
+    root.style.setProperty('--glass-blur', `${(t.glassIntensity ?? 20) / 2}px`);
     
     // Footer Specific Text Colors
     root.style.setProperty('--color-footer-text', t.footerTextColor || 'rgba(255, 255, 255, 0.6)');

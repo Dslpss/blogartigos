@@ -56,6 +56,10 @@ export interface BlogTheme {
   footerTextColor: string;
   footerHighlightColor: string;
   cardBackground: string;
+  headingFont: 'sans' | 'serif';
+  bodyFont: 'sans' | 'serif';
+  borderRadiusPreset: 'none' | 'small' | 'medium' | 'large';
+  glassIntensity: number;
 }
 
 // Blog Settings
@@ -93,7 +97,11 @@ export const getTheme = async (): Promise<BlogTheme> => {
     surfaceColor: '#f8fafc',
     footerTextColor: 'rgba(255, 255, 255, 0.6)',
     footerHighlightColor: '#004a99',
-    cardBackground: '#ffffff'
+    cardBackground: '#ffffff',
+    headingFont: 'sans',
+    bodyFont: 'sans',
+    borderRadiusPreset: 'medium',
+    glassIntensity: 20
   };
 
   if (docSnap.exists()) {
