@@ -21,6 +21,15 @@ interface ArticlesClientProps {
 }
 
 const ArticlesClient: React.FC<ArticlesClientProps> = ({ articles }) => {
+  const [searchTerm, setSearchTerm] = React.useState('');
+  const [selectedCategory, setSelectedCategory] = React.useState('Todos');
+
+  const filteredArticles = articles.filter(article => {
+    const matchesSearch = article.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                         article.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = selectedCategory === 'Todos' || article.category === selectedCategory.toUpperCase();
+    return matchesSearch && matchesCategory;
+  });
   return (
     <div className="min-h-screen pt-32 pb-20 px-4">
       <div className="max-w-7xl mx-auto">
@@ -47,11 +56,19 @@ const ArticlesClient: React.FC<ArticlesClientProps> = ({ articles }) => {
                   type="text" 
                   placeholder="Pesquisar por artigos..." 
                   className="bg-transparent border-none outline-none w-full text-sm font-medium"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </div>
               <div className="flex items-center gap-4 px-4 overflow-x-auto whitespace-nowrap pb-2 md:pb-0">
                 {['Todos', 'Tecnologia', 'Economia', 'Sociedade', 'Ciência'].map(cat => (
-                  <button key={cat} className="text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded-lg hover:bg-white transition-colors text-secondary hover:text-accent">
+                  <button 
+                    key={cat} 
+                    onClick={() => setSelectedCategory(cat)}
+                    className={`text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded-lg transition-colors ${
+                      selectedCategory === cat ? 'bg-white text-accent shadow-sm' : 'text-secondary hover:text-accent'
+                    }`}
+                  >
                     {cat}
                   </button>
                 ))}
@@ -65,14 +82,14 @@ const ArticlesClient: React.FC<ArticlesClientProps> = ({ articles }) => {
 
         {/* Grid Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {articles.map((article, idx) => (
+          {filteredArticles.map((article, idx) => (
             <motion.div
               key={article.id}
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.05 }}
             >
-              <NewsCard {...article} />
+              <NewsCard {...article as any} />
             </motion.div>
           ))}
         </div>

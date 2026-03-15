@@ -141,6 +141,17 @@ export const getArticleBySlug = async (slug: string): Promise<BlogPost | null> =
   return null;
 };
 
+export const searchArticles = async (term: string): Promise<BlogPost[]> => {
+  const articles = await getArticles();
+  const lowerTerm = term.toLowerCase();
+  return articles.filter(article => 
+    article.title.toLowerCase().includes(lowerTerm) ||
+    article.content.toLowerCase().includes(lowerTerm) ||
+    article.category.toLowerCase().includes(lowerTerm) ||
+    article.excerpt.toLowerCase().includes(lowerTerm)
+  );
+};
+
 export const addArticle = async (article: Omit<BlogPost, 'createdAt'>) => {
   await addDoc(collection(db, 'articles'), {
     ...article,

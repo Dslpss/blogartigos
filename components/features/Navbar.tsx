@@ -11,9 +11,11 @@ import {  Instagram,
   X, 
   ArrowUpRight,
   Zap,
-  Shield
+  Shield,
+  Search
 } from 'lucide-react';
 import { CustomAlert } from '@/components/ui/Alert';
+import SearchModal from './SearchModal';
 
 interface NavbarProps {
   blogName?: string;
@@ -25,6 +27,7 @@ const Navbar = ({ blogName, logoUrl, newsletterUrl }: NavbarProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const displayBlogName = blogName || "ComunicaBrasil";
   const nameParts = displayBlogName.match(/[A-Z][a-z]+/g) || [displayBlogName];
@@ -36,8 +39,20 @@ const Navbar = ({ blogName, logoUrl, newsletterUrl }: NavbarProps) => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setIsSearchOpen(true);
+      }
+    };
+
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, []);
 
   const handleSubscribe = () => {
@@ -105,6 +120,16 @@ const Navbar = ({ blogName, logoUrl, newsletterUrl }: NavbarProps) => {
               <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-highlight transition-all duration-300 group-hover:w-full" />
             </Link>
           ))}
+          
+          <button 
+            onClick={() => setIsSearchOpen(true)}
+            className="p-2 hover:bg-surface rounded-xl transition-colors group relative"
+            title="Pesquisar (Cmd+K)"
+          >
+            <Search className="w-5 h-5 text-primary group-hover:text-accent transition-colors" />
+            <div className="absolute top-0 right-0 w-2 h-2 bg-accent rounded-full border-2 border-white opacity-0 group-hover:opacity-100 transition-opacity" />
+          </button>
+
           <motion.button 
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -162,6 +187,11 @@ const Navbar = ({ blogName, logoUrl, newsletterUrl }: NavbarProps) => {
         title="Newsletter"
         message={`O recurso de Newsletter está em desenvolvimento direto no laboratório do ${displayBlogName}. Em breve você receberá nossos artigos exclusivos em sua caixa de entrada.`}
         type="info"
+      />
+
+      <SearchModal 
+        isOpen={isSearchOpen} 
+        onClose={() => setIsSearchOpen(false)} 
       />
     </nav>
   );

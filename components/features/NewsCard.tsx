@@ -3,7 +3,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { ArrowUpRight, Clock, Tag } from 'lucide-react';
+import { ArrowUpRight, Clock, Tag, User } from 'lucide-react';
+import { calculateReadingTime } from '@/lib/utils';
 
 interface NewsCardProps {
   id?: string;
@@ -14,10 +15,14 @@ interface NewsCardProps {
   slug: string;
   imageUrl?: string;
   image?: string; // Fallback for old/static code
+  author?: string;
+  content?: string;
+  readingTime?: number;
 }
 
-const NewsCard: React.FC<NewsCardProps> = ({ id, title, excerpt, category, date, slug, imageUrl, image }) => {
+const NewsCard: React.FC<NewsCardProps> = ({ id, title, excerpt, category, date, slug, imageUrl, image, author, content, readingTime }) => {
   const finalImage = imageUrl || image;
+  const finalReadingTime = readingTime || (content ? calculateReadingTime(content) : 3);
   return (
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
@@ -42,9 +47,15 @@ const NewsCard: React.FC<NewsCardProps> = ({ id, title, excerpt, category, date,
           <span className="px-3 py-1 bg-surface text-[10px] font-black uppercase text-highlight tracking-[0.2em] rounded-full border border-border group-hover:border-highlight/30 transition-colors">
             {category}
           </span>
-          <div className="flex items-center gap-1 text-[10px] font-bold text-secondary opacity-40">
-            <Clock className="w-3 h-3" />
-            <span>{date}</span>
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1 text-[10px] font-bold text-secondary opacity-40">
+              <Clock className="w-3 h-3" />
+              <span>{finalReadingTime} min</span>
+            </div>
+            <div className="w-1 h-1 rounded-full bg-border/20" />
+            <div className="flex items-center gap-1 text-[10px] font-bold text-secondary opacity-40">
+              <span>{date}</span>
+            </div>
           </div>
         </div>
 
@@ -57,12 +68,20 @@ const NewsCard: React.FC<NewsCardProps> = ({ id, title, excerpt, category, date,
         </p>
 
         <div className="mt-auto pt-6 border-t border-border flex items-center justify-between">
-          <Link 
-            href={`/news/${slug || id}`}
-            className="text-xs font-black uppercase tracking-widest text-primary hover:text-highlight flex items-center gap-2 group/btn"
-          >
-            Ver Análise <ArrowUpRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1" />
-          </Link>
+          <div className="flex flex-col gap-1">
+            <Link 
+              href={`/news/${slug || id}`}
+              className="text-xs font-black uppercase tracking-widest text-primary hover:text-highlight flex items-center gap-2 group/btn"
+            >
+              Ver Análise <ArrowUpRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1" />
+            </Link>
+            {author && (
+              <div className="flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest opacity-30">
+                <User className="w-2.5 h-2.5 text-accent" />
+                <span>Por {author}</span>
+              </div>
+            )}
+          </div>
           <div className="w-8 h-8 rounded-full bg-highlight/5 flex items-center justify-center text-highlight opacity-0 group-hover:opacity-100 transition-opacity">
             <Tag className="w-3 h-3" />
           </div>
