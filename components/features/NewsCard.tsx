@@ -44,7 +44,7 @@ const NewsCard: React.FC<NewsCardProps> = ({ id, title, excerpt, category, date,
       )}
       <div className="p-6 pt-0 flex flex-col h-full">
         <div className="flex items-center justify-between mb-4">
-          <span className="px-3 py-1 bg-surface text-[10px] font-black uppercase text-highlight tracking-[0.2em] rounded-full border border-border group-hover:border-highlight/30 transition-colors">
+          <span className="px-3 py-1 text-[10px] font-black uppercase text-highlight tracking-[0.2em] rounded-full border border-border group-hover:border-highlight/30 transition-colors" style={{ backgroundColor: 'var(--color-surface)' }}>
             {category}
           </span>
           <div className="flex items-center gap-3">
@@ -59,11 +59,11 @@ const NewsCard: React.FC<NewsCardProps> = ({ id, title, excerpt, category, date,
           </div>
         </div>
 
-        <h3 className="text-xl font-black text-primary mb-4 leading-tight group-hover:text-highlight transition-colors line-clamp-2">
+        <h3 className="text-xl font-black mb-4 leading-tight group-hover:text-highlight transition-colors line-clamp-2" style={{ color: 'var(--color-text-primary)' }}>
           {title}
         </h3>
 
-        <p className="text-sm text-secondary mb-6 line-clamp-3 font-medium leading-relaxed opacity-80">
+        <p className="text-sm mb-6 line-clamp-3 font-medium leading-relaxed opacity-80" style={{ color: 'var(--color-text-secondary)' }}>
           {excerpt}
         </p>
 

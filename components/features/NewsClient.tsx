@@ -22,14 +22,14 @@ export default function NewsClient({ articles }: NewsClientProps) {
       <header className="mb-16 border-b border-foreground/20 pb-8 flex justify-between items-end">
         <div>
           <span className="text-highlight font-bold uppercase tracking-widest text-sm mb-4 block">Feed</span>
-          <h1 className="text-6xl md:text-8xl font-bold uppercase tracking-tighter text-primary">Notícias</h1>
+          <h1 className="text-6xl md:text-8xl font-bold uppercase tracking-tighter" style={{ color: 'var(--color-text-primary)' }}>Notícias</h1>
         </div>
-        <p className="max-w-xs text-right opacity-60 italic font-serif hidden md:block text-primary">
+        <p className="max-w-xs text-right opacity-60 italic font-serif hidden md:block" style={{ color: 'var(--color-text-primary)' }}>
           Cobertura em tempo real com o rigor técnico que o jornalismo moderno exige.
         </p>
       </header>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 text-primary">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12" style={{ color: 'var(--color-text-primary)' }}>
         {articles.length > 0 ? (
           articles.map((article) => (
             <NewsCard 

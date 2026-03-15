@@ -55,12 +55,14 @@ const HomeClient: React.FC<HomeClientProps> = ({ articles, blogName = "Comunica 
               <span className="text-highlight font-black uppercase tracking-[0.4em] text-[10px]">Propósito & Protocolo</span>
             </motion.div>
             
-            <h1 className="text-4xl sm:text-6xl lg:text-8xl font-black mb-10 leading-[0.9] tracking-tighter text-primary">
-              {blogName.split(' ')[0]} <br />
-              <span className="text-accent underline decoration-black underline-offset-8">{blogName.split(' ').slice(1).join(' ')}</span>
+            <h1 className="text-4xl sm:text-6xl lg:text-8xl font-black mb-10 leading-[0.9] tracking-tighter" style={{ color: 'var(--color-text-primary)' }}>
+              {blogName.includes(' ') ? blogName.split(' ')[0] : blogName} <br />
+              <span className="text-accent underline decoration-black underline-offset-8" style={{ textDecorationColor: 'var(--color-primary)' }}>
+                {blogName.includes(' ') ? blogName.split(' ').slice(1).join(' ') : ''}
+              </span>
             </h1>
             
-            <p className="text-xl text-primary/70 mb-12 max-w-xl leading-relaxed">
+            <p className="text-xl mb-12 max-w-xl leading-relaxed opacity-70" style={{ color: 'var(--color-text-primary)' }}>
               Exploramos o cruzamento entre tecnologia de ponta, economia digital e o futuro da sociedade brasileira através de análises rigorosas.
             </p>
             
@@ -93,8 +95,8 @@ const HomeClient: React.FC<HomeClientProps> = ({ articles, blogName = "Comunica 
         <section className="mb-32">
           <div className="flex items-end justify-between mb-12 border-b border-border pb-8">
             <div>
-              <h2 className="text-3xl font-black uppercase tracking-tight text-primary">Fluxo de Análise</h2>
-              <p className="text-secondary mt-2 italic font-serif opacity-60">Insights selecionados por inteligência e curadoria humana.</p>
+              <h2 className="text-3xl font-black uppercase tracking-tight" style={{ color: 'var(--color-text-primary)' }}>Fluxo de Análise</h2>
+              <p className="mt-2 italic font-serif opacity-60" style={{ color: 'var(--color-text-secondary)' }}>Insights selecionados por inteligência e curadoria humana.</p>
             </div>
             <Link href="/articles" className="text-accent font-bold uppercase tracking-widest text-xs flex items-center gap-2 hover:translate-x-1 transition-transform">
               Ver Arquivo <ArrowRight className="w-4 h-4" />
@@ -142,7 +144,8 @@ const HomeClient: React.FC<HomeClientProps> = ({ articles, blogName = "Comunica 
               <motion.div 
                 key={article.id} 
                 whileHover={{ y: -5 }}
-                className="col-span-1 md:col-span-1 lg:col-span-2 bento-item group p-6 flex flex-col justify-between bg-surface overflow-hidden border-primary/5 active:scale-[0.98] transition-transform"
+                className="col-span-1 md:col-span-1 lg:col-span-2 bento-item group p-6 flex flex-col justify-between overflow-hidden border-primary/5 active:scale-[0.98] transition-transform"
+                style={{ backgroundColor: 'var(--color-surface)' }}
               >
                 {article.imageUrl && (
                   <div className="absolute inset-0 z-0">

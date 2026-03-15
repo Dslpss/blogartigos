@@ -11,10 +11,10 @@ const DEFAULT_THEME: BlogTheme = {
   fontColor: '#15803d',
   secondaryFontColor: '#475569',
   backgroundColor: '#ffffff',
-  headerBackground: 'rgba(255, 255, 255, 0.7)',
+  headerBackground: '#ffffff',
   footerBackground: '#15803d',
   surfaceColor: '#f8fafc',
-  footerTextColor: 'rgba(255, 255, 255, 0.6)',
+  footerTextColor: '#ffffff',
   footerHighlightColor: '#004a99',
   cardBackground: '#ffffff',
   headingFont: 'sans',
@@ -42,6 +42,38 @@ const ThemeCustomizer = () => {
     };
     fetchTheme();
   }, []);
+
+  // Live site-wide preview
+  useEffect(() => {
+    if (!loading && typeof window !== 'undefined') {
+      const root = document.documentElement;
+      
+      // Map colors
+      root.style.setProperty('--color-primary', theme.primaryColor);
+      root.style.setProperty('--color-accent', theme.accentColor);
+      root.style.setProperty('--color-background', theme.backgroundColor);
+      root.style.setProperty('--color-surface', theme.surfaceColor);
+      root.style.setProperty('--color-header-bg', theme.headerBackground || '#ffffff');
+      root.style.setProperty('--color-footer-bg', theme.footerBackground || '#15803d');
+      root.style.setProperty('--color-footer-text', theme.footerTextColor || '#ffffff');
+      root.style.setProperty('--color-footer-highlight', theme.footerHighlightColor || '#00ccff');
+      root.style.setProperty('--color-card-bg', theme.cardBackground || '#ffffff');
+      root.style.setProperty('--color-text-primary', theme.fontColor || '#15803d');
+      root.style.setProperty('--color-text-secondary', theme.secondaryFontColor || '#475569');
+      
+      // Effects
+      root.style.setProperty('--glass-blur', `${(theme.glassIntensity ?? 20) / 2}px`);
+      
+      // Border Radius
+      const radiusMap = {
+        none: '0rem',
+        small: '0.5rem',
+        medium: '1rem',
+        large: '2rem'
+      };
+      root.style.setProperty('--radius-factor', radiusMap[theme.borderRadiusPreset || 'medium']);
+    }
+  }, [theme, loading]);
 
   const handleSave = async () => {
     setSaving(true);
@@ -83,6 +115,8 @@ const ThemeCustomizer = () => {
     { key: 'footerHighlightColor', label: 'Destaque do Rodapé', desc: 'Cor para títulos e ícones de destaque no rodapé.' },
     { key: 'footerTextColor', label: 'Texto do Rodapé', desc: 'Cor para links e descrições no rodapé.' },
     { key: 'cardBackground', label: 'Fundo do Card', desc: 'Cor de fundo dos cartões de notícia.' },
+    { key: 'fontColor', label: 'Cor da Fonte (Principal)', desc: 'Cor predominante dos textos e títulos.' },
+    { key: 'secondaryFontColor', label: 'Cor da Fonte (Secundária)', desc: 'Cor para textos de apoio e descrições.' },
   ];
 
   return (

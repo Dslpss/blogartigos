@@ -36,8 +36,11 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     root.style.setProperty('--color-surface', t.surfaceColor);
     
     // Component Backgrounds (Fallback to core if not explicit)
-    root.style.setProperty('--color-header-bg', t.headerBackground || 'rgba(255, 255, 255, 0.7)');
-    root.style.setProperty('--color-card-bg', t.cardBackground);
+    root.style.setProperty('--color-header-bg', t.headerBackground || '#ffffff');
+    root.style.setProperty('--color-footer-bg', t.footerBackground || '#15803d');
+    root.style.setProperty('--color-card-bg', t.cardBackground || '#ffffff');
+    root.style.setProperty('--color-text-primary', t.fontColor || '#15803d');
+    root.style.setProperty('--color-text-secondary', t.secondaryFontColor || '#475569');
     
     // Typography
     const fonts = {
@@ -60,7 +63,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     root.style.setProperty('--glass-blur', `${(t.glassIntensity ?? 20) / 2}px`);
     
     // Footer Specific Text Colors
-    root.style.setProperty('--color-footer-text', t.footerTextColor || 'rgba(255, 255, 255, 0.6)');
+    root.style.setProperty('--color-footer-text', t.footerTextColor || '#ffffff');
     root.style.setProperty('--color-footer-highlight', t.footerHighlightColor || '#00ccff');
   };
 

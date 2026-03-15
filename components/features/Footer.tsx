@@ -68,7 +68,7 @@ const Footer: React.FC<FooterProps> = ({ blogName = 'Comunica Brasil' }) => {
               </div>
               <span className="text-2xl font-black tracking-tighter uppercase whitespace-nowrap">{blogName}</span>
             </div>
-            <p className="text-base leading-relaxed max-w-xs italic font-serif" style={{ color: 'var(--color-footer-text, rgba(255, 255, 255, 0.6))' }}>
+            <p className="text-base leading-relaxed max-w-xs italic font-serif" style={{ color: 'var(--color-footer-text, #ffffff)' }}>
               "Decodificando a complexidade técnica e econômica através de protocolos de informação rigorosos."
             </p>
             <div className="flex items-center gap-4 mt-2">
@@ -87,7 +87,7 @@ const Footer: React.FC<FooterProps> = ({ blogName = 'Comunica Brasil' }) => {
 
           {/* Column 2: Navegação */}
           <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
-            <h4 className="font-black uppercase tracking-[0.2em] text-xs mb-8" style={{ color: 'var(--color-footer-highlight, #00ccff)' }}>Navegação</h4>
+            <h4 className="text-2xl font-black tracking-tighter uppercase mb-8">Navegação</h4>
             <ul className="flex flex-col gap-4">
               {[
                 { name: 'Dashboard Home', href: '/' },
@@ -99,7 +99,7 @@ const Footer: React.FC<FooterProps> = ({ blogName = 'Comunica Brasil' }) => {
                   <Link 
                     href={link.href} 
                     className="hover:text-white flex items-center gap-2 group transition-colors text-sm font-medium"
-                    style={{ color: 'var(--color-footer-text, rgba(255, 255, 255, 0.6))' }}
+                    style={{ color: 'var(--color-footer-text, #ffffff)' }}
                   >
                     <ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" style={{ color: 'var(--color-footer-highlight)' }} />
                     {link.name}
@@ -111,7 +111,7 @@ const Footer: React.FC<FooterProps> = ({ blogName = 'Comunica Brasil' }) => {
 
           {/* Column 3: Protocolos */}
           <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
-            <h4 className="font-black uppercase tracking-[0.2em] text-xs mb-8" style={{ color: 'var(--color-footer-highlight, #00ccff)' }}>Protocolos de Análise</h4>
+            <h4 className="text-2xl font-black tracking-tighter uppercase mb-8">Protocolos de Análise</h4>
             <ul className="flex flex-col gap-4">
               {[
                 'Economia Digital',
@@ -124,7 +124,7 @@ const Footer: React.FC<FooterProps> = ({ blogName = 'Comunica Brasil' }) => {
                   <Link 
                     href="/news" 
                     className="hover:text-white flex items-center gap-2 group transition-colors text-sm font-medium"
-                    style={{ color: 'var(--color-footer-text, rgba(255, 255, 255, 0.6))' }}
+                    style={{ color: 'var(--color-footer-text, #ffffff)' }}
                   >
                     <div className="w-1.5 h-1.5 rounded-full bg-accent/40 group-hover:bg-accent transition-colors" />
                     {item}
@@ -136,7 +136,7 @@ const Footer: React.FC<FooterProps> = ({ blogName = 'Comunica Brasil' }) => {
 
           {/* Column 4: Conexão */}
           <div className="col-span-2 lg:col-span-1 flex flex-col mt-8 lg:mt-0 items-center lg:items-start text-center lg:text-left">
-            <h4 className="font-black uppercase tracking-[0.2em] text-xs mb-6 md:mb-8" style={{ color: 'var(--color-footer-highlight, #00ccff)' }}>Conexão</h4>
+            <h4 className="text-2xl font-black tracking-tighter uppercase mb-6 md:mb-8">Conexão</h4>
             <div className="flex flex-wrap justify-center lg:justify-start gap-3 mb-8">
               {[
                 { icon: Instagram, href: '#' },

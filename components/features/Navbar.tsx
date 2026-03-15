@@ -91,8 +91,8 @@ const Navbar = ({ blogName, logoUrl, newsletterUrl }: NavbarProps) => {
                 <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
                 {initials}
               </div>
-                <span className="text-xl font-black uppercase tracking-tighter text-primary">
-                  {firstPart}<span className="text-accent underline decoration-primary underline-offset-4">{secondPart}</span>
+                <span className="text-xl font-black uppercase tracking-tighter" style={{ color: 'var(--color-text-primary)' }}>
+                  {firstPart}<span className="text-accent underline decoration-primary underline-offset-4" style={{ textDecorationColor: 'var(--color-primary)' }}>{secondPart}</span>
                 </span>
               </>
             )}
@@ -114,7 +114,8 @@ const Navbar = ({ blogName, logoUrl, newsletterUrl }: NavbarProps) => {
             <Link 
               key={item.name} 
               href={item.href}
-              className="text-sm font-semibold uppercase tracking-widest text-primary/60 hover:text-accent transition-colors relative group"
+              className="text-sm font-semibold uppercase tracking-widest transition-colors relative group"
+              style={{ color: 'var(--color-text-primary)', opacity: scrolled ? 1 : 0.6 }}
             >
               {item.name}
               <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-highlight transition-all duration-300 group-hover:w-full" />
@@ -126,7 +127,7 @@ const Navbar = ({ blogName, logoUrl, newsletterUrl }: NavbarProps) => {
             className="p-2 hover:bg-surface rounded-xl transition-colors group relative"
             title="Pesquisar (Cmd+K)"
           >
-            <Search className="w-5 h-5 text-primary group-hover:text-accent transition-colors" />
+            <Search className="w-5 h-5 group-hover:text-accent transition-colors" style={{ color: scrolled ? 'var(--color-text-primary)' : 'var(--color-text-primary)' }} />
             <div className="absolute top-0 right-0 w-2 h-2 bg-accent rounded-full border-2 border-white opacity-0 group-hover:opacity-100 transition-opacity" />
           </button>
 
@@ -134,7 +135,7 @@ const Navbar = ({ blogName, logoUrl, newsletterUrl }: NavbarProps) => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setIsAlertOpen(true)}
-            className="hidden md:flex bg-primary text-white px-6 py-2.5 rounded-full font-black text-[10px] uppercase tracking-widest hover:bg-highlight hover:!text-white hover:shadow-glow transition-all items-center gap-2 border border-white/10"
+            className="hidden md:flex bg-primary text-white px-6 py-2.5 rounded-full font-black text-[10px] uppercase tracking-widest hover:bg-accent hover:shadow-glow transition-all items-center gap-2 border border-white/10"
           >
             <Zap className="w-3 h-3 fill-current" />
             Inscrever-se
@@ -165,7 +166,8 @@ const Navbar = ({ blogName, logoUrl, newsletterUrl }: NavbarProps) => {
                   key={item.name} 
                   href={item.href}
                   onClick={() => setIsOpen(false)}
-                  className="text-lg font-bold text-primary hover:text-accent transition-colors"
+                  className="text-lg font-bold hover:text-accent transition-colors"
+                  style={{ color: 'var(--color-text-primary)' }}
                 >
                   {item.name}
                 </Link>
