@@ -19,9 +19,12 @@ interface NewsCardProps {
 const NewsCard: React.FC<NewsCardProps> = ({ id, title, excerpt, category, date, slug, imageUrl, image }) => {
   const finalImage = imageUrl || image;
   return (
-    <motion.div
-      whileHover={{ y: -8 }}
-      className="bg-white border border-border rounded-2xl p-6 transition-all duration-500 hover:shadow-premium hover:border-accent/20 group h-full flex flex-col"
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      className="group rounded-[2rem] border border-border/50 overflow-hidden hover:border-accent/30 transition-all duration-500 hover:shadow-2xl hover:shadow-accent/5 flex flex-col h-full"
+      style={{ backgroundColor: 'var(--color-card-bg, #ffffff)' }}
     >
       {finalImage && (
         <div className="w-full h-48 mb-6 rounded-xl overflow-hidden border border-border group-hover:border-accent/30 transition-all">

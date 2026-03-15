@@ -55,6 +55,7 @@ export interface BlogTheme {
   surfaceColor: string;
   footerTextColor: string;
   footerHighlightColor: string;
+  cardBackground: string;
 }
 
 // Blog Settings
@@ -91,7 +92,8 @@ export const getTheme = async (): Promise<BlogTheme> => {
     footerBackground: '#15803d',
     surfaceColor: '#f8fafc',
     footerTextColor: 'rgba(255, 255, 255, 0.6)',
-    footerHighlightColor: '#004a99'
+    footerHighlightColor: '#004a99',
+    cardBackground: '#ffffff'
   };
 
   if (docSnap.exists()) {

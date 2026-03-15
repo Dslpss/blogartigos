@@ -38,6 +38,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     // Component Backgrounds (Fallback to core if not explicit)
     root.style.setProperty('--color-header-bg', t.headerBackground || 'rgba(255, 255, 255, 0.7)');
     root.style.setProperty('--color-footer-bg', t.footerBackground || t.primaryColor);
+    root.style.setProperty('--color-card-bg', t.cardBackground);
     
     // Footer Specific Text Colors
     root.style.setProperty('--color-footer-text', t.footerTextColor || 'rgba(255, 255, 255, 0.6)');

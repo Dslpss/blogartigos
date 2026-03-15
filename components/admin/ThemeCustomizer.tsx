@@ -15,7 +15,8 @@ const DEFAULT_THEME: BlogTheme = {
   footerBackground: '#15803d',
   surfaceColor: '#f8fafc',
   footerTextColor: 'rgba(255, 255, 255, 0.6)',
-  footerHighlightColor: '#004a99'
+  footerHighlightColor: '#004a99',
+  cardBackground: '#ffffff'
 };
 
 const ThemeCustomizer = () => {
@@ -77,6 +78,7 @@ const ThemeCustomizer = () => {
     { key: 'footerBackground', label: 'Fundo do Rodapé', desc: 'Cor sólida do rodapé.' },
     { key: 'footerHighlightColor', label: 'Destaque do Rodapé', desc: 'Cor para títulos e ícones de destaque no rodapé.' },
     { key: 'footerTextColor', label: 'Texto do Rodapé', desc: 'Cor para links e descrições no rodapé.' },
+    { key: 'cardBackground', label: 'Fundo do Card', desc: 'Cor de fundo dos cartões de notícia.' },
   ];
 
   return (
