@@ -9,8 +9,8 @@
   --color-primary: #15803d;    /* Dominant Sustainability Green (Darker for text contrast) */
   --color-accent: #004a99;     /* Institutional Blue (Now Accent) */
   --color-secondary: #475569;  /* Dark Slate for secondary text */
-  --color-highlight: #facc15;  /* Vibrant Yellow */
-  --color-highlight-subtle: #f0fdf4; /* Very Light Green background tint */
+  --color-highlight: #004a99;  /* Institutional Blue (Highlight) */
+  --color-highlight-subtle: #eff6ff; /* Very Light Blue background tint */
   --color-background: #ffffff;
   --color-surface: #f8fafc;
   --color-border: #e2e8f0;
@@ -19,7 +19,9 @@
   --radius-2xl: 2rem;
 
   --shadow-premium: 0 10px 30px -10px rgba(21, 128, 61, 0.12); /* Green tinted shadow */
-  --shadow-glow: 0 0 20px rgba(34, 197, 94, 0.3); /* Green tinted glow */
+  --shadow-glow: 0 0 20px rgba(0, 74, 153, 0.3); /* Blue tinted glow */
+
+  --grid-color: rgba(21, 128, 61, 0.05);
 }
 
 @layer base {
@@ -28,8 +30,13 @@
     font-feature-settings: "ss01", "ss02", "cv01", "cv02";
   }
 
+  /* Optimized Typography for Reading */
+  .prose p {
+    @apply mb-8;
+  }
+
   h1, h2, h3, h4, h5, h6 {
-    @apply tracking-tight font-sans;
+    @apply tracking-tighter font-black;
   }
 }
 
@@ -77,6 +84,27 @@
   .btn-premium {
     @apply px-6 py-3 rounded-full bg-primary text-white font-medium transition-all duration-300 hover:bg-accent hover:shadow-glow active:scale-95;
   }
+
+  .bg-grid-pattern {
+    background-image: 
+      linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
+    mask-image: radial-gradient(circle at center, black, transparent 80%);
+  }
+
+  .animate-float-slow {
+    animation: float 12s ease-in-out infinite;
+  }
+
+  .animate-float-reverse {
+    animation: float-reverse 15s ease-in-out infinite;
+  }
+}
+
+@keyframes float-reverse {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(15px) rotate(-2deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
 }
 
 /* Animations */

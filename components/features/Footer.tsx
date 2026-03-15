@@ -29,22 +29,36 @@ const Footer: React.FC<FooterProps> = ({ blogName = 'Comunica Brasil' }) => {
     .slice(0, 2);
 
   return (
-    <footer className="relative mt-40 overflow-hidden bg-primary text-white border-t border-white/5">
+    <footer className="relative mt-20 md:mt-40 overflow-hidden bg-primary text-white border-t border-white/5">
       {/* Premium Visual Elements */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {/* Subtle Grid Pattern */}
         <div className="absolute inset-0 opacity-[0.03] bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px]" />
         
         {/* Ambient Glows */}
-        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-highlight/5 blur-[120px] rounded-full -translate-y-1/2" />
-        <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-accent/10 blur-[120px] rounded-full translate-y-1/2" />
+        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-highlight/10 blur-[120px] rounded-full -translate-y-1/2" />
+        <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-accent/20 blur-[120px] rounded-full translate-y-1/2" />
+
+        {/* Animated Scanline Effect */}
+        <motion.div 
+          animate={{ 
+            top: ["-100%", "200%"],
+            opacity: [0, 0.5, 0]
+          }}
+          transition={{ 
+            duration: 8, 
+            repeat: Infinity, 
+            ease: "linear" 
+          }}
+          className="absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-highlight/30 to-transparent"
+        />
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 pt-20 pb-10 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 mb-20">
+      <div className="max-w-7xl mx-auto px-6 pt-12 md:pt-20 pb-10 relative z-10">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12 md:gap-8 mb-12 md:mb-20">
           
           {/* Column 1: Identity */}
-          <div className="flex flex-col gap-6">
+          <div className="col-span-2 lg:col-span-1 flex flex-col gap-6 items-center lg:items-start text-center lg:text-left">
             <div className="flex items-center gap-2 group">
               <div className="w-10 h-10 bg-white text-primary rounded-lg flex items-center justify-center font-black text-xl italic transition-transform group-hover:scale-110 shadow-glow">
                 {initials}
@@ -55,15 +69,21 @@ const Footer: React.FC<FooterProps> = ({ blogName = 'Comunica Brasil' }) => {
               "Decodificando a complexidade técnica e econômica através de protocolos de informação rigorosos."
             </p>
             <div className="flex items-center gap-4 mt-2">
-              <div className="flex items-center gap-2 p-2 px-3 rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
-                <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                <span className="text-[10px] font-black uppercase tracking-widest text-white/50">Sistemas Ativos</span>
+              <div className="flex items-center gap-2 p-2 px-3 rounded-full bg-white/5 border border-white/10 backdrop-blur-md relative group/status overflow-hidden">
+                <div className="absolute inset-0 bg-highlight/10 translate-x-[-100%] group-hover/status:translate-x-[100%] transition-transform duration-1000" />
+                <div className="relative flex items-center gap-2">
+                  <div className="relative">
+                    <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse relative z-10" />
+                    <div className="absolute inset-0 w-2 h-2 rounded-full bg-green-500 animate-ping opacity-75" />
+                  </div>
+                  <span className="text-[10px] font-black uppercase tracking-widest text-white/50">Sistemas Ativos</span>
+                </div>
               </div>
             </div>
           </div>
 
           {/* Column 2: Navegação */}
-          <div>
+          <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
             <h4 className="text-highlight font-black uppercase tracking-[0.2em] text-[10px] mb-8">Navegação</h4>
             <ul className="flex flex-col gap-4">
               {[
@@ -86,7 +106,7 @@ const Footer: React.FC<FooterProps> = ({ blogName = 'Comunica Brasil' }) => {
           </div>
 
           {/* Column 3: Protocolos */}
-          <div>
+          <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
             <h4 className="text-highlight font-black uppercase tracking-[0.2em] text-[10px] mb-8">Protocolos de Análise</h4>
             <ul className="flex flex-col gap-4">
               {[
@@ -110,25 +130,27 @@ const Footer: React.FC<FooterProps> = ({ blogName = 'Comunica Brasil' }) => {
           </div>
 
           {/* Column 4: Conexão */}
-          <div className="flex flex-col">
-            <h4 className="text-highlight font-black uppercase tracking-[0.2em] text-[10px] mb-8">Conexão</h4>
-            <div className="grid grid-cols-4 gap-3 mb-8">
+          <div className="col-span-2 lg:col-span-1 flex flex-col mt-8 lg:mt-0 items-center lg:items-start text-center lg:text-left">
+            <h4 className="text-highlight font-black uppercase tracking-[0.2em] text-[10px] mb-6 md:mb-8">Conexão</h4>
+            <div className="flex flex-wrap justify-center lg:justify-start gap-3 mb-8">
               {[
                 { icon: Instagram, href: '#' },
                 { icon: Twitter, href: '#' },
                 { icon: Linkedin, href: '#' },
                 { icon: Github, href: '#' }
               ].map((social, i) => (
-                <a 
+                <motion.a 
                   key={i}
                   href={social.href} 
-                  className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 hover:border-highlight/50 transition-all group"
+                  whileHover={{ y: -5, scale: 1.05 }}
+                  className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-highlight hover:border-highlight hover:shadow-glow transition-all duration-300 group/social overflow-hidden relative"
                 >
-                  <social.icon className="w-5 h-5 text-white/50 group-hover:text-highlight transition-colors" />
-                </a>
+                   <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover/social:opacity-100 transition-opacity" />
+                  <social.icon className="w-5 h-5 text-white/50 group-hover:text-white transition-colors relative z-10" />
+                </motion.a>
               ))}
             </div>
-            <div className="p-5 rounded-2xl bg-black/20 border border-white/5 backdrop-blur-xl">
+            <div className="p-4 md:p-5 rounded-2xl bg-black/20 border border-white/5 backdrop-blur-xl">
               <div className="flex items-center gap-2 mb-3">
                 <ShieldCheck className="w-4 h-4 text-highlight" />
                 <span className="text-[10px] font-black uppercase tracking-widest">Segurança de Dados</span>
@@ -141,17 +163,17 @@ const Footer: React.FC<FooterProps> = ({ blogName = 'Comunica Brasil' }) => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-10 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] font-black uppercase tracking-widest text-white/30">
-          <div className="flex items-center gap-2">
+        <div className="pt-10 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-8 md:gap-6 text-[10px] font-black uppercase tracking-widest text-white/30 text-center md:text-left">
+          <div className="flex flex-col md:flex-row items-center gap-3 md:gap-2">
             <span>© {currentYear} {blogName}</span>
-            <div className="w-1 h-1 rounded-full bg-white/10" />
+            <div className="hidden md:block w-1 h-1 rounded-full bg-white/10" />
             <span>Todos os Direitos Reservados</span>
           </div>
           
-          <div className="flex items-center gap-8">
-            <Link href="#" className="hover:text-white transition-colors">Termos de Uso</Link>
+          <div className="flex flex-wrap justify-center items-center gap-6 md:gap-8">
+            <Link href="#" className="hover:text-white transition-colors">Termos</Link>
             <Link href="#" className="hover:text-white transition-colors">Privacidade</Link>
-            <div className="flex items-center gap-2 text-highlight/50">
+            <div className="flex items-center gap-2 text-highlight/50 w-full md:w-auto justify-center mt-2 md:mt-0">
               <Zap className="w-3 h-3 fill-current" />
               <span>Plataforma Premium</span>
             </div>

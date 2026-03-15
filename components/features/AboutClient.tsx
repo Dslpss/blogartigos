@@ -104,17 +104,26 @@ const AboutClient = () => {
 
         {/* CTA Section */}
         <section>
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            className="p-10 md:p-20 bg-primary rounded-[2rem] md:rounded-[3rem] text-white relative overflow-hidden text-center"
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mt-24 p-12 rounded-[2.5rem] bg-highlight text-white text-center relative overflow-hidden shadow-glow"
           >
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-highlight/10 via-transparent to-transparent pointer-events-none" />
-            <h2 className="text-4xl md:text-5xl font-black mb-8 relative z-10 tracking-tighter uppercase">Quer fazer parte da rede?</h2>
-            <p className="text-white/60 mb-10 max-w-xl mx-auto italic font-serif">Estamos sempre em busca de novos talentos técnicos e analíticos.</p>
-            <button className="btn-premium flex items-center gap-3 mx-auto">
-              Ver Vagas Abertas <ArrowRight className="w-5 h-5" />
-            </button>
+            <div className="absolute inset-0 bg-grid-pattern opacity-10" />
+            <div className="relative z-10">
+              <h2 className="text-4xl font-black mb-6 uppercase tracking-tighter">Pronto para a Profundidade?</h2>
+              <p className="text-white/80 mb-10 max-w-2xl mx-auto text-lg italic">
+                "A informação é a commodity mais valiosa, mas a síntese é o verdadeiro poder."
+              </p>
+              <div className="flex flex-wrap justify-center gap-6 text-[10px] font-black uppercase tracking-[0.3em]">
+                {['Ética', 'Rigor', 'Independência'].map((tag) => (
+                  <span key={tag} className="px-6 py-3 rounded-full bg-white/10 border border-white/20 backdrop-blur-md">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
           </motion.div>
         </section>
       </div>

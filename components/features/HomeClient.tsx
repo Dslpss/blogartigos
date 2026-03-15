@@ -29,19 +29,30 @@ const HomeClient: React.FC<HomeClientProps> = ({ articles, blogName = "Comunica 
     <div className="min-h-screen pt-32 pb-20 px-4">
       <div className="max-w-7xl mx-auto">
         {/* Modern Hero Section */}
-        <section className="mb-32 relative">
-          <div className="absolute top-0 right-0 -z-10 opacity-10 animate-float">
+        <section className="mb-32 relative overflow-hidden">
+          {/* 3D Grid Background */}
+          <div className="absolute inset-0 -z-20 [perspective:1000px]">
+            <div className="absolute inset-0 [transform:rotateX(75deg)_translateY(-100px)]">
+              <div className="absolute inset-0 bg-grid-pattern opacity-5 [background-size:30px_30px]" />
+            </div>
+          </div>
+
+          {/* Floating Particles */}
+          <div className="absolute top-0 right-0 -z-10 opacity-10 animate-float-slow">
             <Sparkles className="w-64 h-64 text-accent" />
+          </div>
+          <div className="absolute bottom-0 left-0 -z-10 opacity-10 animate-float-reverse">
+            <Sparkles className="w-48 h-48 text-highlight" />
           </div>
           
           <div className="max-w-3xl">
             <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="flex items-center gap-2 mb-6"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="inline-flex items-center gap-3 mb-8 px-4 py-2 rounded-full bg-highlight/10 border border-highlight/20 backdrop-blur-md"
             >
-              <div className="w-12 h-[2px] bg-highlight" />
-              <span className="text-highlight font-bold uppercase tracking-[0.3em] text-xs">A Nova Era da Informação</span>
+              <div className="w-2 h-2 rounded-full bg-highlight animate-ping" />
+              <span className="text-highlight font-black uppercase tracking-[0.4em] text-[10px]">Propósito & Protocolo</span>
             </motion.div>
             
             <h1 className="text-4xl sm:text-6xl lg:text-8xl font-black mb-10 leading-[0.9] tracking-tighter text-primary">
@@ -53,13 +64,27 @@ const HomeClient: React.FC<HomeClientProps> = ({ articles, blogName = "Comunica 
               Exploramos o cruzamento entre tecnologia de ponta, economia digital e o futuro da sociedade brasileira através de análises rigorosas.
             </p>
             
-            <div className="flex flex-wrap gap-6">
-              <button className="btn-premium flex items-center gap-2 shadow-glow hover:!bg-highlight hover:!text-primary transition-colors">
-                Começar Leitura <ArrowRight className="w-5 h-5" />
-              </button>
-              <button className="px-8 py-3 rounded-full border border-primary/20 font-bold text-primary hover:bg-highlight/10 transition-all active:scale-95 uppercase tracking-widest text-xs">
-                Ver Protocolos
-              </button>
+            <div className="flex flex-wrap gap-8 items-center">
+              <Link href="/news">
+                <motion.button 
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="btn-premium group flex items-center gap-3 shadow-glow !bg-highlight !text-white px-10 py-4 text-sm"
+                >
+                  Começar Leitura 
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </motion.button>
+              </Link>
+              
+              <Link href="/about">
+                <motion.button 
+                  whileHover={{ backgroundColor: "rgba(0, 74, 153, 0.05)", y: -2 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-8 py-4 rounded-full border-2 border-primary/20 font-black text-primary transition-all uppercase tracking-widest text-[10px] flex items-center gap-2"
+                >
+                  Ver Protocolos <ArrowUpRight className="w-4 h-4 opacity-40" />
+                </motion.button>
+              </Link>
             </div>
           </div>
         </section>
@@ -79,7 +104,10 @@ const HomeClient: React.FC<HomeClientProps> = ({ articles, blogName = "Comunica 
           <div className="bento-grid">
             {/* Main Bento Item (Large) */}
             {featuredArticles[0] && (
-              <div className="col-span-1 md:col-span-2 lg:row-span-2 bento-item group p-8 flex flex-col justify-end bg-primary overflow-hidden">
+              <motion.div 
+                whileHover={{ y: -5 }}
+                className="col-span-1 md:col-span-2 lg:row-span-2 bento-item group p-8 flex flex-col justify-end bg-primary overflow-hidden border-white/5 active:scale-[0.98] transition-transform"
+              >
                 {featuredArticles[0].imageUrl && (
                   <div className="absolute inset-0 z-0">
                     <img src={featuredArticles[0].imageUrl} alt="" className="w-full h-full object-cover opacity-40 group-hover:scale-105 transition-transform duration-700" />
@@ -106,12 +134,16 @@ const HomeClient: React.FC<HomeClientProps> = ({ articles, blogName = "Comunica 
                     Explorar Tese <ArrowRight className="w-4 h-4" />
                   </Link>
                 </div>
-              </div>
+              </motion.div>
             )}
 
             {/* Medium Bento Items */}
             {featuredArticles.slice(1, 3).map((article) => (
-              <div key={article.id} className="col-span-1 md:col-span-1 lg:col-span-2 bento-item group p-6 flex flex-col justify-between bg-surface overflow-hidden">
+              <motion.div 
+                key={article.id} 
+                whileHover={{ y: -5 }}
+                className="col-span-1 md:col-span-1 lg:col-span-2 bento-item group p-6 flex flex-col justify-between bg-surface overflow-hidden border-primary/5 active:scale-[0.98] transition-transform"
+              >
                 {article.imageUrl && (
                   <div className="absolute inset-0 z-0">
                     <img src={article.imageUrl} alt="" className="w-full h-full object-cover opacity-20 group-hover:scale-105 transition-transform duration-700" />
@@ -130,7 +162,7 @@ const HomeClient: React.FC<HomeClientProps> = ({ articles, blogName = "Comunica 
                 >
                   <ArrowRight className="w-5 h-5" />
                 </Link>
-              </div>
+              </motion.div>
             ))}
 
             {/* Small Statistics/Visual Bento Items */}
@@ -148,7 +180,11 @@ const HomeClient: React.FC<HomeClientProps> = ({ articles, blogName = "Comunica 
 
             {/* Final Row items */}
             {featuredArticles.slice(3, 5).map((article) => (
-              <div key={article.id} className="col-span-1 bento-item group p-6 bg-surface flex flex-col gap-4 overflow-hidden">
+              <motion.div 
+                key={article.id} 
+                whileHover={{ y: -5 }}
+                className="col-span-1 bento-item group p-6 bg-surface flex flex-col gap-4 overflow-hidden border-primary/5 active:scale-[0.98] transition-transform"
+              >
                 {article.imageUrl && (
                   <div className="absolute inset-0 z-0">
                     <img src={article.imageUrl} alt="" className="w-full h-full object-cover opacity-10 group-hover:scale-105 transition-transform duration-700" />
@@ -163,7 +199,7 @@ const HomeClient: React.FC<HomeClientProps> = ({ articles, blogName = "Comunica 
                 <Link href={`/news/${article.slug || article.id}`} className="relative z-10 text-[9px] font-black uppercase tracking-widest text-highlight mt-auto hover:underline">
                   Ver Mais
                 </Link>
-              </div>
+              </motion.div>
             ))}
           </div>
         </section>

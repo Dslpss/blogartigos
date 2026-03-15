@@ -3,7 +3,16 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import { Menu, X, Twitter, Github, Linkedin, ArrowUpRight, Shield } from 'lucide-react';
+import {  Instagram, 
+  Twitter, 
+  Linkedin, 
+  Github, 
+  Menu, 
+  X, 
+  ArrowUpRight,
+  Zap,
+  Shield
+} from 'lucide-react';
 import { CustomAlert } from '@/components/ui/Alert';
 
 interface NavbarProps {
@@ -21,6 +30,7 @@ const Navbar = ({ blogName, logoUrl, newsletterUrl }: NavbarProps) => {
   const nameParts = displayBlogName.match(/[A-Z][a-z]+/g) || [displayBlogName];
   const firstPart = nameParts[0] || displayBlogName;
   const secondPart = displayBlogName.replace(firstPart, "");
+  const initials = displayBlogName.split(' ').map(word => word[0]).join('').toUpperCase().slice(0, 2);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -62,9 +72,10 @@ const Navbar = ({ blogName, logoUrl, newsletterUrl }: NavbarProps) => {
               </div>
             ) : (
               <>
-                <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center transition-all duration-500 group-hover:rotate-12 group-hover:bg-accent">
-                  <span className="text-white font-black text-xl italic underline decoration-accent underline-offset-4">C</span>
-                </div>
+                <div className="w-10 h-10 bg-accent text-white rounded-lg flex items-center justify-center font-black text-xl italic transition-transform group-hover:scale-110 shadow-glow relative overflow-hidden">
+                <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+                {initials}
+              </div>
                 <span className="text-xl font-black uppercase tracking-tighter text-primary">
                   {firstPart}<span className="text-accent underline decoration-primary underline-offset-4">{secondPart}</span>
                 </span>
@@ -94,12 +105,15 @@ const Navbar = ({ blogName, logoUrl, newsletterUrl }: NavbarProps) => {
               <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-highlight transition-all duration-300 group-hover:w-full" />
             </Link>
           ))}
-          <button 
-            onClick={handleSubscribe}
-            className="btn-premium flex items-center gap-2 active:scale-95 transition-transform !bg-primary hover:!bg-highlight hover:!text-primary transition-colors duration-300 shadow-glow"
+          <motion.button 
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => setIsAlertOpen(true)}
+            className="hidden md:flex bg-primary text-white px-6 py-2.5 rounded-full font-black text-[10px] uppercase tracking-widest hover:bg-highlight hover:!text-white hover:shadow-glow transition-all items-center gap-2 border border-white/10"
           >
-            Inscrever-se <ArrowUpRight className="w-4 h-4" />
-          </button>
+            <Zap className="w-3 h-3 fill-current" />
+            Inscrever-se
+          </motion.button>
         </div>
 
         {/* Mobile Toggle */}

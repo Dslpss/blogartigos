@@ -15,7 +15,7 @@ interface ArticleData {
 
 const NewsDetailPage = ({ article }: { article: ArticleData }) => {
   return (
-    <div className="min-h-screen pt-32 pb-20 px-4 bg-background">
+    <div className="min-h-screen pt-32 pb-20 px-4 bg-surface/30">
       <div className="max-w-4xl mx-auto">
         {/* Navigation & Header */}
         <motion.div
@@ -24,8 +24,8 @@ const NewsDetailPage = ({ article }: { article: ArticleData }) => {
           className="mb-16"
         >
           <Link 
-            href="/articles"
-            className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-accent mb-12 hover:-translate-x-1 transition-transform group"
+            href="/news"
+            className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-accent mb-12 hover:-translate-x-1 transition-transform group"
           >
             <ArrowLeft className="w-4 h-4" /> Voltar para o Arquivo
           </Link>
@@ -68,7 +68,14 @@ const NewsDetailPage = ({ article }: { article: ArticleData }) => {
            initial={{ opacity: 0 }}
            animate={{ opacity: 1 }}
            transition={{ delay: 0.2 }}
-           className="prose prose-lg max-w-none prose-slate prose-headings:font-black prose-headings:tracking-tighter prose-headings:uppercase prose-p:leading-relaxed prose-p:text-secondary prose-strong:text-primary"
+           className="prose prose-xl max-w-none prose-slate 
+             prose-headings:font-black prose-headings:tracking-tighter prose-headings:uppercase prose-headings:text-primary
+             prose-p:text-slate-800 prose-p:leading-[1.8] prose-p:text-lg md:prose-p:text-xl
+             prose-strong:text-primary prose-strong:font-black
+             prose-a:text-accent prose-a:no-underline hover:prose-a:underline
+             prose-img:rounded-3xl prose-img:shadow-2xl
+             selection:bg-accent/10 selection:text-accent
+             mb-20"
         >
           <div dangerouslySetInnerHTML={{ __html: article.content }} />
         </motion.div>
