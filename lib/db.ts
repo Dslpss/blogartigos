@@ -44,6 +44,19 @@ export interface BlogSettings {
   newsletterUrl?: string;
 }
 
+export interface BlogTheme {
+  primaryColor: string;
+  accentColor: string;
+  fontColor: string;
+  secondaryFontColor: string;
+  backgroundColor: string;
+  headerBackground: string;
+  footerBackground: string;
+  surfaceColor: string;
+  footerTextColor: string;
+  footerHighlightColor: string;
+}
+
 // Blog Settings
 export const getBlogSettings = async (): Promise<BlogSettings> => {
   const docRef = doc(db, 'settings', 'blog');
@@ -61,6 +74,34 @@ export const getBlogSettings = async (): Promise<BlogSettings> => {
 
 export const updateBlogSettings = async (settings: Partial<BlogSettings>) => {
   await setDoc(doc(db, 'settings', 'blog'), settings, { merge: true });
+};
+
+// Theme Settings
+export const getTheme = async (): Promise<BlogTheme> => {
+  const docRef = doc(db, 'settings', 'theme');
+  const docSnap = await getDoc(docRef);
+  
+  const defaultTheme: BlogTheme = {
+    primaryColor: '#15803d',
+    accentColor: '#004a99',
+    fontColor: '#15803d',
+    secondaryFontColor: '#475569',
+    backgroundColor: '#ffffff',
+    headerBackground: 'rgba(255, 255, 255, 0.7)',
+    footerBackground: '#15803d',
+    surfaceColor: '#f8fafc',
+    footerTextColor: 'rgba(255, 255, 255, 0.6)',
+    footerHighlightColor: '#004a99'
+  };
+
+  if (docSnap.exists()) {
+    return { ...defaultTheme, ...docSnap.data() } as BlogTheme;
+  }
+  return defaultTheme;
+};
+
+export const updateTheme = async (theme: Partial<BlogTheme>) => {
+  await setDoc(doc(db, 'settings', 'theme'), theme, { merge: true });
 };
 
 // Articles

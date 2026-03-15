@@ -17,7 +17,8 @@ import {
   Trash2,
   X,
   Shield,
-  Users
+  Users,
+  Palette
 } from 'lucide-react';
 import { auth } from '@/lib/firebase';
 import { signOut } from 'firebase/auth';
@@ -35,6 +36,7 @@ import {
   UserRole
 } from '@/lib/db';
 import { useAuth } from '@/lib/auth-context';
+import ThemeCustomizer from '@/components/admin/ThemeCustomizer';
 
 const SUPER_ADMIN_EMAIL = process.env.NEXT_PUBLIC_SUPER_ADMIN_EMAIL;
 
@@ -207,6 +209,7 @@ const AdminDashboard = () => {
 
   const tabs = [
     { id: 'settings', label: 'Configurações', icon: Settings, roles: ['admin'] },
+    { id: 'appearance', label: 'Aparência', icon: Palette, roles: ['admin'] },
     { id: 'articles', label: 'Artigos', icon: FileText, roles: ['admin', 'editor'] },
     { id: 'team', label: 'Equipe', icon: Globe, roles: ['admin'] },
   ];
@@ -286,6 +289,12 @@ const AdminDashboard = () => {
                     </button>
                   </div>
                 </div>
+              </div>
+            )}
+
+            {activeTab === 'appearance' && role === 'admin' && (
+              <div className="glass-panel p-10 bg-white shadow-sm border-primary/5">
+                <ThemeCustomizer />
               </div>
             )}
 
