@@ -29,10 +29,16 @@ const PollHighlight = () => {
   }, []);
 
   const scrollToPoll = () => {
-    const element = document.getElementById('active-poll-section');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
+    // 1. Dispatch event to expand the floating widget
+    window.dispatchEvent(new CustomEvent('open-poll'));
+
+    // 2. Wait for expansion and then scroll
+    setTimeout(() => {
+      const element = document.getElementById('active-poll-section');
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 100);
   };
 
   if (!poll) return null;
@@ -64,50 +70,48 @@ const PollHighlight = () => {
           />
         </div>
 
-        {/* Status Dot */}
-        <div className="flex items-center gap-3 pr-4 border-r border-white/5">
-          <div className="relative">
-            <div className="w-2.5 h-2.5 rounded-full bg-highlight" />
-            <div className="absolute inset-0 rounded-full bg-highlight animate-ping opacity-75" />
-          </div>
-          <span className="text-[10px] font-black uppercase tracking-[0.3em] text-highlight/80 whitespace-nowrap">
-            cliquei aqui e participe da nossa enquete
-          </span>
-        </div>
-
-        {/* Content */}
-        <div className="flex flex-col text-left">
-          <h4 className="text-base font-bold text-white tracking-tight leading-none group-hover:text-highlight transition-colors duration-500">
-            {poll.title}
-          </h4>
-          {poll.description && (
-            <p className="text-xs text-white/40 mt-1.5 font-medium line-clamp-1 italic tracking-wide">
-              {poll.description}
-            </p>
-          )}
-        </div>
-
-        {/* Counter Info */}
-        {(poll.showCounter && poll.submissionsCount > 0) && (
-          <div className="sm:ml-4 pl-4 border-l border-white/5 flex items-center gap-2">
-            <div className="flex -space-x-2">
-              {[1, 2, 3].map((i) => (
-                <div key={i} className="w-5 h-5 rounded-full border border-[#020617] bg-white/10 backdrop-blur-sm shadow-sm flex items-center justify-center overflow-hidden">
-                   <div className="w-full h-full bg-gradient-to-br from-white/20 to-transparent" />
-                </div>
-              ))}
+        {/* Status & Action Group */}
+        <div className="flex items-center gap-3 w-full sm:w-auto">
+          {/* Status Dot */}
+          <div className="flex items-center gap-2 pr-3 border-r border-black/5">
+            <div className="relative flex-shrink-0">
+              <div className="w-2 h-2 rounded-full bg-highlight" />
+              <div className="absolute inset-0 rounded-full bg-highlight animate-ping opacity-75" />
             </div>
-            <span className="text-[10px] font-bold text-white/50 whitespace-nowrap">
-              <span className="text-white">+{poll.submissionsCount.toLocaleString()}</span> assinaturas
+            <span className="text-[9px] font-black uppercase tracking-[0.2em] text-highlight whitespace-nowrap hidden lg:block">
+              AO VIVO
             </span>
           </div>
-        )}
 
-        <div className="ml-auto flex items-center gap-2 pl-4">
-          <span className="text-[10px] font-black uppercase tracking-widest text-[#1de9b6] opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all duration-500">
+          {/* Content */}
+          <div className="flex flex-col text-left">
+            <h4 className="text-sm font-bold text-slate-800 tracking-tight leading-tight group-hover:text-highlight transition-colors duration-500">
+              Enquete: {poll.title}
+            </h4>
+            <div className="flex items-center gap-2 mt-0.5">
+              {poll.description && (
+                <p className="text-[10px] text-slate-500 font-medium line-clamp-1 italic tracking-wide">
+                  {poll.description}
+                </p>
+              )}
+              {/* Counter Info */}
+              {(poll.showCounter && poll.submissionsCount > 0) && (
+                <span className="text-[9px] font-black uppercase tracking-[0.1em] text-slate-300 whitespace-nowrap">
+                  • <span className="text-slate-500">{poll.submissionsCount.toLocaleString()}</span> assinaturas
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Action Button */}
+        <div className="ml-auto flex items-center gap-3 pl-3 border-l border-black/5 self-stretch">
+          <span className="text-[10px] font-black uppercase tracking-widest text-[#1de9b6] group-hover:scale-105 transition-transform duration-500">
             Assinar agora
           </span>
-          <ChevronRight className="w-4 h-4 text-white/20 group-hover:text-highlight group-hover:translate-x-1 transition-all duration-500" />
+          <div className="w-7 h-7 rounded-full bg-highlight/5 flex items-center justify-center group-hover:bg-highlight/10 transition-all duration-500">
+            <ChevronRight className="w-3.5 h-3.5 text-highlight group-hover:translate-x-0.5 transition-transform duration-500" />
+          </div>
         </div>
       </button>
     </motion.div>

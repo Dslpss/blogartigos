@@ -155,18 +155,29 @@ const PollManager = () => {
     const poll = polls.find(p => p.id === pollId);
     if (!poll || submissions.length === 0) return;
 
+    // Headers and Rows
     const headers = poll.fields.map(f => f.label).join(';');
     const rows = submissions.map(sub => {
       return poll.fields.map(f => sub.data[f.label] || '').join(';');
     }).join('\n');
 
-    const csvContent = "data:text/csv;charset=utf-8," + encodeURIComponent(headers + '\n' + rows);
+    const csvData = headers + '\n' + rows;
+    
+    // Add UTF-8 BOM (Byte Order Mark) so Excel recognizes special characters (ã, ç, etc)
+    const BOM = '\uFEFF';
+    const blob = new Blob([BOM + csvData], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+
     const link = document.createElement("a");
-    link.setAttribute("href", csvContent);
+    link.hash = '#';
+    link.href = url;
     link.setAttribute("download", `submissoes_${poll.title.replace(/\s+/g, '_')}.csv`);
     document.body.appendChild(link);
     link.click();
+    
+    // Cleanup
     document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   if (loading && polls.length === 0) return <div className="p-10 text-center animate-pulse text-secondary uppercase font-black tracking-widest text-xs">Carregando Enquetes...</div>;

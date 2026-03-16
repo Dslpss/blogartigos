@@ -41,6 +41,15 @@ const ActivePoll = () => {
     return () => unsubscribe();
   }, []);
 
+  useEffect(() => {
+    const handleOpenPoll = () => {
+      setIsExpanded(true);
+    };
+
+    window.addEventListener('open-poll', handleOpenPoll);
+    return () => window.removeEventListener('open-poll', handleOpenPoll);
+  }, []);
+
   const handleSelect = (option: string) => {
     setSelection(option);
     setStep(2);
