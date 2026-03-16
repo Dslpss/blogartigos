@@ -94,17 +94,17 @@ const ActivePoll = () => {
               <div className="p-8 md:p-10 relative z-10 space-y-8">
                 {/* Content Header */}
                 <div className="space-y-4">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/5 border border-black/5 backdrop-blur-3xl">
-                    <div className="w-1 h-1 rounded-full bg-sky-500 animate-pulse" />
-                    <span className="text-[8px] font-black uppercase tracking-[0.3em] text-black/50">Consulta Pública</span>
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/10 backdrop-blur-3xl">
+                    <div className="w-1 h-1 rounded-full bg-primary animate-pulse" />
+                    <span className="text-[8px] font-black uppercase tracking-[0.3em] text-primary">Consulta Pública</span>
                   </div>
 
-                  <h2 className="text-3xl md:text-4xl font-serif leading-tight tracking-tight text-black">
+                  <h2 className="text-3xl md:text-4xl font-serif leading-tight tracking-tight text-primary">
                     {poll.title}
                   </h2>
 
                   {poll.description && (
-                    <p className="text-base font-normal leading-relaxed text-black/60">
+                    <p className="text-base font-normal leading-relaxed text-secondary">
                       {poll.description}
                     </p>
                   )}
@@ -112,7 +112,7 @@ const ActivePoll = () => {
                   {poll.showCounter && (
                     <div className="pt-4 flex items-center gap-4 border-t border-black/5">
                       <div className="flex flex-col">
-                        <span className="text-3xl font-serif text-black">
+                        <span className="text-3xl font-serif text-primary">
                           {poll.submissionsCount.toLocaleString()}
                         </span>
                         <span className="text-[8px] font-black uppercase tracking-[0.3em] mt-1 text-black/20">Assinaturas</span>
@@ -165,8 +165,8 @@ const ActivePoll = () => {
                         className="space-y-5 relative z-10"
                       >
                         <div className="flex items-center justify-between mb-4">
-                          <p className="text-[9px] font-black uppercase tracking-[0.3em] text-black/40">Posição: <span className="text-black">{selection}</span></p>
-                          <button onClick={() => setStep(1)} className="text-[9px] transition-colors uppercase tracking-[0.2em] text-sky-600 font-bold hover:underline">Alterar</button>
+                          <p className="text-[9px] font-black uppercase tracking-[0.3em] text-black/40">Posição: <span className="text-primary">{selection}</span></p>
+                          <button onClick={() => setStep(1)} className="text-[9px] transition-colors uppercase tracking-[0.2em] text-accent font-bold hover:underline">Alterar</button>
                         </div>
 
                         {poll.fields.map((field, index) => (
@@ -175,7 +175,7 @@ const ActivePoll = () => {
                               animate={{ 
                                 y: activeField === field.label || formData[field.label] ? -20 : 0,
                                 scale: activeField === field.label || formData[field.label] ? 0.75 : 1,
-                                color: activeField === field.label ? '#000000' : '#888888'
+                                color: activeField === field.label ? 'var(--color-primary)' : 'var(--color-secondary)'
                               }}
                               className="absolute left-0 top-2 font-black uppercase tracking-[0.3em] text-[9px] pointer-events-none origin-left transition-all"
                             >
@@ -188,7 +188,7 @@ const ActivePoll = () => {
                               onBlur={() => setActiveField(null)}
                               value={formData[field.label] || ''}
                               onChange={(e) => handleInputChange(field.label, e.target.value)}
-                              className="w-full bg-transparent border-b-2 py-2 font-bold text-base text-black outline-none transition-all placeholder:opacity-20 border-black/10 focus:border-black"
+                              className="w-full bg-transparent border-b-2 py-2 font-bold text-base text-black outline-none transition-all placeholder:opacity-20 border-black/10 focus:border-primary"
                             />
                           </div>
                         ))}
@@ -198,7 +198,7 @@ const ActivePoll = () => {
                             whileHover={{ y: -2 }}
                             whileTap={{ scale: 0.98 }}
                             disabled={submitting}
-                            className="w-full relative py-4 rounded-2xl flex items-center justify-center bg-black text-white hover:bg-neutral-800 transition-all shadow-lg hover:shadow-black/20"
+                            className="btn-premium w-full relative py-4 rounded-2xl flex items-center justify-center shadow-lg"
                           >
                             <span className="font-black tracking-[0.4em] uppercase text-[10px]">
                               {submitting ? 'VALIDANDO...' : 'Protocolar Voto'}
@@ -224,7 +224,7 @@ const ActivePoll = () => {
                         </div>
                         <button 
                           onClick={() => { setStep(1); setSubmitted(false); setFormData({}); }}
-                          className="text-[9px] font-black uppercase tracking-[0.4em] text-sky-600 hover:text-sky-700 transition-colors mt-6 py-2 px-4 rounded-xl bg-sky-50"
+                          className="text-[9px] font-black uppercase tracking-[0.4em] text-accent hover:text-accent/80 transition-colors mt-6 py-2 px-4 rounded-xl bg-accent/5"
                         >
                           ← Nova entrada
                         </button>
