@@ -55,6 +55,19 @@ service cloud.firestore {
       allow write: if isStaff();
     }
 
+    // Polls & Petitions System
+    match /polls/{pollId} {
+      allow read: if true;
+      // Allow public to update ONLY the submissionsCount for the counter
+      allow update: if request.resource.data.diff(resource.data).affectedKeys().hasOnly(['submissionsCount']) || hasRole('admin');
+      allow create, delete: if hasRole('admin');
+    }
+
+    match /poll_submissions/{submission} {
+      allow create: if true;
+      allow read, update, delete: if hasRole('admin');
+    }
+
     // Default deny
     match /{document=**} {
       allow read, write: if false;

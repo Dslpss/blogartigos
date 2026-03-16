@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { ArrowRight, Sparkles, Zap, Shield, Globe, ArrowUpRight } from 'lucide-react';
 import NewsCard from './NewsCard';
+import PollHighlight from './PollHighlight';
 
 interface Article {
   id: string;
@@ -45,22 +46,24 @@ const HomeClient: React.FC<HomeClientProps> = ({ articles, blogName = "Comunica 
             <Sparkles className="w-48 h-48 text-highlight" />
           </div>
           
-          <div className="max-w-3xl">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="inline-flex items-center gap-3 mb-8 px-4 py-2 rounded-full bg-highlight/10 border border-highlight/20 backdrop-blur-md"
-            >
-              <div className="w-2 h-2 rounded-full bg-highlight animate-ping" />
-              <span className="text-highlight font-black uppercase tracking-[0.4em] text-[10px]">Propósito & Protocolo</span>
-            </motion.div>
-            
-            <h1 className="text-4xl sm:text-6xl lg:text-8xl font-black mb-10 leading-[0.9] tracking-tighter" style={{ color: 'var(--color-text-primary)' }}>
-              {blogName.includes(' ') ? blogName.split(' ')[0] : blogName} <br />
-              <span className="text-accent underline decoration-black underline-offset-8" style={{ textDecorationColor: 'var(--color-primary)' }}>
-                {blogName.includes(' ') ? blogName.split(' ').slice(1).join(' ') : ''}
-              </span>
-            </h1>
+          <div className="flex flex-col lg:flex-row gap-12 items-start justify-between">
+            <div className="max-w-3xl">
+              <PollHighlight />
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="inline-flex items-center gap-3 mb-8 mt-8 px-4 py-2 rounded-full bg-highlight/10 border border-highlight/20 backdrop-blur-md"
+              >
+                <div className="w-2 h-2 rounded-full bg-highlight animate-ping" />
+                <span className="text-highlight font-black uppercase tracking-[0.4em] text-[10px]">Propósito & Protocolo</span>
+              </motion.div>
+              
+              <h1 className="text-4xl sm:text-6xl lg:text-8xl font-black mb-10 leading-[0.9] tracking-tighter" style={{ color: 'var(--color-text-primary)' }}>
+                {blogName.includes(' ') ? blogName.split(' ')[0] : blogName} <br />
+                <span className="text-accent underline decoration-black underline-offset-8" style={{ textDecorationColor: 'var(--color-primary)' }}>
+                  {blogName.includes(' ') ? blogName.split(' ').slice(1).join(' ') : ''}
+                </span>
+              </h1>
             
             <p className="text-xl mb-12 max-w-xl leading-relaxed opacity-70" style={{ color: 'var(--color-text-primary)' }}>
               Exploramos o cruzamento entre tecnologia de ponta, economia digital e o futuro da sociedade brasileira através de análises rigorosas.
@@ -89,7 +92,8 @@ const HomeClient: React.FC<HomeClientProps> = ({ articles, blogName = "Comunica 
               </Link>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
         {/* Bento Grid Featured Content */}
         <section className="mb-32">
@@ -206,6 +210,7 @@ const HomeClient: React.FC<HomeClientProps> = ({ articles, blogName = "Comunica 
             ))}
           </div>
         </section>
+
 
       </div>
     </div>

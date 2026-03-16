@@ -210,3 +210,92 @@ export const addTeamMember = async (email: string, role: 'admin' | 'editor', uid
 export const removeTeamMember = async (uid: string) => {
   await deleteDoc(doc(db, 'user_roles', uid));
 };
+
+// --- Polls & Petitions System ---
+
+export interface PollField {
+  label: string;
+  type: 'text' | 'email' | 'tel' | 'city';
+  required: boolean;
+}
+
+export interface Poll {
+  id?: string;
+  title: string;
+  description?: string;
+  fields: PollField[];
+  isActive: boolean;
+  showCounter: boolean;
+  submissionsCount: number;
+  cardColor?: string;
+  fontColor?: string;
+  createdAt: Timestamp;
+}
+
+export interface PollSubmission {
+  id?: string;
+  pollId: string;
+  selection?: string; // Add this field
+  data: Record<string, string>;
+  submittedAt: Timestamp;
+}
+
+export const getPolls = async (): Promise<Poll[]> => {
+  const q = query(collection(db, 'polls'), orderBy('createdAt', 'desc'));
+  const querySnapshot = await getDocs(q);
+  return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Poll));
+};
+
+export const getActivePoll = async (): Promise<Poll | null> => {
+  const q = query(collection(db, 'polls'), where('isActive', '==', true), limit(1));
+  const querySnapshot = await getDocs(q);
+  if (!querySnapshot.empty) {
+    const docData = querySnapshot.docs[0];
+    return { id: docData.id, ...docData.data() } as Poll;
+  }
+  return null;
+};
+
+export const addPoll = async (poll: Omit<Poll, 'id' | 'createdAt' | 'submissionsCount'>) => {
+  await addDoc(collection(db, 'polls'), {
+    ...poll,
+    submissionsCount: 0,
+    createdAt: Timestamp.now()
+  });
+};
+
+export const updatePoll = async (id: string, poll: Partial<Poll>) => {
+  await updateDoc(doc(db, 'polls', id), poll);
+};
+
+export const deletePoll = async (id: string) => {
+  await deleteDoc(doc(db, 'polls', id));
+};
+
+export const submitPollResponse = async (pollId: string, data: Record<string, string>, selection?: string) => {
+  // 1. Add the submission
+  await addDoc(collection(db, 'poll_submissions'), {
+    pollId,
+    selection,
+    data,
+    submittedAt: Timestamp.now()
+  });
+
+  // 2. Increment the counter in the poll document
+  const pollRef = doc(db, 'polls', pollId);
+  const pollSnap = await getDoc(pollRef);
+  if (pollSnap.exists()) {
+    const currentCount = pollSnap.data().submissionsCount || 0;
+    await updateDoc(pollRef, { submissionsCount: currentCount + 1 });
+  }
+};
+
+export const getPollSubmissions = async (pollId: string): Promise<PollSubmission[]> => {
+  const q = query(
+    collection(db, 'poll_submissions'), 
+    where('pollId', '==', pollId),
+    orderBy('submittedAt', 'desc')
+  );
+  const querySnapshot = await getDocs(q);
+  return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as PollSubmission));
+};

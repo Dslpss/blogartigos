@@ -37,6 +37,7 @@ import {
 } from '@/lib/db';
 import { useAuth } from '@/lib/auth-context';
 import ThemeCustomizer from '@/components/admin/ThemeCustomizer';
+import PollManager from '@/components/admin/PollManager';
 
 const SUPER_ADMIN_EMAIL = process.env.NEXT_PUBLIC_SUPER_ADMIN_EMAIL;
 
@@ -210,6 +211,7 @@ const AdminDashboard = () => {
   const tabs = [
     { id: 'settings', label: 'Configurações', icon: Settings, roles: ['admin'] },
     { id: 'appearance', label: 'Aparência', icon: Palette, roles: ['admin'] },
+    { id: 'polls', label: 'Enquetes', icon: BarChart3, roles: ['admin'] },
     { id: 'articles', label: 'Artigos', icon: FileText, roles: ['admin', 'editor'] },
     { id: 'team', label: 'Equipe', icon: Globe, roles: ['admin'] },
   ];
@@ -295,6 +297,12 @@ const AdminDashboard = () => {
             {activeTab === 'appearance' && role === 'admin' && (
               <div className="glass-panel p-10 bg-white shadow-sm border-primary/5">
                 <ThemeCustomizer />
+              </div>
+            )}
+
+            {activeTab === 'polls' && role === 'admin' && (
+              <div className="glass-panel p-10 bg-white shadow-sm border-primary/5">
+                <PollManager />
               </div>
             )}
 
