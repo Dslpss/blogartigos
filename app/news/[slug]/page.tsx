@@ -43,11 +43,11 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
           <div className="h-[1px] w-12 bg-accent/30" />
         </div>
         
-        <h1 className="text-5xl md:text-8xl font-black leading-[0.85] uppercase tracking-tighter mb-12 italic text-primary">
+        <h1 className="text-5xl md:text-8xl font-black leading-[0.85] uppercase tracking-tighter mb-12 italic" style={{ color: 'var(--color-text-primary)' }}>
           {article.title}
         </h1>
         
-        <div className="flex flex-col md:flex-row md:items-center justify-between border-y border-primary/5 py-8 text-primary gap-6">
+        <div className="flex flex-col md:flex-row md:items-center justify-between border-y border-primary/5 py-8 gap-6" style={{ color: 'var(--color-text-primary)' }}>
           <div className="flex items-center gap-6">
             <div className="w-14 h-14 rounded-full bg-accent/10 border border-accent/20 flex items-center justify-center font-mono text-sm font-black text-accent">
               {article.author?.substring(0, 2).toUpperCase() || 'CB'}
@@ -87,13 +87,17 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
       )}
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
-        <div className="lg:col-span-8 prose prose-2xl prose-primary prose-invert-none max-w-none font-serif text-primary leading-relaxed space-y-12">
+        <div className="lg:col-span-8 prose prose-2xl prose-invert-none max-w-none font-serif leading-relaxed space-y-12" style={{ 
+          color: 'var(--color-text-primary)',
+          '--tw-prose-body': 'var(--color-text-primary)',
+          '--tw-prose-headings': 'var(--color-text-primary)'
+        } as any}>
           {article.excerpt && (
             <p className="text-3xl md:text-4xl font-sans font-black leading-tight italic border-l-8 border-accent pl-10 mb-16">
               {article.excerpt}
             </p>
           )}
-          <div className="opacity-70 whitespace-pre-wrap">
+          <div className="whitespace-pre-wrap leading-relaxed">
             {article.content}
           </div>
         </div>

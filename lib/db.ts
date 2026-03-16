@@ -89,7 +89,7 @@ export const getTheme = async (): Promise<BlogTheme> => {
   const defaultTheme: BlogTheme = {
     primaryColor: '#15803d',
     accentColor: '#004a99',
-    fontColor: '#15803d',
+    fontColor: '#000000',
     secondaryFontColor: '#475569',
     backgroundColor: '#ffffff',
     headerBackground: '#ffffff',

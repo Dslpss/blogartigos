@@ -68,14 +68,21 @@ const NewsDetailPage = ({ article }: { article: ArticleData }) => {
            initial={{ opacity: 0 }}
            animate={{ opacity: 1 }}
            transition={{ delay: 0.2 }}
-           className="prose prose-xl max-w-none prose-slate 
-             prose-headings:font-black prose-headings:tracking-tighter prose-headings:uppercase prose-headings:text-primary
-             prose-p:text-slate-800 prose-p:leading-[1.8] prose-p:text-lg md:prose-p:text-xl
-             prose-strong:text-primary prose-strong:font-black
+           className="prose prose-xl max-w-none 
+             prose-headings:font-black prose-headings:tracking-tighter prose-headings:uppercase
+             prose-p:leading-[1.8] prose-p:text-lg md:prose-p:text-xl
+             prose-strong:font-black
              prose-a:text-accent prose-a:no-underline hover:prose-a:underline
              prose-img:rounded-3xl prose-img:shadow-2xl
              selection:bg-accent/10 selection:text-accent
              mb-20"
+           style={{ 
+             color: 'var(--color-text-primary)',
+             '--tw-prose-body': 'var(--color-text-primary)',
+             '--tw-prose-headings': 'var(--color-text-primary)',
+             '--tw-prose-bold': 'var(--color-text-primary)',
+             '--tw-prose-links': 'var(--color-accent)'
+           } as any}
         >
           <div dangerouslySetInnerHTML={{ __html: article.content }} />
         </motion.div>

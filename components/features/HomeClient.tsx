@@ -155,7 +155,7 @@ const HomeClient: React.FC<HomeClientProps> = ({ articles, blogName = "Comunica 
                 )}
                 <div className="relative z-10">
                    <span className="text-[10px] font-black uppercase text-accent/60 tracking-widest block mb-4 italic">{article.category}</span>
-                   <h3 className="text-2xl font-black text-primary leading-tight group-hover:text-accent transition-colors">
+                   <h3 className="text-2xl font-black leading-tight group-hover:text-accent transition-colors" style={{ color: 'var(--color-text-primary)' }}>
                     {article.title}
                   </h3>
                 </div>
@@ -170,13 +170,13 @@ const HomeClient: React.FC<HomeClientProps> = ({ articles, blogName = "Comunica 
 
             {/* Small Statistics/Visual Bento Items */}
             <div className="col-span-1 bento-item bg-highlight-subtle p-6 flex flex-col items-center justify-center text-center border-highlight/10">
-              <Zap className="w-10 h-10 text-primary mb-4 animate-pulse" />
-              <div className="text-3xl font-black text-primary">2.4k+</div>
-              <div className="text-[10px] font-bold text-primary/60 uppercase tracking-widest mt-1">Pontos de Dados</div>
+              <Zap className="w-10 h-10 mb-4 animate-pulse" style={{ color: 'var(--color-primary)' }} />
+              <div className="text-3xl font-black" style={{ color: 'var(--color-text-primary)' }}>2.4k+</div>
+              <div className="text-[10px] font-bold uppercase tracking-widest mt-1 opacity-60" style={{ color: 'var(--color-text-primary)' }}>Pontos de Dados</div>
             </div>
 
             <div className="col-span-1 bento-item group p-8 flex flex-col justify-center bg-white border-dashed border-2 border-border hover:border-highlight/30 hover:bg-highlight-subtle">
-              <h4 className="text-sm font-black uppercase text-primary mb-4">Seja um Editor</h4>
+              <h4 className="text-sm font-black uppercase mb-4" style={{ color: 'var(--color-text-primary)' }}>Seja um Editor</h4>
               <p className="text-xs text-secondary mb-4 italic font-medium">Contribua com suas análises técnicas para nossa rede.</p>
               <ArrowUpRight className="w-6 h-6 text-highlight group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
             </div>
@@ -196,7 +196,7 @@ const HomeClient: React.FC<HomeClientProps> = ({ articles, blogName = "Comunica 
                 <div className="relative z-10 w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center text-accent">
                    {article.category === 'TECNOLOGIA' ? <Globe className="w-4 h-4" /> : <Shield className="w-4 h-4" />}
                 </div>
-                <h3 className="relative z-10 text-base font-bold text-primary leading-tight group-hover:text-accent transition-colors">
+                <h3 className="relative z-10 text-base font-bold leading-tight group-hover:text-accent transition-colors" style={{ color: 'var(--color-text-primary)' }}>
                   {article.title}
                 </h3>
                 <Link href={`/news/${article.slug || article.id}`} className="relative z-10 text-[9px] font-black uppercase tracking-widest text-highlight mt-auto hover:underline">

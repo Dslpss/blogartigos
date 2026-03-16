@@ -28,7 +28,7 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
         <span className="text-accent font-bold uppercase tracking-[0.4em] text-[10px] mb-6 block">
           {article.category || 'Artigo de Opinião'}
         </span>
-        <h1 className="text-5xl md:text-7xl font-bold leading-[0.9] uppercase mb-12 italic">
+        <h1 className="text-5xl md:text-7xl font-bold leading-[0.9] uppercase mb-12 italic" style={{ color: 'var(--color-text-primary)' }}>
           {article.title}
         </h1>
         
@@ -48,7 +48,11 @@ export default async function ArticleDetailPage({ params }: { params: Promise<{ 
         </div>
       </header>
 
-      <div className="prose prose-invert prose-stone max-w-none font-serif text-xl leading-loose">
+      <div className="prose prose-stone max-w-none font-serif text-xl leading-loose" style={{ 
+        color: 'var(--color-text-primary)',
+        '--tw-prose-body': 'var(--color-text-primary)',
+        '--tw-prose-headings': 'var(--color-text-primary)'
+      } as any}>
         <div className="whitespace-pre-wrap">
           {article.content}
         </div>

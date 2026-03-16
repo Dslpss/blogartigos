@@ -63,7 +63,7 @@ const NewsCard: React.FC<NewsCardProps> = ({ id, title, excerpt, category, date,
           {title}
         </h3>
 
-        <p className="text-sm mb-6 line-clamp-3 font-medium leading-relaxed opacity-80" style={{ color: 'var(--color-text-secondary)' }}>
+        <p className="text-sm mb-6 line-clamp-3 font-medium leading-relaxed" style={{ color: 'var(--color-text-secondary)' }}>
           {excerpt}
         </p>
 

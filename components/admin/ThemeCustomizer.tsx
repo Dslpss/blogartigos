@@ -8,7 +8,7 @@ import { useBlogTheme } from '@/components/providers/ThemeProvider';
 const DEFAULT_THEME: BlogTheme = {
   primaryColor: '#15803d',
   accentColor: '#004a99',
-  fontColor: '#15803d',
+  fontColor: '#000000',
   secondaryFontColor: '#475569',
   backgroundColor: '#ffffff',
   headerBackground: '#ffffff',
@@ -58,7 +58,7 @@ const ThemeCustomizer = () => {
       root.style.setProperty('--color-footer-text', theme.footerTextColor || '#ffffff');
       root.style.setProperty('--color-footer-highlight', theme.footerHighlightColor || '#00ccff');
       root.style.setProperty('--color-card-bg', theme.cardBackground || '#ffffff');
-      root.style.setProperty('--color-text-primary', theme.fontColor || '#15803d');
+      root.style.setProperty('--color-text-primary', theme.fontColor || '#000000');
       root.style.setProperty('--color-text-secondary', theme.secondaryFontColor || '#475569');
       
       // Effects
@@ -157,8 +157,8 @@ const ThemeCustomizer = () => {
                 onChange={e => setTheme({ ...theme, headingFont: e.target.value as any })}
                 className="w-full bg-white border border-border rounded-lg p-2 text-xs text-primary"
               >
-                <option value="sans">Moderno (Sans-serif)</option>
-                <option value="serif">Elegante (Serifada)</option>
+                <option value="sans">Premium Sans (Jakarta)</option>
+                <option value="serif">Elegante (Playfair)</option>
               </select>
             </div>
             <div>

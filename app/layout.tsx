@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Inter } from "next/font/google";
+import { Playfair_Display, Inter, Plus_Jakarta_Sans } from "next/font/google";
 import Navbar from "@/components/features/Navbar";
 import Footer from "@/components/features/Footer";
 import "./globals.css";
@@ -12,6 +12,11 @@ const playfair = Playfair_Display({
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
+});
+
+const jakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: "--font-jakarta",
 });
 
 export const metadata: Metadata = {
@@ -32,7 +37,7 @@ export default async function RootLayout({
 
   return (
     <html lang="pt-BR">
-      <body className={`${inter.variable} ${playfair.variable} antialiased font-sans bg-background text-foreground`}>
+      <body className={`${inter.variable} ${playfair.variable} ${jakarta.variable} antialiased font-sans bg-background text-foreground`}>
         <ThemeProvider>
           <AuthProvider>
             <Navbar blogName={settings.name} logoUrl={settings.logoUrl} />

@@ -39,12 +39,12 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     root.style.setProperty('--color-header-bg', t.headerBackground || '#ffffff');
     root.style.setProperty('--color-footer-bg', t.footerBackground || '#15803d');
     root.style.setProperty('--color-card-bg', t.cardBackground || '#ffffff');
-    root.style.setProperty('--color-text-primary', t.fontColor || '#15803d');
+    root.style.setProperty('--color-text-primary', t.fontColor || '#000000');
     root.style.setProperty('--color-text-secondary', t.secondaryFontColor || '#475569');
     
     // Typography
     const fonts = {
-      sans: "'Inter', ui-sans-serif, system-ui, sans-serif",
+      sans: "var(--font-jakarta), 'Inter', ui-sans-serif, system-ui, sans-serif",
       serif: "'Playfair Display', ui-serif, Georgia, serif"
     };
     root.style.setProperty('--font-heading', fonts[t.headingFont || 'sans']);

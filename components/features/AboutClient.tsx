@@ -84,7 +84,11 @@ const AboutClient = () => {
 
         {/* Content Section */}
         <section className="max-w-4xl mx-auto mb-40">
-          <div className="prose prose-lg prose-slate max-w-none">
+          <div className="prose prose-lg max-w-none" style={{ 
+            color: 'var(--color-text-primary)',
+            '--tw-prose-body': 'var(--color-text-primary)',
+            '--tw-prose-headings': 'var(--color-text-primary)'
+          } as any}>
             <h2 className="text-4xl font-black text-primary uppercase tracking-tighter mb-8">Por que o Comunica Brasil?</h2>
             <p className="text-secondary/80 leading-relaxed mb-6">
               Em um cenário digital fragmentado, a precisão torna-se a moeda mais valiosa. Nós não competimos pela atenção efêmera; competimos pela construção de um repertório sólido para nossos leitores.
