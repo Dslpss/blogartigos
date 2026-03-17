@@ -21,6 +21,8 @@ const AdminLoginPage = () => {
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
+      // Set session cookie for middleware
+      document.cookie = "firebase-token=true; path=/; max-age=3600; SameSite=Lax";
       router.push('/admin/dashboard');
     } catch (err: any) {
       setError('Credenciais inválidas ou erro de conexão.');
@@ -33,6 +35,8 @@ const AdminLoginPage = () => {
     setError('');
     try {
       await signInWithPopup(auth, googleProvider);
+      // Set session cookie for middleware
+      document.cookie = "firebase-token=true; path=/; max-age=3600; SameSite=Lax";
       router.push('/admin/dashboard');
     } catch (err: any) {
       setError('Erro ao autenticar com Google.');

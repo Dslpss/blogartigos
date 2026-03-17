@@ -16,6 +16,7 @@ import {  Instagram,
 } from 'lucide-react';
 import { CustomAlert } from '@/components/ui/Alert';
 import SearchModal from './SearchModal';
+import { useAuth } from '@/lib/auth-context';
 
 interface NavbarProps {
   blogName?: string;
@@ -24,10 +25,12 @@ interface NavbarProps {
 }
 
 const Navbar = ({ blogName, logoUrl, newsletterUrl }: NavbarProps) => {
+  const { isAdmin, isEditor, loading } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   const displayBlogName = blogName || "ComunicaBrasil";
   const nameParts = displayBlogName.match(/[A-Z][a-z]+/g) || [displayBlogName];
@@ -36,6 +39,7 @@ const Navbar = ({ blogName, logoUrl, newsletterUrl }: NavbarProps) => {
   const initials = displayBlogName.split(' ').map(word => word[0]).join('').toUpperCase().slice(0, 2);
 
   useEffect(() => {
+    setMounted(true);
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
@@ -64,10 +68,9 @@ const Navbar = ({ blogName, logoUrl, newsletterUrl }: NavbarProps) => {
   };
 
   const menuItems = [
-    { name: 'Início', href: '/' },
-    { name: 'Artigos', href: '/articles' },
-    { name: 'Sobre', href: '/about' },
-    { name: 'Contato', href: '/contact' },
+    { name: 'Home', href: '/' },
+    { name: 'Artigos', href: '/news' },
+    { name: 'Sobre Nós', href: '/about' },
   ];
 
   return (
@@ -98,14 +101,16 @@ const Navbar = ({ blogName, logoUrl, newsletterUrl }: NavbarProps) => {
             )}
           </Link>
 
-          {/* Hidden Admin Link (Separate from Logo Link to fix Hydration Error) */}
-          <Link 
-            href="/admin/dashboard" 
-            className="absolute -top-2 -right-6 opacity-0 group-hover:opacity-10 hover:opacity-100 transition-opacity p-2"
-            title="Acesso Administrativo"
-          >
-             <Shield className="w-3 h-3 text-primary" />
-          </Link>
+          {/* Admin Access Point - Only for staff. Code is physically absent for guest DOM. */}
+          {mounted && !loading && (isAdmin || isEditor) ? (
+            <Link 
+              href="/admin/dashboard" 
+              className="absolute -top-2 -right-6 opacity-0 group-hover:opacity-10 hover:opacity-100 transition-opacity p-2"
+              title="Acesso Administrativo"
+            >
+               <Shield className="w-3 h-3 text-primary" />
+            </Link>
+          ) : null}
         </div>
 
         {/* Desktop Menu */}

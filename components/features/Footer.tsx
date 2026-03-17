@@ -90,10 +90,9 @@ const Footer: React.FC<FooterProps> = ({ blogName = 'Comunica Brasil' }) => {
             <h4 className="text-2xl font-black tracking-tighter uppercase mb-8">Navegação</h4>
             <ul className="flex flex-col gap-4">
               {[
-                { name: 'Dashboard Home', href: '/' },
-                { name: 'Arquivo de Artigos', href: '/news' },
-                { name: 'Manifesto Institucional', href: '/about' },
-                { name: 'Laboratório (Beta)', href: '#' },
+                { name: 'Início', href: '/' },
+                { name: 'Arquivo', href: '/news' },
+                { name: 'Sobre', href: '/about' },
               ].map((link) => (
                 <li key={link.name}>
                   <Link 
