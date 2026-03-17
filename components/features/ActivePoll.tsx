@@ -143,23 +143,24 @@ const ActivePoll = () => {
                         className="space-y-4 relative z-10"
                       >
                         <p className="text-[9px] font-black uppercase tracking-[0.4em] text-center mb-6 text-black/30">Escolha sua Posição</p>
-                        <div className="grid grid-cols-1 gap-3">
-                          <motion.button
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
-                            onClick={() => handleSelect('A Favor')}
-                            className="w-full py-5 rounded-2xl border border-black/10 bg-white hover:bg-emerald-500 text-black hover:text-white font-black uppercase tracking-[0.3em] text-[11px] transition-all shadow-sm hover:shadow-emerald-500/10"
-                          >
-                            Sou a Favor
-                          </motion.button>
-                          <motion.button
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
-                            onClick={() => handleSelect('Contra')}
-                            className="w-full py-5 rounded-2xl border border-black/10 bg-white hover:bg-red-500 text-black hover:text-white font-black uppercase tracking-[0.3em] text-[11px] transition-all shadow-sm"
-                          >
-                            Sou Contra
-                          </motion.button>
+                        <div className={`grid ${poll.options && poll.options.length === 2 ? 'grid-cols-2' : 'grid-cols-1'} gap-3`}>
+                          {(poll.options || ['A Favor', 'Contra']).map((option, index) => (
+                            <motion.button
+                              key={option}
+                              whileHover={{ scale: 1.02 }}
+                              whileTap={{ scale: 0.98 }}
+                              onClick={() => handleSelect(option)}
+                              className={`w-full py-5 px-4 rounded-2xl border border-black/10 bg-white transition-all shadow-sm font-black uppercase tracking-[0.2em] text-[10px] flex items-center justify-center text-center
+                                ${index === 0 
+                                  ? 'hover:bg-emerald-500 hover:text-white hover:shadow-emerald-500/10' 
+                                  : index === 1 
+                                    ? 'hover:bg-red-500 hover:text-white hover:shadow-red-500/10'
+                                    : 'hover:bg-primary hover:text-white hover:shadow-primary/10'
+                                } text-black`}
+                            >
+                              {option}
+                            </motion.button>
+                          ))}
                         </div>
                       </motion.div>
                     )}

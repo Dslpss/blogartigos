@@ -227,6 +227,7 @@ export interface Poll {
   isActive: boolean;
   showCounter: boolean;
   submissionsCount: number;
+  options: string[];
   cardColor?: string;
   fontColor?: string;
   createdAt: Timestamp;
@@ -269,7 +270,14 @@ export const updatePoll = async (id: string, poll: Partial<Poll>) => {
 };
 
 export const deletePoll = async (id: string) => {
+  // 1. Delete the poll document
   await deleteDoc(doc(db, 'polls', id));
+
+  // 2. Delete all submissions for this poll
+  const q = query(collection(db, 'poll_submissions'), where('pollId', '==', id));
+  const snapshot = await getDocs(q);
+  const deletePromises = snapshot.docs.map(d => deleteDoc(d.ref));
+  await Promise.all(deletePromises);
 };
 
 export const submitPollResponse = async (pollId: string, data: Record<string, string>, selection?: string) => {

@@ -37,7 +37,7 @@ export default async function RootLayout({
   const settings = await getBlogSettings();
 
   return (
-    <html lang="pt-BR">
+    <html lang="pt-BR" suppressHydrationWarning>
       <body className={`${inter.variable} ${playfair.variable} ${jakarta.variable} antialiased font-sans bg-background text-foreground`}>
         <ThemeProvider>
           <AuthProvider>

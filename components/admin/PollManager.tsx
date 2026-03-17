@@ -43,7 +43,8 @@ const PollManager = () => {
     isActive: false,
     showCounter: true,
     cardColor: '#080808',
-    fontColor: '#ffffff'
+    fontColor: '#ffffff',
+    options: ['A Favor', 'Contra']
   });
 
   useEffect(() => {
@@ -110,15 +111,25 @@ const PollManager = () => {
       isActive: poll.isActive,
       showCounter: poll.showCounter,
       cardColor: poll.cardColor || '#080808',
-      fontColor: poll.fontColor || '#ffffff'
+      fontColor: poll.fontColor || '#ffffff',
+      options: poll.options || ['A Favor', 'Contra']
     });
     setIsAdding(true);
   };
 
   const handleDelete = async (id: string, title: string) => {
-    if (window.confirm(`Excluir enquete "${title}"?`)) {
-      await deletePoll(id);
-      fetchPolls();
+    if (window.confirm(`Excluir enquete "${title}" e todas as suas assinaturas?`)) {
+      setLoading(true);
+      try {
+        await deletePoll(id);
+        alert('Enquete e assinaturas excluídas com sucesso!');
+        fetchPolls();
+      } catch (err) {
+        console.error('Error deleting poll:', err);
+        alert('Erro ao excluir enquete. Verifique as permissões.');
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -136,6 +147,27 @@ const PollManager = () => {
     } catch (err) {
       alert('Erro ao alterar status.');
     }
+  };
+
+  const handleAddOption = () => {
+    if (formData.options.length >= 6) return;
+    setFormData({
+      ...formData,
+      options: [...formData.options, `Opção ${formData.options.length + 1}`]
+    });
+  };
+
+  const handleRemoveOption = (index: number) => {
+    if (formData.options.length <= 2) return;
+    const newOptions = [...formData.options];
+    newOptions.splice(index, 1);
+    setFormData({ ...formData, options: newOptions });
+  };
+
+  const handleOptionChange = (index: number, value: string) => {
+    const newOptions = [...formData.options];
+    newOptions[index] = value;
+    setFormData({ ...formData, options: newOptions });
   };
 
   const handleViewSubmissions = async (pollId: string) => {
@@ -156,9 +188,10 @@ const PollManager = () => {
     if (!poll || submissions.length === 0) return;
 
     // Headers and Rows
-    const headers = poll.fields.map(f => f.label).join(';');
+    const headers = ['Posição', ...poll.fields.map(f => f.label)].join(';');
     const rows = submissions.map(sub => {
-      return poll.fields.map(f => sub.data[f.label] || '').join(';');
+      const fieldValues = poll.fields.map(f => sub.data[f.label] || '');
+      return [sub.selection || '', ...fieldValues].join(';');
     }).join('\n');
 
     const csvData = headers + '\n' + rows;
@@ -199,7 +232,8 @@ const PollManager = () => {
               isActive: false,
               showCounter: true,
               cardColor: '#080808',
-              fontColor: '#ffffff'
+              fontColor: '#ffffff',
+              options: ['A Favor', 'Contra']
             });
             setIsAdding(true);
           }} 
@@ -318,6 +352,47 @@ const PollManager = () => {
                     </div>
                   </div>
                 </div>
+              </div>
+
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-secondary ml-4">Opções de Voto (O que o usuário escolhe)</label>
+                  <button 
+                    type="button" 
+                    onClick={handleAddOption}
+                    disabled={formData.options.length >= 6}
+                    className="flex items-center gap-2 text-[9px] font-black uppercase tracking-widest text-accent hover:underline disabled:opacity-30 disabled:no-underline"
+                  >
+                    <Plus size={14} /> Adicionar Opção
+                  </button>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {formData.options.map((option, index) => (
+                    <div key={index} className="flex gap-2 items-center p-3 bg-secondary/5 rounded-xl border border-transparent hover:border-accent/10 transition-all">
+                      <div className="w-6 h-6 flex items-center justify-center bg-accent/10 text-accent rounded-lg text-[10px] font-black">
+                        {index + 1}
+                      </div>
+                      <input 
+                        type="text" 
+                        placeholder={`Ex: ${index === 0 ? 'A Favor' : index === 1 ? 'Contra' : 'Outro'}`}
+                        value={option}
+                        onChange={e => handleOptionChange(index, e.target.value)}
+                        className="flex-1 bg-transparent text-xs font-bold outline-none"
+                      />
+                      {formData.options.length > 2 && (
+                        <button 
+                          type="button" 
+                          onClick={() => handleRemoveOption(index)}
+                          className="p-1.5 text-secondary hover:text-red-500 transition-colors"
+                        >
+                          <X size={14} />
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+                <p className="text-[8px] text-secondary/60 uppercase font-bold text-center">Defina de 2 a 6 opções para esta enquete</p>
               </div>
 
               <div className="space-y-4">
