@@ -8,36 +8,33 @@ import type { NextRequest } from 'next/server';
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  let response = NextResponse.next();
 
-  // 1. Only intercept /admin routes
+  // 1. Admin Authentication Logic
   if (pathname.startsWith('/admin')) {
-    // 2. Allow access to the login page itself
-    if (pathname === '/admin/login') {
-      return NextResponse.next();
-    }
-
-    // 3. For other admin pages, check for authentication
-    // Note: In a full production setup with Firebase, you would use 
-    // cookie-based sessions (sessionCookie). 
-    // As a hardening step to prevent 'Public Admin Panel', we check if 
-    // the user is hitting the dashboard directly.
-    
-    // We expect a cookie names '__session' or 'firebase-token' 
-    // based on typical Next.js + Firebase integration patterns.
-    const hasAuthCookie = request.cookies.get('__session') || request.cookies.get('firebase-token');
-
-    // If no cookie is present, redirect to login immediately (Server Side)
-    // This prevents the HTTP 200 issue.
-    if (!hasAuthCookie) {
-      const loginUrl = new URL('/admin/login', request.url);
-      return NextResponse.redirect(loginUrl);
+    if (pathname !== '/admin/login') {
+      const hasAuthCookie = request.cookies.get('__session') || request.cookies.get('firebase-token');
+      if (!hasAuthCookie) {
+        const loginUrl = new URL('/admin/login', request.url);
+        response = NextResponse.redirect(loginUrl);
+      }
     }
   }
 
-  return NextResponse.next();
+  // 2. Inject Security Headers (More reliable than next.config.js in some dev environments)
+  const csp = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' apis.google.com www.gstatic.com; connect-src 'self' *.firebaseio.com *.googleapis.com securetoken.googleapis.com; img-src 'self' data: blob: https:; style-src 'self' 'unsafe-inline' fonts.googleapis.com; font-src 'self' fonts.gstatic.com; frame-src 'self' *.firebaseapp.com; object-src 'none'; base-uri 'self';";
+
+  response.headers.set('Content-Security-Policy', csp);
+  response.headers.set('X-Frame-Options', 'DENY');
+  response.headers.set('X-Content-Type-Options', 'nosniff');
+  response.headers.set('X-XSS-Protection', '1; mode=block');
+  response.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
+  response.headers.set('Referrer-Policy', 'origin-when-cross-origin');
+
+  return response;
 }
 
-// See "Matching Paths" below to learn more
+// Ensure the middleware applies to all routes except static assets
 export const config = {
-  matcher: ['/admin/:path*'],
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
 };
