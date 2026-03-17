@@ -49,10 +49,10 @@ export function middleware(request: NextRequest) {
   response.headers.set('Referrer-Policy', 'origin-when-cross-origin');
 
   // Harden infrastructure headers by overwriting with generic values
-  // This is often more effective than deletion on some PaaS like Railway
-  response.headers.set('X-Powered-By', 'WebServer');
-  response.headers.set('Server', 'WebServer');
-  response.headers.set('X-Railway-Edge', 'Protected');
+  // Masking as common generic signatures to confuse scanners
+  response.headers.set('X-Powered-By', 'PHP/8.2.0'); // Common generic decoy
+  response.headers.set('Server', 'Apache');       // Common generic decoy
+  response.headers.set('X-Railway-Edge', '1');     // Obfuscate region/platform
 
   return response;
 }
