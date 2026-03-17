@@ -23,6 +23,7 @@ import {
   Poll, 
   PollField 
 } from '@/lib/db';
+import ConfirmModal from './ConfirmModal';
 
 const PollManager = () => {
   const [polls, setPolls] = useState<Poll[]>([]);
@@ -45,6 +46,18 @@ const PollManager = () => {
     cardColor: '#080808',
     fontColor: '#ffffff',
     options: ['A Favor', 'Contra']
+  });
+
+  const [confirmConfig, setConfirmConfig] = useState<{
+    isOpen: boolean;
+    title: string;
+    message: string;
+    onConfirm: () => void;
+  }>({
+    isOpen: false,
+    title: '',
+    message: '',
+    onConfirm: () => {}
   });
 
   useEffect(() => {
@@ -117,20 +130,26 @@ const PollManager = () => {
     setIsAdding(true);
   };
 
-  const handleDelete = async (id: string, title: string) => {
-    if (window.confirm(`Excluir enquete "${title}" e todas as suas assinaturas?`)) {
-      setLoading(true);
-      try {
-        await deletePoll(id);
-        alert('Enquete e assinaturas excluídas com sucesso!');
-        fetchPolls();
-      } catch (err) {
-        console.error('Error deleting poll:', err);
-        alert('Erro ao excluir enquete. Verifique as permissões.');
-      } finally {
-        setLoading(false);
+  const handleDelete = (id: string, title: string) => {
+    setConfirmConfig({
+      isOpen: true,
+      title: 'Excluir Enquete?',
+      message: `Tem certeza que deseja excluir "${title}"? Todas as assinaturas associadas serão removidas permanentemente.`,
+      onConfirm: async () => {
+        setConfirmConfig(prev => ({ ...prev, isOpen: false }));
+        setLoading(true);
+        try {
+          await deletePoll(id);
+          alert('Enquete e assinaturas excluídas com sucesso!');
+          fetchPolls();
+        } catch (err) {
+          console.error('Error deleting poll:', err);
+          alert('Erro ao excluir enquete. Verifique as permissões.');
+        } finally {
+          setLoading(false);
+        }
       }
-    }
+    });
   };
 
   const handleToggleActive = async (poll: Poll) => {
@@ -510,6 +529,15 @@ const PollManager = () => {
           </div>
         </div>
       )}
+      {/* Confirmation Modal */}
+      <ConfirmModal
+        isOpen={confirmConfig.isOpen}
+        onClose={() => setConfirmConfig(prev => ({ ...prev, isOpen: false }))}
+        onConfirm={confirmConfig.onConfirm}
+        title={confirmConfig.title}
+        message={confirmConfig.message}
+        loading={loading}
+      />
     </div>
   );
 };
