@@ -8,6 +8,12 @@ import type { NextRequest } from 'next/server';
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  
+  // 0. Block direct directory listing for static assets
+  if (pathname === '/_next/static' || pathname === '/_next/static/') {
+    return new NextResponse(null, { status: 404 });
+  }
+
   let response = NextResponse.next();
 
   // 1. Admin Authentication Logic
@@ -42,10 +48,11 @@ export function middleware(request: NextRequest) {
   response.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
   response.headers.set('Referrer-Policy', 'origin-when-cross-origin');
 
-  // Strip infrastructure headers to prevent disclosure
-  response.headers.delete('X-Powered-By');
-  response.headers.delete('Server');
-  response.headers.delete('X-Railway-Edge');
+  // Harden infrastructure headers by overwriting with generic values
+  // This is often more effective than deletion on some PaaS like Railway
+  response.headers.set('X-Powered-By', 'WebServer');
+  response.headers.set('Server', 'WebServer');
+  response.headers.set('X-Railway-Edge', 'Protected');
 
   return response;
 }
