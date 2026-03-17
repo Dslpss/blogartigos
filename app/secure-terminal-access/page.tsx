@@ -46,6 +46,9 @@ const AdminLoginPage = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4 pt-32">
+      <head>
+        <meta name="robots" content="noindex, nofollow" />
+      </head>
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-accent/10 via-transparent to-transparent pointer-events-none" />
       
       <motion.div
@@ -131,7 +134,7 @@ const AdminLoginPage = () => {
           disabled={loading}
           className="w-full flex items-center justify-center gap-3 py-4 border border-border rounded-xl hover:bg-surface transition-all text-sm font-bold text-primary"
         >
-          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" className="w-5 h-5" />
+          <img src="https://www.google.com/favicon.ico" alt="Google" className="w-5 h-5" />
           Acesso via Google
         </button>
 

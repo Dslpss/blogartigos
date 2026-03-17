@@ -11,13 +11,24 @@ export function middleware(request: NextRequest) {
   let response = NextResponse.next();
 
   // 1. Admin Authentication Logic
+  const SECURE_ADMIN_PATH = '/secure-terminal-access';
+
   if (pathname.startsWith('/admin')) {
-    if (pathname !== '/admin/login') {
-      const hasAuthCookie = request.cookies.get('__session') || request.cookies.get('firebase-token');
-      if (!hasAuthCookie) {
-        const loginUrl = new URL('/admin/login', request.url);
-        response = NextResponse.redirect(loginUrl);
-      }
+    // Obfuscate existing /admin/login path by returning 404
+    if (pathname === '/admin/login') {
+      return new NextResponse(null, { status: 404 });
+    }
+
+    const hasAuthCookie = request.cookies.get('__session') || request.cookies.get('firebase-token');
+    if (!hasAuthCookie) {
+      return new NextResponse(null, { status: 404 });
+    }
+  }
+
+  if (pathname === SECURE_ADMIN_PATH) {
+    const hasAuthCookie = request.cookies.get('__session') || request.cookies.get('firebase-token');
+    if (hasAuthCookie) {
+      return NextResponse.redirect(new URL('/admin/dashboard', request.url));
     }
   }
 
@@ -30,6 +41,11 @@ export function middleware(request: NextRequest) {
   response.headers.set('X-XSS-Protection', '1; mode=block');
   response.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
   response.headers.set('Referrer-Policy', 'origin-when-cross-origin');
+
+  // Strip infrastructure headers to prevent disclosure
+  response.headers.delete('X-Powered-By');
+  response.headers.delete('Server');
+  response.headers.delete('X-Railway-Edge');
 
   return response;
 }
