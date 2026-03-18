@@ -23,16 +23,19 @@ interface NewsCardProps {
 const NewsCard: React.FC<NewsCardProps> = ({ id, title, excerpt, category, date, slug, imageUrl, image, author, content, readingTime }) => {
   const finalImage = imageUrl || image;
   const finalReadingTime = readingTime || (content ? calculateReadingTime(content) : 3);
+  // lightweight 3D card with lift+tilt on hover
+  const MotionLink = motion(Link);
+
   return (
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
+      whileHover={{ y: -8, scale: 1.02, rotate: -0.8, boxShadow: '0 20px 40px rgba(2,6,23,0.08)' }}
+      whileTap={{ scale: 0.99 }}
+      transition={{ type: 'spring', stiffness: 300, damping: 24 }}
       viewport={{ once: true }}
-      className="group rounded-2xl border border-border/50 overflow-hidden hover:border-accent/30 transition-all duration-500 hover:shadow-2xl hover:shadow-accent/5 flex flex-col h-full bg-white"
-      style={{ 
-        backgroundColor: 'var(--color-card-bg, #ffffff)',
-        borderRadius: 'var(--radius-xl, 1.5rem)'
-      }}
+      className="group rounded-2xl border border-border/50 overflow-hidden transition-all duration-500 flex flex-col h-full bg-white will-change-transform"
+      style={{ perspective: 1000, backgroundColor: 'var(--color-card-bg, #ffffff)', borderRadius: 'var(--radius-xl, 1.5rem)' }}
     >
       {finalImage && (
         <div 
@@ -69,12 +72,14 @@ const NewsCard: React.FC<NewsCardProps> = ({ id, title, excerpt, category, date,
 
         <div className="mt-auto pt-6 border-t border-border flex items-center justify-between">
           <div className="flex flex-col gap-1">
-            <Link 
+            <MotionLink
               href={`/news/${slug || id}`}
+              whileHover={{ scale: 1.03, boxShadow: '0 8px 30px rgba(16,185,129,0.08)' }}
+              whileTap={{ scale: 0.98 }}
               className="text-xs font-black uppercase tracking-widest text-primary hover:text-highlight flex items-center gap-2 group/btn"
             >
               Ver Análise <ArrowUpRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1" />
-            </Link>
+            </MotionLink>
             {author && (
               <div className="flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest opacity-30">
                 <User className="w-2.5 h-2.5 text-accent" />

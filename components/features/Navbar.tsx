@@ -71,6 +71,7 @@ const Navbar = ({ blogName, logoUrl, newsletterUrl }: NavbarProps) => {
     { name: 'Home', href: '/' },
     { name: 'Artigos', href: '/news' },
     { name: 'Sobre Nós', href: '/about' },
+    { name: 'Contato', href: '/contact' },
   ];
 
   return (

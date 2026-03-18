@@ -13,8 +13,10 @@ interface Article {
 }
 
 interface NewsClientProps {
-  articles: Article[];
+  articles?: Article[];
 }
+
+import NewsCardSkeleton from '@/components/ui/NewsCardSkeleton';
 
 export default function NewsClient({ articles }: NewsClientProps) {
   return (
@@ -30,7 +32,13 @@ export default function NewsClient({ articles }: NewsClientProps) {
       </header>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12" style={{ color: 'var(--color-text-primary)' }}>
-        {articles.length > 0 ? (
+        {articles === undefined ? (
+          Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className="col-span-1">
+              <NewsCardSkeleton />
+            </div>
+          ))
+        ) : articles.length > 0 ? (
           articles.map((article) => (
             <NewsCard 
               key={article.id}
