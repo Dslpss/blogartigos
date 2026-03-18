@@ -14,7 +14,7 @@ export default function ArticleViews({ articleId, initial = 0 }: Props) {
 
   useEffect(() => {
     if (!articleId) return;
-    const ref = doc(db, 'articles', articleId);
+    const ref = doc(db, 'article_stats', articleId);
     let mounted = true;
 
     // one-off fetch to ensure latest value

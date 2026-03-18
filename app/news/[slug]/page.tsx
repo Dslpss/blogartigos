@@ -5,6 +5,7 @@ import { Clock, User, ArrowLeft, Share2, Heart, MessageSquare, ChevronRight } fr
 import Link from "next/link";
 import React from 'react';
 import ArticleViewTracker from "@/components/ArticleViewTracker";
+import ArticleViews from "@/components/ArticleViews";
 import { notFound } from "next/navigation";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -62,6 +63,9 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
                   <Clock className="w-3 h-3" />
                   <span>{readingTime} min de leitura</span>
                 </div>
+              </div>
+              <div className="mt-1 flex items-center gap-2">
+                <ArticleViews articleId={article.id!} />
               </div>
             </div>
           </div>

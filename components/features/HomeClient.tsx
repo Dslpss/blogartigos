@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { ArrowRight, Sparkles, Zap, Shield, Globe, ArrowUpRight } from 'lucide-react';
 import NewsCard from './NewsCard';
 import PollHighlight from './PollHighlight';
+import ArticleViewTracker from '@/components/ArticleViewTracker';
 
 interface Article {
   id: string;
@@ -28,6 +29,7 @@ const HomeClient: React.FC<HomeClientProps> = ({ articles, blogName = "Comunica 
 
   return (
     <div className="min-h-screen pt-32 pb-20 px-4">
+      <ArticleViewTracker articleId="home" />
       <div className="max-w-7xl mx-auto">
         {/* Modern Hero Section */}
         <section className="mb-32 relative overflow-hidden">

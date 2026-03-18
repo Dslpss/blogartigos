@@ -39,6 +39,8 @@ import {
 import { useAuth } from '@/lib/auth-context';
 import ThemeCustomizer from '@/components/admin/ThemeCustomizer';
 import PollManager from '@/components/admin/PollManager';
+import TotalViews from '@/components/TotalViews';
+import ArticleViews from '@/components/ArticleViews';
 
 const SUPER_ADMIN_EMAIL = process.env.NEXT_PUBLIC_SUPER_ADMIN_EMAIL;
 
@@ -234,9 +236,16 @@ const AdminDashboard = () => {
               </div>
               <div>
                 <h1 className="text-2xl font-black uppercase tracking-tighter">Painel de Controle</h1>
-                <p className="text-[10px] font-mono opacity-50 uppercase tracking-widest italic flex items-center gap-2">
-                   USUÁRIO: {role} <span className="w-1 h-1 bg-accent rounded-full animate-pulse" /> CB_STUDY_HUB_v5.0
-                </p>
+                <div className="flex flex-wrap items-center gap-4 mt-1">
+                  <p className="text-[10px] font-mono opacity-50 uppercase tracking-widest italic flex items-center gap-2">
+                     USUÁRIO: {role} <span className="w-1 h-1 bg-accent rounded-full animate-pulse" /> CB_STUDY_HUB_v5.0
+                  </p>
+                  <div className="h-3 w-px bg-border hidden md:block" />
+                  <div className="flex items-center gap-1.5 bg-accent/5 px-2 py-0.5 rounded-md border border-accent/10 whitespace-nowrap">
+                    <span className="text-[8px] font-black uppercase text-accent/60 tracking-widest">Tráfego Global:</span>
+                    <TotalViews />
+                  </div>
+                </div>
               </div>
             </div>
             <button onClick={handleLogout} className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-secondary/60 hover:text-accent transition-colors">
@@ -378,7 +387,9 @@ const AdminDashboard = () => {
                         <div className="min-w-0">
                           <h4 className="text-[10px] md:text-[11px] font-black uppercase tracking-tight truncate">{article.title}</h4>
                           <p className="text-[8px] opacity-50 uppercase mt-1">{article.category} • {article.date}</p>
-                          <p className="text-[8px] opacity-60 mt-1"><span className="font-black">{article.views ?? 0}</span> visitas</p>
+                          <div className="text-[8px] opacity-60 mt-1 flex items-center gap-1">
+                            <ArticleViews articleId={article.id!} initial={article.views} />
+                          </div>
                         </div>
                       </div>
                       <div className="flex items-center gap-2 md:opacity-0 group-hover:opacity-100 transition-all justify-end border-t md:border-none pt-2 md:pt-0">
