@@ -12,6 +12,7 @@ import {
   Timestamp,
   orderBy,
   limit,
+  writeBatch,
   increment
 } from 'firebase/firestore';
 import { db } from './firebase';
@@ -157,7 +158,6 @@ export const searchArticles = async (term: string): Promise<BlogPost[]> => {
 export const addArticle = async (article: Omit<BlogPost, 'createdAt'>) => {
   await addDoc(collection(db, 'articles'), {
     ...article,
-    views: 0,
     createdAt: Timestamp.now()
   });
 };
@@ -171,17 +171,36 @@ export const deleteArticle = async (id: string) => {
 };
 
 export const incrementArticleViews = async (id: string) => {
-  const articleRef = doc(db, 'articles', id);
+  const articleStatsRef = doc(db, 'article_stats', id);
+  const statsRef = doc(db, 'stats', 'global');
   try {
-    await updateDoc(articleRef, { views: increment(1) });
+    const batch = writeBatch(db);
+    batch.set(articleStatsRef, { views: increment(1) }, { merge: true });
+    batch.set(statsRef, { totalViews: increment(1) }, { merge: true });
+    await batch.commit();
   } catch (err) {
-    // If the document doesn't exist, create it with views = 1
+    // Fallback to updating article_stats and stats separately
     try {
-      await setDoc(articleRef, { views: 1 }, { merge: true });
+      await updateDoc(articleStatsRef, { views: increment(1) });
     } catch (e) {
-      // ignore
+      try { await setDoc(articleStatsRef, { views: 1 }, { merge: true }); } catch (e) {}
+    }
+    try {
+      await updateDoc(statsRef, { totalViews: increment(1) });
+    } catch (e) {
+      try { await setDoc(statsRef, { totalViews: 1 }, { merge: true }); } catch (e) {}
     }
   }
+};
+
+export const getAllArticleViews = async (): Promise<Record<string, number>> => {
+  const q = query(collection(db, 'article_stats'));
+  const querySnapshot = await getDocs(q);
+  const map: Record<string, number> = {};
+  querySnapshot.docs.forEach(d => {
+    map[d.id] = (d.data() as any).views || 0;
+  });
+  return map;
 };
 
 // User Roles & Team Management

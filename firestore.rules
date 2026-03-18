@@ -57,7 +57,24 @@ service cloud.firestore {
       allow write: if isStaff();
     }
 
-    // Polls & Petitions System
+    // Stats: global and per-article (admin-only reads)
+    match /stats/{stat} {
+      allow read: if hasRole('admin');
+      // Allow public to update ONLY the totalViews field and only by +1
+      allow update: if request.resource.data.diff(resource.data).affectedKeys().hasOnly(['totalViews']) && request.resource.data.totalViews == resource.data.totalViews + 1;
+      // Allow creating the stats doc only when initializing totalViews == 1
+      allow create: if request.resource.data.keys().hasOnly(['totalViews']) && request.resource.data.totalViews == 1;
+      allow write: if hasRole('admin');
+    }
+
+    match /article_stats/{articleId} {
+      allow read: if hasRole('admin');
+      // Allow public to increment views by exactly +1
+      allow update: if request.resource.data.diff(resource.data).affectedKeys().hasOnly(['views']) && request.resource.data.views == resource.data.views + 1;
+      allow create: if request.resource.data.keys().hasOnly(['views']) && request.resource.data.views == 1;
+      allow write: if hasRole('admin');
+    }
+
     match /polls/{pollId} {
       allow read: if true;
       // Allow public to update ONLY the submissionsCount for the counter

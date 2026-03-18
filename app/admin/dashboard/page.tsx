@@ -33,6 +33,7 @@ import {
   getTeamMembers,
   addTeamMember,
   removeTeamMember,
+  getAllArticleViews,
   UserRole
 } from '@/lib/db';
 import { useAuth } from '@/lib/auth-context';
@@ -77,16 +78,18 @@ const AdminDashboard = () => {
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const [settings, fetchedArticles, members] = await Promise.all([
+        const [settings, fetchedArticles, members, articleViews] = await Promise.all([
           getBlogSettings(),
           getArticles(),
-          getTeamMembers()
+          getTeamMembers(),
+          getAllArticleViews()
         ]);
         setBlogName(settings.name);
         setBlogDescription(settings.description || '');
         setBlogLogoUrl(settings.logoUrl || '');
         setBlogNewsletterUrl(settings.newsletterUrl || '');
-        setArticles(fetchedArticles);
+        const merged = fetchedArticles.map(a => ({ ...a, views: (articleViews[a.id || ''] || 0) } as BlogPost));
+        setArticles(merged);
         setTeamMembers(members);
       } catch (err) {
         console.error(err);
