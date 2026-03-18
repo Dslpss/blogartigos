@@ -365,13 +365,25 @@ const PollManager = () => {
                 <div className="space-y-4">
                   <label className="text-[10px] font-black uppercase tracking-widest text-secondary ml-4 block mb-2">Configurações de Exibição</label>
                   <div className="flex gap-4">
-                    <button 
-                      type="button"
-                      onClick={() => setFormData({...formData, showCounter: !formData.showCounter})}
-                      className={`flex-1 flex items-center justify-center gap-2 p-3 rounded-xl border text-[10px] font-black uppercase tracking-widest transition-all ${formData.showCounter ? 'bg-accent/5 border-accent text-accent' : 'border-border text-secondary'}`}
-                    >
-                      <BarChart3 size={14} /> {formData.showCounter ? 'Contador Ativo' : 'Contador Oculto'}
-                    </button>
+                    <div className="flex-1 flex flex-col gap-4">
+                      <button 
+                        type="button"
+                        onClick={() => setFormData({...formData, showCounter: !formData.showCounter})}
+                        className={`w-full flex items-center justify-center gap-2 p-3 rounded-xl border text-[10px] font-black uppercase tracking-widest transition-all h-[42px] ${formData.showCounter ? 'bg-accent/5 border-accent text-accent' : 'border-border text-secondary'}`}
+                      >
+                        <BarChart3 size={14} /> {formData.showCounter ? 'Contador Ativo' : 'Contador Oculto'}
+                      </button>
+                      <div className="flex items-center gap-3 px-4 py-2 bg-secondary/5 rounded-xl border border-border">
+                        <input 
+                          type="number"
+                          placeholder="0 = Oculto"
+                          value={formData.goal || ''}
+                          onChange={e => setFormData({...formData, goal: parseInt(e.target.value) || 0})}
+                          className="w-16 bg-transparent border-0 p-0 text-sm font-bold outline-none text-right"
+                        />
+                        <span className="text-[9px] font-black uppercase tracking-widest text-secondary">Meta de Votos</span>
+                      </div>
+                    </div>
                     <div className="flex-1 space-y-4">
                       <div className="flex items-center gap-3 px-4 py-2 bg-secondary/5 rounded-xl border border-border">
                         <input 

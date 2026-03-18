@@ -274,6 +274,7 @@ export interface Poll {
   // Outer / principal card color and transparency (configurable separately)
   outerCardColor?: string;
   outerCardAlpha?: number;
+  goal?: number;
   createdAt: Timestamp;
 }
 

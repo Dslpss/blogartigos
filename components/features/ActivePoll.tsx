@@ -103,7 +103,7 @@ const ActivePoll = () => {
           >
             <section 
               id="active-poll-section" 
-              className="relative overflow-hidden rounded-[2.5rem] border border-border shadow-[0_12px_30px_rgba(2,6,23,0.06)] w-[90vw] md:w-[450px] max-h-[80vh] overflow-y-auto backdrop-blur-xl"
+              className="relative overflow-hidden rounded-[2rem] border border-border shadow-[0_12px_30px_rgba(2,6,23,0.06)] w-[85vw] max-w-[340px] max-h-[85vh] overflow-y-auto backdrop-blur-xl"
               style={{ backgroundColor: poll?.outerCardColor ? hexToRgba(poll.outerCardColor, poll.outerCardAlpha ?? 0.8) : undefined }}
             >
               <button 
@@ -115,7 +115,7 @@ const ActivePoll = () => {
 
               <div className="absolute inset-0 bg-transparent -z-10" />
               
-              <div className="p-8 md:p-10 relative z-10 space-y-8">
+              <div className="p-6 md:p-8 relative z-10 space-y-6">
                 {/* Content Header */}
                 <div className="space-y-4">
                   <div 
@@ -126,35 +126,68 @@ const ActivePoll = () => {
                     <span className="text-[8px] font-black uppercase tracking-[0.3em]" style={{ color: poll?.fontColor || 'var(--color-primary)' }}>Consulta Pública</span>
                   </div>
 
-                  <h2 className="text-3xl md:text-4xl font-serif leading-tight tracking-tight" style={{ color: poll?.fontColor || 'var(--color-primary)' }}>
+                  <h2 className="text-2xl md:text-3xl font-serif leading-tight tracking-tight" style={{ color: poll?.fontColor || 'var(--color-primary)' }}>
                     {poll.title}
                   </h2>
 
                   {poll.description && (
-                    <p className="text-base font-normal leading-relaxed" style={{ color: poll?.fontColor || 'inherit', opacity: 0.8 }}>
+                    <p className="text-sm font-normal leading-relaxed" style={{ color: poll?.fontColor || 'inherit', opacity: 0.8 }}>
                       {poll.description}
                     </p>
                   )}
 
                   {poll.showCounter && (
-                    <div className="pt-4 flex items-center gap-4 border-t border-black/5">
-                      <div className="flex flex-col">
-                        <span className="text-3xl font-serif" style={{ color: poll?.highlightColor || 'var(--color-primary)' }}>
-                          {poll.submissionsCount.toLocaleString()}
-                        </span>
-                        <span 
-                          className="text-[8px] font-black uppercase tracking-[0.3em] mt-1"
-                          style={{ color: poll?.fontColor || 'var(--color-primary)', opacity: (poll?.secondaryFontAlpha ?? 40) / 100 }}
+                    <div className="pt-3 flex flex-col gap-3 border-t border-black/5">
+                      <div className="flex justify-center">
+                        <div 
+                          className="flex items-center gap-1.5 px-4 py-1.5 rounded-full border shadow-sm backdrop-blur-md"
+                          style={{ 
+                            backgroundColor: poll?.highlightColor ? hexToRgba(poll.highlightColor, 0.05) : 'rgba(0,0,0,0.03)',
+                            borderColor: poll?.highlightColor ? hexToRgba(poll.highlightColor, 0.15) : 'rgba(0,0,0,0.05)'
+                          }}
                         >
-                          Assinaturas
-                        </span>
+                          <span 
+                            className="text-[9px] font-black uppercase tracking-widest"
+                            style={{ color: poll?.fontColor || 'var(--color-primary)', opacity: Math.max((poll?.secondaryFontAlpha ?? 80) / 100, 0.4) }}
+                          >
+                            Votos Computados:
+                          </span>
+                          <span className="text-sm font-black tracking-tight" style={{ color: poll?.highlightColor || 'var(--color-primary)' }}>
+                            {poll.submissionsCount.toLocaleString()}
+                          </span>
+                        </div>
                       </div>
+
+                      {poll.goal && poll.goal > 0 ? (
+                        <div className="w-full px-2 mt-1">
+                           <div className="flex justify-between text-[8px] font-black uppercase tracking-widest opacity-60 mb-1.5" style={{ color: poll?.fontColor || 'var(--color-primary)'}}>
+                             <span>Progresso</span>
+                             <span>{poll.submissionsCount.toLocaleString()} / {poll.goal.toLocaleString()}</span>
+                           </div>
+                           <div className="h-1.5 w-full rounded-full overflow-hidden shadow-inner border border-black/5" style={{ backgroundColor: poll?.fontColor ? hexToRgba(poll.fontColor, 0.1) : 'rgba(0,0,0,0.05)' }}>
+                             <motion.div 
+                               initial={{ width: 0 }}
+                               animate={{ width: `${Math.min(100, Math.round((poll.submissionsCount / poll.goal) * 100))}%` }}
+                               transition={{ duration: 1.5, ease: "easeOut" }}
+                               className="h-full rounded-full relative overflow-hidden"
+                               style={{ backgroundColor: poll?.highlightColor || 'var(--color-primary)' }}
+                             >
+                                <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full animate-[shimmer_2s_infinite]" />
+                             </motion.div>
+                           </div>
+                           <style dangerouslySetInnerHTML={{__html: `
+                             @keyframes shimmer {
+                               100% { transform: translateX(100%); }
+                             }
+                           `}} />
+                        </div>
+                      ) : null}
                     </div>
                   )}
                 </div>
 
                 <div 
-                  className="bg-surface/60 border border-border rounded-[2rem] p-8 relative overflow-hidden min-h-[300px] flex flex-col justify-center shadow-inner"
+                  className="bg-surface/60 border border-white/10 rounded-[2.5rem] p-6 relative overflow-hidden min-h-[220px] flex flex-col justify-center shadow-lg backdrop-blur-xl"
                   style={{ backgroundColor: poll?.cardColor ? hexToRgba(poll.cardColor, poll.cardAlpha ?? 0.06) : 'rgba(21, 128, 61, 0.04)' }}
                 >
                   <AnimatePresence mode="wait">
@@ -172,21 +205,21 @@ const ActivePoll = () => {
                         >
                           Escolha sua Posição
                         </p>
-                        <div className={`grid ${poll.options && poll.options.length === 2 ? 'grid-cols-2' : 'grid-cols-1'} gap-3`}>
+                        <div className="flex flex-col gap-3">
                           {(poll.options || ['A Favor', 'Contra']).map((option, index) => (
                             <motion.button
                               key={option}
                               whileHover={{ scale: 1.02 }}
                               whileTap={{ scale: 0.98 }}
                               onClick={() => handleSelect(option)}
-                              className={`w-full py-5 px-4 rounded-2xl border border-border/60 bg-surface/50 transition-all shadow-sm font-black uppercase tracking-[0.2em] text-[10px] flex items-center justify-center text-center
+                              className={`w-[85%] mx-auto py-4 px-4 rounded-full border-2 border-black bg-surface/40 transition-all font-black uppercase tracking-[0.2em] text-[10px] flex items-center justify-center text-center backdrop-blur-md shadow-md hover:shadow-xl hover:-translate-y-0.5
                                 ${index === 0 
-                                  ? 'hover:bg-emerald-500 hover:text-white hover:shadow-emerald-500/10' 
+                                  ? 'hover:bg-emerald-500 hover:text-white hover:border-emerald-600' 
                                   : index === 1 
-                                    ? 'hover:bg-red-500 hover:text-white hover:shadow-red-500/10'
-                                    : 'hover:bg-black/90 hover:text-white dark:hover:bg-white/90 dark:hover:text-black hover:shadow-lg'
+                                    ? 'hover:bg-red-500 hover:text-white hover:border-red-600'
+                                    : 'hover:bg-black/90 hover:text-white hover:border-black dark:hover:bg-white/90 dark:hover:text-black dark:hover:border-white'
                                 } `}
-                              style={{ color: poll?.fontColor || 'var(--color-primary)', borderColor: poll?.cardColor ? poll.cardColor : undefined }}
+                              style={{ color: poll?.fontColor || 'var(--color-primary)' }}
                             >
                               {option}
                             </motion.button>
@@ -220,7 +253,7 @@ const ActivePoll = () => {
                               animate={{ 
                                 y: activeField === field.label || formData[field.label] ? -20 : 0,
                                 scale: activeField === field.label || formData[field.label] ? 0.75 : 1,
-                                color: activeField === field.label ? (poll?.highlightColor || 'var(--color-primary)') : 'var(--color-secondary)'
+                                color: activeField === field.label ? (poll?.highlightColor || '#000000') : '#000000'
                               }}
                               className="absolute left-0 top-2 font-black uppercase tracking-[0.3em] text-[9px] pointer-events-none origin-left transition-all"
                             >
@@ -233,21 +266,22 @@ const ActivePoll = () => {
                               onBlur={() => setActiveField(null)}
                               value={formData[field.label] || ''}
                               onChange={(e) => handleInputChange(field.label, e.target.value)}
-                              className="w-full bg-transparent border-b-2 py-2 font-bold text-base outline-none transition-all placeholder:opacity-20"
+                              className="w-full bg-transparent border-b-2 py-1.5 font-bold text-sm outline-none transition-all placeholder:opacity-20"
                               style={{ color: poll?.fontColor || '#000000', borderColor: activeField === field.label ? (poll?.highlightColor || 'var(--color-primary)') : (poll?.fontColor ? `${poll.fontColor}22` : 'rgba(0,0,0,0.1)') }}
                             />
                           </div>
                         ))}
 
-                        <div className="pt-2">
+                        <div className="pt-3">
                           <motion.button
                             whileHover={{ y: -2 }}
                             whileTap={{ scale: 0.98 }}
                             disabled={submitting}
-                            className="w-full relative py-4 rounded-2xl flex items-center justify-center shadow-lg transition-transform"
+                            className="w-[90%] mx-auto relative py-4 px-6 rounded-full flex items-center justify-center shadow-[0_8px_20px_-8px_rgba(0,0,0,0.5)] hover:shadow-[0_15px_30px_-10px_rgba(0,0,0,0.6)] transition-all overflow-hidden group border border-white/20"
                             style={{ backgroundColor: poll?.highlightColor || '#000000', color: '#ffffff' }}
                           >
-                            <span className="font-black tracking-[0.4em] uppercase text-[10px]">
+                            <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-[150%] group-hover:translate-x-[150%] transition-transform duration-1000 ease-out" />
+                            <span className="font-bold tracking-[0.25em] uppercase text-[11px] relative z-10 drop-shadow-md">
                               {submitting ? 'VALIDANDO...' : 'Protocolar Voto'}
                             </span>
                           </motion.button>

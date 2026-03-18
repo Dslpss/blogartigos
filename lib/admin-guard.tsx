@@ -11,7 +11,8 @@ export const AdminGuard = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     if (!loading && (!user || (!isAdmin && !isEditor))) {
-      router.push('/admin/login');
+      document.cookie = "firebase-token=; path=/; max-age=0; SameSite=Lax";
+      router.push('/secure-terminal-access');
     }
   }, [user, loading, isAdmin, isEditor, router]);
 
