@@ -31,7 +31,12 @@ service cloud.firestore {
 
     // User Roles management
     match /user_roles/{userId} {
-      allow read: if request.auth != null && (request.auth.uid == userId || hasRole('admin'));
+      // Allow reading own UID doc, own invite doc, or if admin
+      allow read: if request.auth != null && (
+        request.auth.uid == userId || 
+        userId == ("invite_" + request.auth.token.email) ||
+        hasRole('admin')
+      );
       
       // Activation: User can create their own UID doc if they have an invite
       allow create: if request.auth != null && request.auth.uid == userId && hasInvite();
