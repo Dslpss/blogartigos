@@ -52,7 +52,7 @@ const PollHighlight = () => {
     >
       <button
         onClick={scrollToPoll}
-        className="group relative w-full flex flex-col sm:flex-row items-center gap-5 py-5 px-7 bg-surface/80 backdrop-blur-2xl border border-border rounded-[2rem] transition-all duration-700 hover:bg-white hover:border-primary/30 hover:shadow-premium text-center sm:text-left outline-none overflow-hidden"
+        className="group relative w-full flex flex-col sm:flex-row items-center gap-5 py-5 px-7 bg-surface/80 backdrop-blur-2xl border-2 border-green-500 rounded-[2rem] transition-all duration-700 hover:bg-white hover:border-green-600 hover:shadow-premium text-center sm:text-left outline-none overflow-hidden"
       >
         {/* Animated Shimmer Line */}
         <div className="absolute inset-0 rounded-[2rem] overflow-hidden pointer-events-none">
