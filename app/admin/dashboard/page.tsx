@@ -459,7 +459,7 @@ const AdminDashboard = () => {
                 )}
 
                 <div className="grid grid-cols-1 gap-4">
-                   <div className="glass-panel p-4 md:p-6 bg-accent/[0.02] border-accent/20 flex flex-col md:flex-row md:items-center justify-between text-primary gap-4">
+                   <div className="glass-panel p-4 md:p-6 bg-accent/2 border-accent/20 flex flex-col md:flex-row md:items-center justify-between text-primary gap-4">
                       <div className="flex items-center gap-4">
                         <div className="w-10 h-10 bg-accent rounded-full flex items-center justify-center text-white text-xs">DB</div>
                         <div>
