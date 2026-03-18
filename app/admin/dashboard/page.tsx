@@ -387,7 +387,7 @@ const AdminDashboard = () => {
                         <div className="min-w-0">
                           <h4 className="text-[10px] md:text-[11px] font-black uppercase tracking-tight truncate">{article.title}</h4>
                           <p className="text-[8px] opacity-50 uppercase mt-1">{article.category} • {article.date}</p>
-                          <div className="text-[8px] opacity-60 mt-1 flex items-center gap-1">
+                          <div className="mt-1 flex items-center gap-1">
                             <ArticleViews articleId={article.id!} initial={article.views} />
                           </div>
                         </div>

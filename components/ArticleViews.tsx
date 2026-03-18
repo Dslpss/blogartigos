@@ -42,8 +42,9 @@ export default function ArticleViews({ articleId, initial = 0 }: Props) {
   }, [articleId]);
 
   return (
-    <div className="text-[10px] font-mono opacity-40 uppercase tracking-widest mr-4">
-      {views} visitas
+    <div className="text-[10px] font-mono uppercase tracking-widest flex items-center gap-1">
+      <span className="font-black text-accent">{views}</span> 
+      <span className="opacity-60">visitas</span>
     </div>
   );
 }
