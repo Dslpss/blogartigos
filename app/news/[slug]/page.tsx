@@ -4,6 +4,7 @@ import { calculateReadingTime } from "@/lib/utils";
 import { Clock, User, ArrowLeft, Share2, Heart, MessageSquare, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import React from 'react';
+import ArticleViewTracker from "@/components/ArticleViewTracker";
 import { notFound } from "next/navigation";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -73,6 +74,8 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
           </div>
         </div>
       </header>
+
+      {article.id && <ArticleViewTracker articleId={article.id} />}
 
       {article.imageUrl && (
         <div className="aspect-[21/9] bg-primary/5 overflow-hidden mb-20 relative group">

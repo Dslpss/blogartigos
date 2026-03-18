@@ -11,7 +11,8 @@ import {
   setDoc,
   Timestamp,
   orderBy,
-  limit
+  limit,
+  increment
 } from 'firebase/firestore';
 import { db } from './firebase';
 
@@ -28,6 +29,7 @@ export interface BlogPost {
   status: string;
   source: string;
   region: string;
+  views?: number;
   createdAt: Timestamp;
 }
 
@@ -155,6 +157,7 @@ export const searchArticles = async (term: string): Promise<BlogPost[]> => {
 export const addArticle = async (article: Omit<BlogPost, 'createdAt'>) => {
   await addDoc(collection(db, 'articles'), {
     ...article,
+    views: 0,
     createdAt: Timestamp.now()
   });
 };
@@ -165,6 +168,20 @@ export const updateArticle = async (id: string, article: Partial<BlogPost>) => {
 
 export const deleteArticle = async (id: string) => {
   await deleteDoc(doc(db, 'articles', id));
+};
+
+export const incrementArticleViews = async (id: string) => {
+  const articleRef = doc(db, 'articles', id);
+  try {
+    await updateDoc(articleRef, { views: increment(1) });
+  } catch (err) {
+    // If the document doesn't exist, create it with views = 1
+    try {
+      await setDoc(articleRef, { views: 1 }, { merge: true });
+    } catch (e) {
+      // ignore
+    }
+  }
 };
 
 // User Roles & Team Management

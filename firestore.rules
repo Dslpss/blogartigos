@@ -52,6 +52,8 @@ service cloud.firestore {
     // Articles & News: Admins and Editors can write
     match /articles/{article} {
       allow read: if true;
+      // Allow public to update ONLY the views field (for page counters) and only by +1
+      allow update: if request.resource.data.diff(resource.data).affectedKeys().hasOnly(['views']) && request.resource.data.views == resource.data.views + 1;
       allow write: if isStaff();
     }
 

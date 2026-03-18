@@ -51,6 +51,7 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [articles, setArticles] = useState<BlogPost[]>([]);
+  const totalViews = articles.reduce((acc, a) => acc + (a.views || 0), 0);
   
   const [teamMembers, setTeamMembers] = useState<UserRole[]>([]);
   const [isAddingMember, setIsAddingMember] = useState(false);
@@ -374,6 +375,7 @@ const AdminDashboard = () => {
                         <div className="min-w-0">
                           <h4 className="text-[10px] md:text-[11px] font-black uppercase tracking-tight truncate">{article.title}</h4>
                           <p className="text-[8px] opacity-50 uppercase mt-1">{article.category} • {article.date}</p>
+                          <p className="text-[8px] opacity-60 mt-1"><span className="font-black">{article.views ?? 0}</span> visitas</p>
                         </div>
                       </div>
                       <div className="flex items-center gap-2 md:opacity-0 group-hover:opacity-100 transition-all justify-end border-t md:border-none pt-2 md:pt-0">
