@@ -264,8 +264,16 @@ export interface Poll {
   showCounter: boolean;
   submissionsCount: number;
   options: string[];
+  // Inner card color (used for the vote area)
   cardColor?: string;
+  cardAlpha?: number;
+  // Font color for text inside the poll
   fontColor?: string;
+  secondaryFontAlpha?: number;
+  highlightColor?: string;
+  // Outer / principal card color and transparency (configurable separately)
+  outerCardColor?: string;
+  outerCardAlpha?: number;
   createdAt: Timestamp;
 }
 

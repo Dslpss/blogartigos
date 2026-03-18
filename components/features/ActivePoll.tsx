@@ -8,6 +8,20 @@ import { Poll, submitPollResponse } from '@/lib/db';
 import { Sparkles, CheckCircle2, X, MessageSquare, ChevronUp } from 'lucide-react';
 
 const ActivePoll = () => {
+  // helper to convert hex color to rgba with alpha fallback
+  const hexToRgba = (hex: string, alpha = 0.06) => {
+    if (!hex) return `rgba(21,128,61,${alpha})`;
+    const sanitized = hex.replace('#', '');
+    const bigint = parseInt(sanitized, 16);
+    const r = (bigint >> 16) & 255;
+    const g = (bigint >> 8) & 255;
+    const b = bigint & 255;
+    // Normalize alpha: support 0-1 or 0-100 percentage values
+    let a = typeof alpha === 'number' ? alpha : 0.06;
+    if (a > 1) a = a / 100; // treat >1 as percentage
+    a = Math.max(0, Math.min(1, a));
+    return `rgba(${r}, ${g}, ${b}, ${a})`;
+  };
   const [poll, setPoll] = useState<Poll | null>(null);
   const [loading, setLoading] = useState(true);
   const [submitted, setSubmitted] = useState(false);
@@ -89,7 +103,8 @@ const ActivePoll = () => {
           >
             <section 
               id="active-poll-section" 
-              className="relative overflow-hidden rounded-[2.5rem] border border-black/5 bg-white shadow-[0_20px_50px_rgba(0,0,0,0.15)] w-[90vw] md:w-[450px] max-h-[80vh] overflow-y-auto"
+              className="relative overflow-hidden rounded-[2.5rem] border border-border shadow-[0_12px_30px_rgba(2,6,23,0.06)] w-[90vw] md:w-[450px] max-h-[80vh] overflow-y-auto backdrop-blur-xl"
+              style={{ backgroundColor: poll?.outerCardColor ? hexToRgba(poll.outerCardColor, poll.outerCardAlpha ?? 0.8) : undefined }}
             >
               <button 
                 onClick={() => setIsExpanded(false)}
@@ -103,17 +118,20 @@ const ActivePoll = () => {
               <div className="p-8 md:p-10 relative z-10 space-y-8">
                 {/* Content Header */}
                 <div className="space-y-4">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/10 backdrop-blur-3xl">
-                    <div className="w-1 h-1 rounded-full bg-primary animate-pulse" />
-                    <span className="text-[8px] font-black uppercase tracking-[0.3em] text-primary">Consulta Pública</span>
+                  <div 
+                    className="inline-flex items-center gap-2 px-3 py-1 rounded-full border backdrop-blur-3xl"
+                    style={{ backgroundColor: poll?.highlightColor ? hexToRgba(poll.highlightColor, 0.1) : 'rgba(21, 128, 61, 0.1)', borderColor: poll?.highlightColor ? hexToRgba(poll.highlightColor, 0.1) : 'rgba(21, 128, 61, 0.1)' }}
+                  >
+                    <div className="w-1 h-1 rounded-full animate-pulse" style={{ backgroundColor: poll?.highlightColor || 'var(--color-primary)' }} />
+                    <span className="text-[8px] font-black uppercase tracking-[0.3em]" style={{ color: poll?.fontColor || 'var(--color-primary)' }}>Consulta Pública</span>
                   </div>
 
-                  <h2 className="text-3xl md:text-4xl font-serif leading-tight tracking-tight text-primary">
+                  <h2 className="text-3xl md:text-4xl font-serif leading-tight tracking-tight" style={{ color: poll?.fontColor || 'var(--color-primary)' }}>
                     {poll.title}
                   </h2>
 
                   {poll.description && (
-                    <p className="text-base font-normal leading-relaxed text-secondary">
+                    <p className="text-base font-normal leading-relaxed" style={{ color: poll?.fontColor || 'inherit', opacity: 0.8 }}>
                       {poll.description}
                     </p>
                   )}
@@ -121,17 +139,23 @@ const ActivePoll = () => {
                   {poll.showCounter && (
                     <div className="pt-4 flex items-center gap-4 border-t border-black/5">
                       <div className="flex flex-col">
-                        <span className="text-3xl font-serif text-primary">
+                        <span className="text-3xl font-serif" style={{ color: poll?.highlightColor || 'var(--color-primary)' }}>
                           {poll.submissionsCount.toLocaleString()}
                         </span>
-                        <span className="text-[8px] font-black uppercase tracking-[0.3em] mt-1 text-black/20">Assinaturas</span>
+                        <span 
+                          className="text-[8px] font-black uppercase tracking-[0.3em] mt-1"
+                          style={{ color: poll?.fontColor || 'var(--color-primary)', opacity: (poll?.secondaryFontAlpha ?? 40) / 100 }}
+                        >
+                          Assinaturas
+                        </span>
                       </div>
                     </div>
                   )}
                 </div>
 
                 <div 
-                  className="bg-neutral-50 border border-black/5 rounded-[2rem] p-8 relative overflow-hidden min-h-[300px] flex flex-col justify-center shadow-inner"
+                  className="bg-surface/60 border border-border rounded-[2rem] p-8 relative overflow-hidden min-h-[300px] flex flex-col justify-center shadow-inner"
+                  style={{ backgroundColor: poll?.cardColor ? hexToRgba(poll.cardColor, poll.cardAlpha ?? 0.06) : 'rgba(21, 128, 61, 0.04)' }}
                 >
                   <AnimatePresence mode="wait">
                     {step === 1 && (
@@ -142,7 +166,12 @@ const ActivePoll = () => {
                         exit={{ opacity: 0, y: -10 }}
                         className="space-y-4 relative z-10"
                       >
-                        <p className="text-[9px] font-black uppercase tracking-[0.4em] text-center mb-6 text-black/30">Escolha sua Posição</p>
+                        <p 
+                          className="text-[9px] font-black uppercase tracking-[0.4em] text-center mb-6"
+                          style={{ color: poll?.fontColor || 'var(--color-primary)', opacity: (poll?.secondaryFontAlpha ?? 40) / 100 }}
+                        >
+                          Escolha sua Posição
+                        </p>
                         <div className={`grid ${poll.options && poll.options.length === 2 ? 'grid-cols-2' : 'grid-cols-1'} gap-3`}>
                           {(poll.options || ['A Favor', 'Contra']).map((option, index) => (
                             <motion.button
@@ -150,13 +179,14 @@ const ActivePoll = () => {
                               whileHover={{ scale: 1.02 }}
                               whileTap={{ scale: 0.98 }}
                               onClick={() => handleSelect(option)}
-                              className={`w-full py-5 px-4 rounded-2xl border border-black/10 bg-white transition-all shadow-sm font-black uppercase tracking-[0.2em] text-[10px] flex items-center justify-center text-center
+                              className={`w-full py-5 px-4 rounded-2xl border border-border/60 bg-surface/50 transition-all shadow-sm font-black uppercase tracking-[0.2em] text-[10px] flex items-center justify-center text-center
                                 ${index === 0 
                                   ? 'hover:bg-emerald-500 hover:text-white hover:shadow-emerald-500/10' 
                                   : index === 1 
                                     ? 'hover:bg-red-500 hover:text-white hover:shadow-red-500/10'
-                                    : 'hover:bg-primary hover:text-white hover:shadow-primary/10'
-                                } text-black`}
+                                    : 'hover:bg-black/90 hover:text-white dark:hover:bg-white/90 dark:hover:text-black hover:shadow-lg'
+                                } `}
+                              style={{ color: poll?.fontColor || 'var(--color-primary)', borderColor: poll?.cardColor ? poll.cardColor : undefined }}
                             >
                               {option}
                             </motion.button>
@@ -175,8 +205,13 @@ const ActivePoll = () => {
                         className="space-y-5 relative z-10"
                       >
                         <div className="flex items-center justify-between mb-4">
-                          <p className="text-[9px] font-black uppercase tracking-[0.3em] text-black/40">Posição: <span className="text-primary">{selection}</span></p>
-                          <button onClick={() => setStep(1)} className="text-[9px] transition-colors uppercase tracking-[0.2em] text-accent font-bold hover:underline">Alterar</button>
+                          <p 
+                            className="text-[9px] font-black uppercase tracking-[0.3em]"
+                            style={{ color: poll?.fontColor || 'var(--color-primary)', opacity: (poll?.secondaryFontAlpha ?? 40) / 100 }}
+                          >
+                            Posição: <span style={{ opacity: 1, color: poll?.highlightColor || 'var(--color-primary)' }} className="font-bold">{selection}</span>
+                          </p>
+                          <button onClick={() => setStep(1)} className="text-[9px] transition-colors uppercase tracking-[0.2em] font-bold hover:underline" style={{ color: poll?.highlightColor || 'var(--color-accent)' }}>Alterar</button>
                         </div>
 
                         {poll.fields.map((field, index) => (
@@ -185,7 +220,7 @@ const ActivePoll = () => {
                               animate={{ 
                                 y: activeField === field.label || formData[field.label] ? -20 : 0,
                                 scale: activeField === field.label || formData[field.label] ? 0.75 : 1,
-                                color: activeField === field.label ? 'var(--color-primary)' : 'var(--color-secondary)'
+                                color: activeField === field.label ? (poll?.highlightColor || 'var(--color-primary)') : 'var(--color-secondary)'
                               }}
                               className="absolute left-0 top-2 font-black uppercase tracking-[0.3em] text-[9px] pointer-events-none origin-left transition-all"
                             >
@@ -198,7 +233,8 @@ const ActivePoll = () => {
                               onBlur={() => setActiveField(null)}
                               value={formData[field.label] || ''}
                               onChange={(e) => handleInputChange(field.label, e.target.value)}
-                              className="w-full bg-transparent border-b-2 py-2 font-bold text-base text-black outline-none transition-all placeholder:opacity-20 border-black/10 focus:border-primary"
+                              className="w-full bg-transparent border-b-2 py-2 font-bold text-base outline-none transition-all placeholder:opacity-20"
+                              style={{ color: poll?.fontColor || '#000000', borderColor: activeField === field.label ? (poll?.highlightColor || 'var(--color-primary)') : (poll?.fontColor ? `${poll.fontColor}22` : 'rgba(0,0,0,0.1)') }}
                             />
                           </div>
                         ))}
@@ -208,7 +244,8 @@ const ActivePoll = () => {
                             whileHover={{ y: -2 }}
                             whileTap={{ scale: 0.98 }}
                             disabled={submitting}
-                            className="btn-premium w-full relative py-4 rounded-2xl flex items-center justify-center shadow-lg"
+                            className="w-full relative py-4 rounded-2xl flex items-center justify-center shadow-lg transition-transform"
+                            style={{ backgroundColor: poll?.highlightColor || '#000000', color: '#ffffff' }}
                           >
                             <span className="font-black tracking-[0.4em] uppercase text-[10px]">
                               {submitting ? 'VALIDANDO...' : 'Protocolar Voto'}
@@ -229,12 +266,18 @@ const ActivePoll = () => {
                           <CheckCircle2 className="w-6 h-6" />
                         </div>
                         <div className="space-y-1">
-                          <h3 className="text-xl font-serif text-black">Voto Validado</h3>
-                          <p className="font-black tracking-widest text-[9px] uppercase text-black/30">Seu registro foi integrado ao sistema.</p>
+                          <h3 className="text-xl font-serif" style={{ color: poll?.fontColor || '#000000' }}>Voto Validado</h3>
+                          <p 
+                            className="font-black tracking-widest text-[9px] uppercase"
+                            style={{ color: poll?.fontColor || 'var(--color-primary)', opacity: (poll?.secondaryFontAlpha ?? 40) / 100 }}
+                          >
+                            Seu registro foi integrado ao sistema.
+                          </p>
                         </div>
                         <button 
                           onClick={() => { setStep(1); setSubmitted(false); setFormData({}); }}
-                          className="text-[9px] font-black uppercase tracking-[0.4em] text-accent hover:text-accent/80 transition-colors mt-6 py-2 px-4 rounded-xl bg-accent/5"
+                          className="text-[9px] font-black uppercase tracking-[0.4em] transition-colors mt-6 py-2 px-4 rounded-xl"
+                          style={{ color: poll?.highlightColor || 'var(--color-accent)', backgroundColor: poll?.highlightColor ? hexToRgba(poll.highlightColor, 0.05) : 'rgba(0,0,0,0.05)' }}
                         >
                           ← Nova entrada
                         </button>
@@ -269,9 +312,10 @@ const ActivePoll = () => {
         whileTap={{ scale: 0.98 }}
         className={`pointer-events-auto flex items-center gap-3 px-6 py-4 rounded-full transition-all border ${
           !isExpanded 
-            ? "bg-white text-black border-sky-400 shadow-[0_0_10px_rgba(14,165,233,0.1)]" 
+            ? "bg-white text-black shadow-lg" 
             : "bg-white text-black border-black/5"
         } font-black uppercase tracking-widest text-[10px] shadow-2xl`}
+        style={!isExpanded ? { borderColor: poll?.highlightColor || '#0ea5e9', color: '#000000' } : { color: '#000000' }}
       >
         <AnimatePresence mode="wait">
           {!isExpanded ? (
@@ -283,7 +327,7 @@ const ActivePoll = () => {
               className="flex items-center gap-4"
             >
               <div className="flex items-center gap-2 border-r border-black/5 pr-3">
-                <MessageSquare size={16} className="text-sky-500" />
+                <MessageSquare size={16} style={{ color: poll?.highlightColor || '#0ea5e9' }} />
                 <span className="whitespace-nowrap">{poll.title}</span>
               </div>
               

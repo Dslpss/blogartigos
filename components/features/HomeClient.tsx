@@ -27,6 +27,19 @@ interface HomeClientProps {
 const HomeClient: React.FC<HomeClientProps> = ({ articles, blogName = "Comunica Brasil" }) => {
   const featuredArticles = articles.slice(0, 6);
 
+  let firstPart = "";
+  let secondPart = "";
+
+  if (blogName.includes(' ')) {
+    const parts = blogName.split(' ');
+    firstPart = parts[0];
+    secondPart = " " + parts.slice(1).join(' ');
+  } else {
+    const nameParts = blogName.match(/[A-Z][a-z]+/g) || [blogName];
+    firstPart = nameParts[0] || blogName;
+    secondPart = blogName.replace(firstPart, "");
+  }
+
   return (
     <div className="min-h-screen pt-32 pb-20 px-4">
       <ArticleViewTracker articleId="home" />
@@ -61,9 +74,9 @@ const HomeClient: React.FC<HomeClientProps> = ({ articles, blogName = "Comunica 
               </motion.div>
               
               <h1 className="text-4xl sm:text-6xl lg:text-8xl font-black mb-10 leading-[0.9] tracking-tighter" style={{ color: 'var(--color-text-primary)' }}>
-                {blogName.includes(' ') ? blogName.split(' ')[0] : blogName} <br />
+                <span className="text-primary">{firstPart}</span> <br />
                 <span className="text-accent underline decoration-black underline-offset-8" style={{ textDecorationColor: 'var(--color-primary)' }}>
-                  {blogName.includes(' ') ? blogName.split(' ').slice(1).join(' ') : ''}
+                  {secondPart.trim()}
                 </span>
               </h1>
             

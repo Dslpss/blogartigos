@@ -44,7 +44,13 @@ const PollManager = () => {
     isActive: false,
     showCounter: true,
     cardColor: '#080808',
+    cardAlpha: 6,
     fontColor: '#ffffff',
+    secondaryFontAlpha: 40,
+    highlightColor: '#15803d',
+    // defaults for outer/principal card (percent 0-100)
+    outerCardColor: '#ffffff',
+    outerCardAlpha: 80,
     options: ['A Favor', 'Contra']
   });
 
@@ -97,12 +103,19 @@ const PollManager = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+
+    // Normalize outerCardAlpha to 0-1 before saving (support 0-100 percent entered by admin)
+    const normalizedOuterAlpha = typeof formData.outerCardAlpha === 'number' ? (formData.outerCardAlpha > 1 ? formData.outerCardAlpha / 100 : formData.outerCardAlpha) : undefined;
+    const normalizedCardAlpha = typeof formData.cardAlpha === 'number' ? (formData.cardAlpha > 1 ? formData.cardAlpha / 100 : formData.cardAlpha) : undefined;
+    const normalizedSecondaryAlpha = typeof formData.secondaryFontAlpha === 'number' ? (formData.secondaryFontAlpha > 1 ? formData.secondaryFontAlpha / 100 : formData.secondaryFontAlpha) : undefined;
+    const payload: any = { ...formData, outerCardAlpha: normalizedOuterAlpha, cardAlpha: normalizedCardAlpha, secondaryFontAlpha: normalizedSecondaryAlpha };
+
     try {
       if (editingPoll?.id) {
-        await updatePoll(editingPoll.id, formData);
+        await updatePoll(editingPoll.id, payload);
         alert('Enquete atualizada!');
       } else {
-        await addPoll(formData);
+        await addPoll(payload);
         alert('Enquete criada!');
       }
       setIsAdding(false);
@@ -124,7 +137,12 @@ const PollManager = () => {
       isActive: poll.isActive,
       showCounter: poll.showCounter,
       cardColor: poll.cardColor || '#080808',
+      cardAlpha: typeof poll.cardAlpha === 'number' ? (poll.cardAlpha <= 1 ? poll.cardAlpha * 100 : poll.cardAlpha) : 6,
       fontColor: poll.fontColor || '#ffffff',
+      secondaryFontAlpha: typeof poll.secondaryFontAlpha === 'number' ? (poll.secondaryFontAlpha <= 1 ? poll.secondaryFontAlpha * 100 : poll.secondaryFontAlpha) : 40,
+      highlightColor: poll.highlightColor || '#15803d',
+      outerCardColor: poll.outerCardColor || '#ffffff',
+      outerCardAlpha: typeof poll.outerCardAlpha === 'number' ? (poll.outerCardAlpha <= 1 ? poll.outerCardAlpha * 100 : poll.outerCardAlpha) : 80,
       options: poll.options || ['A Favor', 'Contra']
     });
     setIsAdding(true);
@@ -251,7 +269,12 @@ const PollManager = () => {
               isActive: false,
               showCounter: true,
               cardColor: '#080808',
+              cardAlpha: 6,
               fontColor: '#ffffff',
+              secondaryFontAlpha: 40,
+              highlightColor: '#15803d',
+              outerCardColor: '#ffffff',
+              outerCardAlpha: 80,
               options: ['A Favor', 'Contra']
             });
             setIsAdding(true);
@@ -357,7 +380,19 @@ const PollManager = () => {
                           onChange={e => setFormData({...formData, cardColor: e.target.value})}
                           className="w-8 h-8 rounded-lg cursor-pointer bg-transparent border-0 p-0"
                         />
-                        <span className="text-[9px] font-black uppercase tracking-widest text-secondary">Cor Fundo</span>
+                        <span className="text-[9px] font-black uppercase tracking-widest text-secondary">Cor Fundo (Interno)</span>
+                      </div>
+                      <div className="flex items-center gap-3 px-4 py-2 bg-secondary/5 rounded-xl border border-border">
+                        <input
+                          type="range"
+                          min="0"
+                          max="100"
+                          step="1"
+                          value={formData.cardAlpha ?? 6}
+                          onChange={e => setFormData({...formData, cardAlpha: parseFloat(e.target.value)})}
+                          className="w-full cursor-pointer accent-accent"
+                        />
+                        <span className="text-[9px] font-black uppercase tracking-widest text-secondary w-32">Opacidade Interna ({Math.round(formData.cardAlpha ?? 6)}%)</span>
                       </div>
                       <div className="flex items-center gap-3 px-4 py-2 bg-secondary/5 rounded-xl border border-border">
                         <input 
@@ -366,7 +401,49 @@ const PollManager = () => {
                           onChange={e => setFormData({...formData, fontColor: e.target.value})}
                           className="w-8 h-8 rounded-lg cursor-pointer bg-transparent border-0 p-0"
                         />
-                        <span className="text-[9px] font-black uppercase tracking-widest text-secondary">Cor Fonte</span>
+                        <span className="text-[9px] font-black uppercase tracking-widest text-secondary">Cor Fonte (Total)</span>
+                      </div>
+                      <div className="flex items-center gap-3 px-4 py-2 bg-secondary/5 rounded-xl border border-border">
+                        <input 
+                          type="color" 
+                          value={formData.highlightColor || '#15803d'} 
+                          onChange={e => setFormData({...formData, highlightColor: e.target.value})}
+                          className="w-8 h-8 rounded-lg cursor-pointer bg-transparent border-0 p-0"
+                        />
+                        <span className="text-[9px] font-black uppercase tracking-widest text-secondary w-32">Cor Destaque (Números)</span>
+                      </div>
+                      <div className="flex items-center gap-3 px-4 py-2 bg-secondary/5 rounded-xl border border-border">
+                        <input
+                          type="range"
+                          min="0"
+                          max="100"
+                          step="1"
+                          value={formData.secondaryFontAlpha ?? 40}
+                          onChange={e => setFormData({...formData, secondaryFontAlpha: parseFloat(e.target.value)})}
+                          className="w-full cursor-pointer accent-accent"
+                        />
+                        <span className="text-[9px] font-black uppercase tracking-widest text-secondary w-32">Opacidade Secundária ({Math.round(formData.secondaryFontAlpha ?? 40)}%)</span>
+                      </div>
+                      <div className="flex items-center gap-3 px-4 py-2 bg-secondary/5 rounded-xl border border-border">
+                        <input 
+                          type="color" 
+                          value={formData.outerCardColor || '#ffffff'} 
+                          onChange={e => setFormData({...formData, outerCardColor: e.target.value})}
+                          className="w-8 h-8 rounded-lg cursor-pointer bg-transparent border-0 p-0"
+                        />
+                        <span className="text-[9px] font-black uppercase tracking-widest text-secondary">Cor Fundo (Principal)</span>
+                      </div>
+                      <div className="flex items-center gap-3 px-4 py-2 bg-secondary/5 rounded-xl border border-border">
+                        <input
+                          type="range"
+                          min="0"
+                          max="100"
+                          step="1"
+                          value={formData.outerCardAlpha ?? 80}
+                          onChange={e => setFormData({...formData, outerCardAlpha: parseFloat(e.target.value)})}
+                          className="w-full cursor-pointer accent-accent"
+                        />
+                        <span className="text-[9px] font-black uppercase tracking-widest text-secondary w-32">Opacidade Externa ({Math.round(formData.outerCardAlpha ?? 80)}%)</span>
                       </div>
                     </div>
                   </div>

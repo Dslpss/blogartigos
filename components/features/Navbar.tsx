@@ -33,9 +33,19 @@ const Navbar = ({ blogName, logoUrl, newsletterUrl }: NavbarProps) => {
   const [mounted, setMounted] = useState(false);
 
   const displayBlogName = blogName || "ComunicaBrasil";
-  const nameParts = displayBlogName.match(/[A-Z][a-z]+/g) || [displayBlogName];
-  const firstPart = nameParts[0] || displayBlogName;
-  const secondPart = displayBlogName.replace(firstPart, "");
+  let firstPart = "";
+  let secondPart = "";
+
+  if (displayBlogName.includes(' ')) {
+    const parts = displayBlogName.split(' ');
+    firstPart = parts[0];
+    secondPart = " " + parts.slice(1).join(' ');
+  } else {
+    const nameParts = displayBlogName.match(/[A-Z][a-z]+/g) || [displayBlogName];
+    firstPart = nameParts[0] || displayBlogName;
+    secondPart = displayBlogName.replace(firstPart, "");
+  }
+
   const initials = displayBlogName.split(' ').map(word => word[0]).join('').toUpperCase().slice(0, 2);
 
   useEffect(() => {
@@ -95,8 +105,9 @@ const Navbar = ({ blogName, logoUrl, newsletterUrl }: NavbarProps) => {
                 <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
                 {initials}
               </div>
-                <span className="text-xl font-black uppercase tracking-tighter" style={{ color: 'var(--color-text-primary)' }}>
-                  {firstPart}<span className="text-accent underline decoration-primary underline-offset-4" style={{ textDecorationColor: 'var(--color-primary)' }}>{secondPart}</span>
+                <span className="text-xl font-black uppercase tracking-tighter">
+                  <span className="text-primary">{firstPart}</span>
+                  <span className="text-accent underline decoration-primary underline-offset-4" style={{ textDecorationColor: 'var(--color-primary)' }}>{secondPart}</span>
                 </span>
               </>
             )}
